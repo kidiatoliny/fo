@@ -1,11 +1,14 @@
+import { ThemeProvider } from '@material-ui/core'
+import { theme } from '~/src/config/theme'
+import React from 'react'
 
-
+import Routes from './src/routes'
 function App() {
   return (
-    <div className="App">
-      <h1>React App</h1>
-    </div>
-  );
+    <ThemeProvider theme={theme}>
+      <Routes />
+    </ThemeProvider>
+  )
 }
 
-export default App;
+export default App
