@@ -1,3 +1,4 @@
-import Home from "./Home";
+import Home from './Home'
+import Reservation from './Reservation'
 
-export {Home}
+export { Home, Reservation }

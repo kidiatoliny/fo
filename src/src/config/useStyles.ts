@@ -11,19 +11,28 @@ export const useStyles = () => {
         zIndex: theme.zIndex.drawer + 1
       },
       drawer: {
-        width: drawerWidth,
-        flexShrink: 0
+        [theme.breakpoints.up('sm')]: {
+          width: drawerWidth,
+          flexShrink: 0
+        }
       },
       drawerPaper: {
         width: drawerWidth
       },
       drawerContainer: {
-        overflow: 'auto',
-        paddingTop: 70
+        overflow: 'auto'
       },
       content: {
         flexGrow: 1,
-        padding: theme.spacing(3)
+        padding: theme.spacing(3),
+        marginTop: theme.spacing(5)
+      },
+
+      menuButton: {
+        marginRight: theme.spacing(2)
+      },
+      hide: {
+        display: 'none'
       }
     })
   )

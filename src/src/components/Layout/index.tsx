@@ -1,16 +1,20 @@
-import { CssBaseline, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
+import { useStyles } from '~/src/config/useStyles'
 import React from 'react'
 
 import AppBar from '../AppBar'
 import AppDrawer from '../AppDrawer'
 
 const Layout: React.FC = ({ children }) => {
+  const { classes } = useStyles()
   return (
-    <Grid container direction="column">
+    <Grid container>
       <AppBar />
       <AppDrawer />
-      <Grid item xs={12}></Grid>
-      <Grid item container>
+
+      {/* <Grid item /> */}
+      {/* <Grid item /> */}
+      <Grid item className={classes.content}>
         {children}
       </Grid>
     </Grid>

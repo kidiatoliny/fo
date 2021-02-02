@@ -1,27 +1,33 @@
 import {
+  Icon,
   List,
   ListItem,
   ListItemIcon,
-  ListItemText,
-  Divider
+  ListItemText
 } from '@material-ui/core'
-import DraftsIcon from '@material-ui/icons/Drafts'
-import InboxIcon from '@material-ui/icons/Inbox'
-import React from 'react'
-const SimpleList: React.FC = () => {
+import { useToggleDrawer } from '~/src/contexts/ToggleDrawerProvider'
+import React, { ReactElement } from 'react'
+import { useHistory } from 'react-router-dom'
+
+interface SimpleListProps {
+  icon?: ReactElement
+  title: string
+  link: string
+}
+const SimpleList: React.FC<SimpleListProps> = ({ icon, title, link }) => {
+  const history = useHistory()
+  const { handleToggle } = useToggleDrawer()
+  const handleIcon = () => {
+    history.push(link)
+    handleToggle()
+  }
   return (
-    <List component="nav" aria-label="main mailbox folders">
-      <ListItem button>
+    <List component="nav" aria-label={title}>
+      <ListItem button onClick={handleIcon}>
         <ListItemIcon>
-          <InboxIcon />
+          <Icon>{icon}</Icon>
         </ListItemIcon>
-        <ListItemText primary="Inbox" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <DraftsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Drafts" />
+        <ListItemText primary={title} />
       </ListItem>
     </List>
   )
