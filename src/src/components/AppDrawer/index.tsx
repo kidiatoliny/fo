@@ -8,7 +8,7 @@ import React from 'react'
 import SimpleList from '../Lists/SimpleList'
 
 const simpleList = [
-  { title: 'Dashboard', icon: <DashBoardIcon />, link: '/home' },
+  { title: 'Dashboard', icon: <DashBoardIcon />, link: '/dashboard' },
   { title: 'Venda/Reserva', icon: <LocalAtmIcon />, link: '/reservation' }
 ]
 const AppDrawer: React.FC = () => {
