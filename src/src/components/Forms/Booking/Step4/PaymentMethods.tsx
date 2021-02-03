@@ -5,19 +5,32 @@ import {
   InputAdornment,
   MenuItem,
   Typography,
-  Box
+  Box,
+  Icon,
+  DialogContent,
+  DialogContentText,
+  Button,
+  DialogActions
 } from '@material-ui/core'
-import { PaymentIcon } from '~/src/components/Icons'
+import SimpleDialog from '~/src/components/Dialogs/SimpleDialog'
+import {
+  MailIcon,
+  MobileIcon,
+  PaymentIcon,
+  PhoneIcon,
+  UserIcon
+} from '~/src/components/Icons'
 import { Field } from 'formik'
 import { Select } from 'formik-material-ui'
-import React from 'react'
+import React, { useState } from 'react'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 
 import FaturationForm from './FaturationForm'
+import PaymentDetails from './PaymentDetails'
 
 const PaymentMethods: React.FC = () => {
   return (
-    <Grid container>
+    <Grid container spacing={4}>
       <Grid item container>
         <Box mt={2} mb={4}>
           <Typography variant="h6">Pagamento</Typography>
@@ -48,7 +61,7 @@ const PaymentMethods: React.FC = () => {
         </Grid>
       </Grid>
       <Grid item container sm={6}>
-        detalhes de pagamento
+        <PaymentDetails />
       </Grid>
     </Grid>
   )

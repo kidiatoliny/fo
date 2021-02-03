@@ -186,22 +186,24 @@ export function FormikStepper({
               <Grid item />
 
               <Grid item sm={6} md={2}>
-                <Button
-                  startIcon={
-                    isSubmitting ? <CircularProgress size="1rem" /> : null
-                  }
-                  disabled={isSubmitting}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  fullWidth
-                >
-                  {isSubmitting
-                    ? 'Guardando...'
-                    : isLastStep()
-                    ? 'Guardar'
-                    : 'Proximo'}
-                </Button>
+                {!isLastStep() && (
+                  <Button
+                    startIcon={
+                      isSubmitting ? <CircularProgress size="1rem" /> : null
+                    }
+                    disabled={isSubmitting}
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    fullWidth
+                  >
+                    {isSubmitting
+                      ? 'Guardando...'
+                      : isLastStep()
+                      ? 'Guardar'
+                      : 'Proximo'}
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </Hidden>

@@ -102,16 +102,16 @@ const PassengerPreview: React.FC = () => {
                       <StyledTableCell component="th" scope="row">
                         {passenger.name}
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align="left">
                         {passenger.departure} - {passenger.return}
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align="left">
                         {passenger.departureTime}-{passenger.returnTime}
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align="left">
                         {passenger.amount}
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align="left">
                         <Grid container alignItems="center" spacing={1}>
                           <Grid item>
                             <Button
