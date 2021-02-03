@@ -5,10 +5,16 @@ import { useToggleDrawer } from '~/src/contexts/ToggleDrawerProvider'
 import React from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 
+import { SearchIcon } from '../Icons'
 import SimpleList from '../Lists/SimpleList'
 
 const simpleList = [
   { title: 'Dashboard', icon: <DashBoardIcon />, link: '/dashboard' },
+  {
+    title: 'Procurar',
+    icon: <SearchIcon />,
+    link: '/search'
+  },
   {
     title: 'Venda/Reserva',
     icon: <AiOutlineShoppingCart />,

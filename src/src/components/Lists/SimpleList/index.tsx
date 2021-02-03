@@ -5,9 +5,10 @@ import {
   ListItemIcon,
   ListItemText
 } from '@material-ui/core'
+import { useStyles } from '~/src/config/useStyles'
 import { useToggleDrawer } from '~/src/contexts/ToggleDrawerProvider'
 import React, { ReactElement } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 interface SimpleListProps {
   icon?: ReactElement
@@ -17,13 +18,19 @@ interface SimpleListProps {
 const SimpleList: React.FC<SimpleListProps> = ({ icon, title, link }) => {
   const history = useHistory()
   const { handleToggle } = useToggleDrawer()
+  const { pathname } = useLocation()
+  const { classes } = useStyles()
   const handleIcon = () => {
     history.push(link)
     handleToggle()
   }
   return (
     <List component="nav" aria-label={title}>
-      <ListItem button onClick={handleIcon}>
+      <ListItem
+        button
+        onClick={handleIcon}
+        className={pathname === link ? classes.active : ''}
+      >
         <ListItemIcon>
           <Icon>{icon}</Icon>
         </ListItemIcon>

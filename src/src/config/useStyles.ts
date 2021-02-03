@@ -33,6 +33,10 @@ export const useStyles = () => {
       },
       hide: {
         display: 'none'
+      },
+      active: {
+        background: '#f5f3f3',
+        borderRight: '4px solid' + theme.palette.primary.light
       }
     })
   )
