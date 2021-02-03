@@ -49,7 +49,8 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'off',
     'react/react-in-jsx-scope': 'off',
-    camelcase: 'off'
+    camelcase: 'off',
+    'multiline-ternary': 'off'
   },
   settings: {
     react: {
