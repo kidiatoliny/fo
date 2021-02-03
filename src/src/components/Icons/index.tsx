@@ -1,4 +1,7 @@
-import { AiFillSchedule as ScheduleIcon } from 'react-icons/ai'
+import {
+  AiFillSchedule as ScheduleIcon,
+  AiFillLock as LockIcon
+} from 'react-icons/ai'
 import {
   FiUser as UserIcon,
   FiPhone as PhoneIcon,
@@ -25,5 +28,6 @@ export {
   ScheduleIcon,
   DeleteForeverIcon,
   EditIcon,
+  LockIcon,
   LocationIcon
 }
