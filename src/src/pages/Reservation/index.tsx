@@ -8,9 +8,13 @@ import {
   Icon,
   Typography
 } from '@material-ui/core'
-import ReservationOwner from '~/src/components/Forms/Booking/ReservationOwner'
-import SearchTravel from '~/src/components/Forms/Booking/SearchTravel'
-import SetTickets from '~/src/components/Forms/Booking/SetTickets'
+import ReservationOwner from '~/src/components/Forms/Booking/Step1/ReservationOwner'
+import SearchTravel from '~/src/components/Forms/Booking/Step1/SearchTravel'
+import SetTickets from '~/src/components/Forms/Booking/Step1/SetTickets'
+import PassengerData from '~/src/components/Forms/Booking/Step2/PassengerData'
+import VehicleData from '~/src/components/Forms/Booking/Step2/VehicleData'
+import PassengerPreview from '~/src/components/Forms/Booking/Step3/PassengerPreview'
+import ReservationOwnerPreview from '~/src/components/Forms/Booking/Step3/ReservationOwnerPreview'
 import { FormikStep } from '~/src/components/Forms/Formik/FormikStep'
 import { FormikStepper } from '~/src/components/Forms/Formik/FormikStepper'
 import Layout from '~/src/components/Layout'
@@ -45,6 +49,14 @@ const Reservation: React.FC = () => {
                 <SearchTravel />
                 <SetTickets />
                 <ReservationOwner />
+              </FormikStep>
+              <FormikStep label="Dados de Passageiro">
+                <PassengerData />
+                <VehicleData />
+              </FormikStep>
+              <FormikStep label="Preview">
+                <ReservationOwnerPreview />
+                <PassengerPreview />
               </FormikStep>
             </FormikStepper>
           </CardContent>

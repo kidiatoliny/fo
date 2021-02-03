@@ -132,7 +132,7 @@ export function FormikStepper({
                   onClick={() => setStep(s => s + 1)}
                   disabled={step === 5}
                 >
-                  Next
+                  Proximo
                   <KeyboardArrowRight />
                 </Button>
               }
@@ -140,7 +140,7 @@ export function FormikStepper({
                 step > 0 && (
                   <Button size="small" onClick={() => setStep(s => s - 1)}>
                     <KeyboardArrowLeft />
-                    Back
+                    Voltar
                   </Button>
                 )
               }
@@ -172,7 +172,7 @@ export function FormikStepper({
                 <Grid item sm={6} md={2}>
                   <Button
                     disabled={isSubmitting}
-                    variant="contained"
+                    variant="outlined"
                     color="primary"
                     onClick={() => setStep(s => s - 1)}
                     fullWidth
