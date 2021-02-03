@@ -16,7 +16,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Slide,
   Switch
 } from '@material-ui/core'
 import SimpleDialog from '~/src/components/Dialogs/SimpleDialog'
@@ -24,8 +23,9 @@ import { EditIcon } from '~/src/components/Icons'
 import React from 'react'
 
 import PassengerData from '../Step2/PassengerData'
+import VehicleData from '../Step2/VehicleData'
 
-const PassengerPreview: React.FC = () => {
+const VehiclePreview: React.FC = () => {
   const passengers = [
     {
       name: 'john Down',
@@ -66,32 +66,28 @@ const PassengerPreview: React.FC = () => {
     })
   )(TableRow)
   const [openPassengerModal, setOpenPassagerModal] = React.useState(false)
-  const [viewPassenger, setViewPassenger] = React.useState(true)
+  const [viewVehicle, setViewVehicle] = React.useState(true)
   return (
     <Box mb={5}>
       <Grid container spacing={4} direction="column">
         <Box>
           <Grid item container>
-            <Typography variant="h6">Passageiros</Typography>
+            <Typography variant="h6">Veículos</Typography>
             <Switch
-              checked={viewPassenger}
-              onChange={() => setViewPassenger(prev => !prev)}
+              checked={viewVehicle}
+              onChange={() => setViewVehicle(prev => !prev)}
             />
           </Grid>
         </Box>
-        {viewPassenger && (
+        {viewVehicle && (
           <Box>
             <TableContainer component={Paper}>
               <Table size="small">
                 <TableHead>
                   <StyledTableRow>
-                    <StyledTableCell>NOME</StyledTableCell>
-                    <StyledTableCell align="left">
-                      PARTIDA/RETORNO
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      HORA PARTIDA/RETORNO
-                    </StyledTableCell>
+                    <StyledTableCell>TIPO</StyledTableCell>
+                    <StyledTableCell align="left">MARCA/MODELO</StyledTableCell>
+                    <StyledTableCell align="left">MATRICULA</StyledTableCell>
                     <StyledTableCell align="left">VALOR</StyledTableCell>
                     <StyledTableCell align="left">Ações</StyledTableCell>
                   </StyledTableRow>
@@ -136,13 +132,13 @@ const PassengerPreview: React.FC = () => {
       </Grid>
 
       <SimpleDialog
-        title="Editar Passageiro"
+        title="Editar Veículo"
         open={openPassengerModal}
         onClose={() => setOpenPassagerModal(false)}
       >
         <DialogContent>
           <DialogContentText id="reservation">
-            <PassengerData />
+            <VehicleData />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -166,4 +162,4 @@ const PassengerPreview: React.FC = () => {
   )
 }
 
-export default PassengerPreview
+export default VehiclePreview

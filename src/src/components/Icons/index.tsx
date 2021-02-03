@@ -6,7 +6,10 @@ import {
   FiUsers as UsersIcon,
   FiEdit as EditIcon
 } from 'react-icons/fi'
-import { HiOutlineMail as MailIcon } from 'react-icons/hi'
+import {
+  HiOutlineMail as MailIcon,
+  HiOutlineLocationMarker as LocationIcon
+} from 'react-icons/hi'
 import {
   MdPayment as PaymentIcon,
   MdDeleteForever as DeleteForeverIcon
@@ -21,5 +24,6 @@ export {
   PaymentIcon,
   ScheduleIcon,
   DeleteForeverIcon,
-  EditIcon
+  EditIcon,
+  LocationIcon
 }

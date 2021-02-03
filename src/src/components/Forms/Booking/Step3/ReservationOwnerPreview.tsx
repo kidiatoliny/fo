@@ -5,14 +5,12 @@ import {
   Hidden,
   Icon,
   Typography,
-  Dialog,
-  DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
   Slide
 } from '@material-ui/core'
-import { TransitionProps } from '@material-ui/core/transitions'
+import SimpleDialog from '~/src/components/Dialogs/SimpleDialog'
 import {
   MailIcon,
   MobileIcon,
@@ -22,12 +20,6 @@ import {
   UserIcon
 } from '~/src/components/Icons'
 import React from 'react'
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & { children?: React.ReactElement<any, any> },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="down" ref={ref} {...props} />
-})
 const ReservationOwnerPreview: React.FC = () => {
   const [isReservationModalOpen, setIsReservationModalOpen] = React.useState(
     false
@@ -36,7 +28,6 @@ const ReservationOwnerPreview: React.FC = () => {
   const handleReservationModalOpen = () => {
     setIsReservationModalOpen(true)
   }
-
   const handleReservationModalClose = () => {
     setIsReservationModalOpen(false)
   }
@@ -61,16 +52,6 @@ const ReservationOwnerPreview: React.FC = () => {
                   onClick={handleReservationModalOpen}
                 >
                   Reservar
-                </Button>
-              </Grid>
-              <Grid item md={2} xs={12}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  startIcon={<PaymentIcon />}
-                >
-                  Cobrar
                 </Button>
               </Grid>
             </Grid>
@@ -112,17 +93,11 @@ const ReservationOwnerPreview: React.FC = () => {
       </Grid>
       {/* reservation Dialog */}
       <Box>
-        <Dialog
+        <SimpleDialog
+          title="RESERVADO COM SUCESSO"
           open={isReservationModalOpen}
-          TransitionComponent={Transition}
-          keepMounted
           onClose={handleReservationModalClose}
-          aria-labelledby="reservation-dialog"
-          aria-describedby="reservation"
         >
-          <DialogTitle id="reservation-dialog">
-            RESERVADO COM SUCESSO
-          </DialogTitle>
           <DialogContent>
             <DialogContentText id="reservation">
               <Typography variant="h6" style={{ marginBottom: '1rem' }}>
@@ -179,7 +154,7 @@ const ReservationOwnerPreview: React.FC = () => {
               OK
             </Button>
           </DialogActions>
-        </Dialog>
+        </SimpleDialog>
       </Box>
     </Box>
   )

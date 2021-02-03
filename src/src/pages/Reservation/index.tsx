@@ -15,6 +15,8 @@ import PassengerData from '~/src/components/Forms/Booking/Step2/PassengerData'
 import VehicleData from '~/src/components/Forms/Booking/Step2/VehicleData'
 import PassengerPreview from '~/src/components/Forms/Booking/Step3/PassengerPreview'
 import ReservationOwnerPreview from '~/src/components/Forms/Booking/Step3/ReservationOwnerPreview'
+import VehiclePreview from '~/src/components/Forms/Booking/Step3/Vehicle'
+import PaymentMethods from '~/src/components/Forms/Booking/Step4/PaymentMethods'
 import { FormikStep } from '~/src/components/Forms/Formik/FormikStep'
 import { FormikStepper } from '~/src/components/Forms/Formik/FormikStepper'
 import Layout from '~/src/components/Layout'
@@ -54,9 +56,13 @@ const Reservation: React.FC = () => {
                 <PassengerData />
                 <VehicleData />
               </FormikStep>
-              <FormikStep label="Preview">
+              <FormikStep label="Pre-Visualização">
                 <ReservationOwnerPreview />
                 <PassengerPreview />
+                <VehiclePreview />
+              </FormikStep>
+              <FormikStep label="Pagamento">
+                <PaymentMethods />
               </FormikStep>
             </FormikStepper>
           </CardContent>

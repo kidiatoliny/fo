@@ -17,6 +17,7 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday'
 import GroupAddIcon from '@material-ui/icons/GroupAdd'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import LocalAtmIcon from '@material-ui/icons/LocalAtm'
 import VideoLabelIcon from '@material-ui/icons/VideoLabel'
 import clsx from 'clsx'
 import { Form, Formik, FormikConfig, FormikValues } from 'formik'
@@ -76,7 +77,8 @@ function ColorlibStepIcon(props: StepIconProps) {
   const icons: { [index: string]: React.ReactElement } = {
     1: <CalendarTodayIcon />,
     2: <GroupAddIcon />,
-    3: <VideoLabelIcon />
+    3: <VideoLabelIcon />,
+    4: <LocalAtmIcon />
   }
   return (
     <div
