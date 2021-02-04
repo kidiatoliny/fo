@@ -27,7 +27,6 @@ const reducer: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
     case LoginActionTypes.GET_ROLE:
       return {
         ...state,
-
         role: action.payload
       }
     case LoginActionTypes.GET_TOKEN_EXPIRATION_DATE:
@@ -38,9 +37,16 @@ const reducer: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
     case LoginActionTypes.LOGIN_FAILURE:
       localStorage.removeItem('token')
       return { ...state, loading: false, error: action.payload }
+
     case LoginActionTypes.LOGOUT:
       localStorage.removeItem('token')
       return { ...state, token: null }
+
+    case LoginActionTypes.CLEAR_ERROR:
+      return {
+        ...state,
+        error: null
+      }
     default:
       return state
   }

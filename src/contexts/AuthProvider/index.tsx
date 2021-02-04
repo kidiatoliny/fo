@@ -9,26 +9,16 @@ import { AuthContextData } from './types'
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 export const AuthProvider: React.FC = ({ children }) => {
   const dispatch = useDispatch()
-  const isTokenExpired = useSelector((state: ApplicationState) =>
-    selectors.isTokenExpired(state.auth)
-  )
-
-  const isLoading = useSelector((state: ApplicationState) =>
-    selectors.isLoading(state.auth)
-  )
-  const isLogdin = useSelector((state: ApplicationState) =>
-    selectors.isLogdin(state.auth)
-  )
-  const role = useSelector((state: ApplicationState) =>
-    selectors.getRole(state.auth)
-  )
 
   const login = (payload: Login) => dispatch(actions.loginRequest(payload))
 
   const logout = () => dispatch(actions.logout())
   return (
     <AuthContext.Provider
-      value={{ isLogdin, isLoading, isTokenExpired, role, login, logout }}
+      value={{
+        login,
+        logout
+      }}
     >
       {children}
     </AuthContext.Provider>

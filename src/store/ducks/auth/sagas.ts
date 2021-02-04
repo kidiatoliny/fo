@@ -9,12 +9,14 @@ import { LoginActionTypes } from './types'
 export function* loginRequest({
   payload
 }: ActionType<typeof actions.loginRequest>) {
+  yield put(actions.clearState())
   let token
   try {
     const { username, password } = payload
     /** request login */
     const response = yield call(api.post, '/auth/login', { username, password })
     token = response.data.data.token
+
     yield put(actions.loginSuccess(token))
     yield put(actions.getRole(token))
     yield put(actions.getTokenExpirationDate(token))
@@ -24,7 +26,7 @@ export function* loginRequest({
     yield put(
       actions.loginFailure({
         code: err.status,
-        msg: err.status
+        msg: err.data.message
       } as HttpResponseError)
     )
   }
