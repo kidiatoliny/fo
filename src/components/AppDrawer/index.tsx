@@ -35,7 +35,6 @@ const simpleList = [
   }
 ]
 const AppDrawer: React.FC = () => {
-  const { role } = useAuth()
   const { profile } = useUser()
 
   const { classes } = useStyles()
@@ -79,9 +78,9 @@ const AppDrawer: React.FC = () => {
           <List>
             <ListItem>
               <ListItemAvatar>
-                <Avatar>{profile.name[0]}</Avatar>
+                <Avatar>{profile.name && profile.name[0]} </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={profile.name} secondary={role.name} />
+              <ListItemText primary={profile.name} secondary={profile.email} />
             </ListItem>
           </List>
 
