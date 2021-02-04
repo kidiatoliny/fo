@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpResponseError } from '~/types'
 import jwt from 'jsonwebtoken'
 import { action } from 'typesafe-actions'
