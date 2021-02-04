@@ -4,12 +4,12 @@ import { ActionType } from 'typesafe-actions'
 
 import { actions } from '.'
 import api from '../../../services/api'
+import { userProfileRequest } from '../user/actions'
 import { LoginActionTypes } from './types'
 
 export function* loginRequest({
   payload
 }: ActionType<typeof actions.loginRequest>) {
-  yield put(actions.clearState())
   let token
   try {
     const { username, password } = payload
@@ -18,10 +18,10 @@ export function* loginRequest({
     token = response.data.data.token
 
     yield put(actions.loginSuccess(token))
+    api.defaults.headers.authorization = `Bearer ${token}`
     yield put(actions.getRole(token))
     yield put(actions.getTokenExpirationDate(token))
-
-    api.defaults.headers.Authorization = `Bearer ${token}`
+    yield put(userProfileRequest())
   } catch (err) {
     yield put(
       actions.loginFailure({

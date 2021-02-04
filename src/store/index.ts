@@ -5,8 +5,10 @@ import createSagaMiddleware from 'redux-saga'
 import { AuthState } from './ducks/auth/types'
 import rootReducer from './ducks/rootReducers'
 import rootSaga from './ducks/rootSagas'
+import { UserState } from './ducks/user/types'
 export interface ApplicationState {
   auth: AuthState
+  user: UserState
 }
 const sagaMiddleware = createSagaMiddleware()
 

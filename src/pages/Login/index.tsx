@@ -7,17 +7,21 @@ import {
   CardMedia,
   Grid,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  Snackbar
 } from '@material-ui/core'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
+import CloseIcon from '@material-ui/icons/Close'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import logo from '~/assets/logo.png'
-import { LockIcon, UserIcon } from '~/components/Icons'
+import { LockIcon, LoginIcon, UserIcon } from '~/components/Icons'
+import { useAuth } from '~/contexts/AuthProvider'
+import { LoginValidation } from '~/validations/LoginValidation'
 import { Field, Form, Formik } from 'formik'
 import { TextField } from 'formik-material-ui'
-import React from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Redirect, useHistory } from 'react-router-dom'
 
 interface State {
   password: string
@@ -42,11 +46,32 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Login: React.FC = () => {
   const classes = useStyles()
+  const { login, error, isLoading, token, isTokenExpired } = useAuth()
+
   const history = useHistory()
   const [values, setValues] = React.useState<State>({
     password: '',
     showPassword: false
   })
+
+  const [open, setOpen] = React.useState(false)
+
+  useEffect(() => {
+    if (error?.code === 401) {
+      !open && setOpen(true)
+    }
+  }, [error])
+  const handleClose = (
+    event: React.SyntheticEvent | React.MouseEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpen(false)
+  }
+
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword })
   }
@@ -54,6 +79,10 @@ const Login: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault()
+  }
+
+  if (token && !isTokenExpired) {
+    return <Redirect to="/dashboard" />
   }
   return (
     <Grid
@@ -71,84 +100,110 @@ const Login: React.FC = () => {
         </Grid>
         <CardContent>
           <Formik
+            validationSchema={LoginValidation}
             initialValues={{ username: '', password: '' }}
-            onSubmit={async (values, helpers) => {
-              history.push('/dashboard')
+            onSubmit={async values => {
+              login(values)
             }}
           >
-            <Form>
-              <Grid item>
-                <Grid item sm={12}>
-                  <Box mt={2}>
-                    <Field
-                      component={TextField}
-                      variant="outlined"
-                      label=" NOME DE UTILIZADOR"
-                      name="last_name"
-                      fullWidth
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <UserIcon />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </Box>
+            {({ isSubmitting }) => (
+              <Form>
+                <Grid item>
+                  <Grid item sm={12}>
+                    <Box mt={2}>
+                      <Field
+                        component={TextField}
+                        variant="outlined"
+                        label=" NOME DE UTILIZADOR"
+                        name="username"
+                        fullWidth
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <UserIcon />
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item sm={12}>
+                    <Box mt={4}>
+                      <Field
+                        component={TextField}
+                        variant="outlined"
+                        label=" PASSWORD"
+                        name="password"
+                        fullWidth
+                        type={values.showPassword ? 'text' : 'password'}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <LockIcon />
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                              >
+                                {values.showPassword ? (
+                                  <Visibility />
+                                ) : (
+                                  <VisibilityOff />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item sm={12}>
+                    <Box mt={4}>
+                      <Button
+                        fullWidth
+                        color="primary"
+                        variant="contained"
+                        size="large"
+                        type="submit"
+                        aria-label="large"
+                        endIcon={<LoginIcon />}
+                      >
+                        Login
+                      </Button>
+                    </Box>
+                  </Grid>
                 </Grid>
-                <Grid item sm={12}>
-                  <Box mt={4}>
-                    <Field
-                      component={TextField}
-                      variant="outlined"
-                      label=" PASSWORD"
-                      name="password"
-                      fullWidth
-                      type={values.showPassword ? 'text' : 'password'}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <LockIcon />
-                          </InputAdornment>
-                        ),
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                            >
-                              {values.showPassword ? (
-                                <Visibility />
-                              ) : (
-                                <VisibilityOff />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item sm={12}>
-                  <Box mt={4}>
-                    <Button
-                      fullWidth
-                      color="primary"
-                      variant="contained"
-                      size="large"
-                      type="submit"
-                      aria-label="large"
-                    >
-                      Login
-                    </Button>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Form>
+              </Form>
+            )}
           </Formik>
         </CardContent>
       </Card>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        message="Crendências Invalidas"
+        action={
+          <React.Fragment>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
     </Grid>
   )
 }

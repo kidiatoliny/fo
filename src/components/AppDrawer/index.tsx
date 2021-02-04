@@ -1,7 +1,20 @@
-import { Drawer, Hidden, Toolbar } from '@material-ui/core'
+import {
+  AppBar,
+  Avatar,
+  Divider,
+  Drawer,
+  Hidden,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Toolbar
+} from '@material-ui/core'
 import DashBoardIcon from '@material-ui/icons/Dashboard'
 import { useStyles } from '~/config/useStyles'
+import { useAuth } from '~/contexts/AuthProvider'
 import { useToggleDrawer } from '~/contexts/ToggleDrawerProvider'
+import { useUser } from '~/hooks/useUser'
 import React from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 
@@ -22,6 +35,9 @@ const simpleList = [
   }
 ]
 const AppDrawer: React.FC = () => {
+  const { role } = useAuth()
+  const { profile } = useUser()
+
   const { classes } = useStyles()
   const { toggle, handleToggle } = useToggleDrawer()
   const drawer = (
@@ -60,6 +76,17 @@ const AppDrawer: React.FC = () => {
             paper: classes.drawerPaper
           }}
         >
+          <List>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>{profile.name[0]}</Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={profile.name} secondary={role.name} />
+            </ListItem>
+          </List>
+
+          <Divider />
+
           {drawer}
         </Drawer>
       </Hidden>

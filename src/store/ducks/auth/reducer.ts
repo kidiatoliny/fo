@@ -1,13 +1,13 @@
 import { Reducer } from 'redux'
 
-import { LoginActionTypes, AuthState, Role } from './types'
+import { LoginActionTypes, AuthState, UserRole } from './types'
 
 export const INITIAL_STATE: AuthState = {
   token: localStorage.getItem('token'),
   loading: false,
   error: null,
   isLogdin: !!localStorage.getItem('token'),
-  role: {} as Role,
+  role: {} as UserRole,
   tokenExpirationDate: new Date()
 }
 

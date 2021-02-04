@@ -11,7 +11,6 @@ const Layout: React.FC = ({ children }) => {
     <Grid container>
       <AppBar />
       <AppDrawer />
-
       <Grid item className={classes.content}>
         {children}
       </Grid>

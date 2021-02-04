@@ -33,7 +33,7 @@ export const logout = () => action(LoginActionTypes.LOGOUT)
 /**
  * Clear auth errors
  */
-export const clearState = () => action(LoginActionTypes.CLEAR_ERROR)
+export const clearError = () => action(LoginActionTypes.CLEAR_ERROR)
 
 export const getRole = (payload: string) => {
   const encoded: any = jwt.decode(payload)

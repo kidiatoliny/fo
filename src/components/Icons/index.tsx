@@ -1,6 +1,7 @@
 import {
   AiFillSchedule as ScheduleIcon,
-  AiFillLock as LockIcon
+  AiFillLock as LockIcon,
+  AiOutlineLogin as LoginIcon
 } from 'react-icons/ai'
 import { BsSearch as SearchIcon } from 'react-icons/bs'
 import {
@@ -31,5 +32,6 @@ export {
   EditIcon,
   LockIcon,
   LocationIcon,
-  SearchIcon
+  SearchIcon,
+  LoginIcon
 }

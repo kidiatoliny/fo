@@ -28,7 +28,7 @@ export interface Login {
 export interface Token {
   token: string | null
 }
-export interface Role {
+export interface UserRole {
   code: string
   name: string
 }
@@ -39,6 +39,6 @@ export interface AuthState {
   readonly isLogdin: boolean
   readonly loading: boolean
   readonly error: HttpResponseError | null
-  readonly role: Role
+  readonly role: UserRole
   readonly tokenExpirationDate: Date
 }
