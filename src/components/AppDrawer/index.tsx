@@ -38,7 +38,7 @@ const AppDrawer: React.FC = () => {
   )
   return (
     <>
-      <Hidden smDown>
+      <Hidden lgDown>
         <Drawer
           variant="permanent"
           className={classes.drawer}
@@ -50,7 +50,7 @@ const AppDrawer: React.FC = () => {
           {drawer}
         </Drawer>
       </Hidden>
-      <Hidden mdUp>
+      <Hidden xlUp>
         <Drawer
           className={classes.drawer}
           variant="temporary"

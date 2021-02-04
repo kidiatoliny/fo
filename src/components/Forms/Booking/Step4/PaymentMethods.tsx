@@ -31,12 +31,12 @@ import PaymentDetails from './PaymentDetails'
 const PaymentMethods: React.FC = () => {
   return (
     <Grid container spacing={4}>
-      <Grid item container>
+      <Grid item xs={12}>
         <Box mt={2} mb={4}>
           <Typography variant="h6">Pagamento</Typography>
         </Box>
       </Grid>
-      <Grid item container sm={6}>
+      <Grid item sm={6}>
         <FormControl fullWidth size="small" variant="outlined">
           <InputLabel htmlFor="departure">Metodos de Pagamento</InputLabel>
           <Field
@@ -56,11 +56,11 @@ const PaymentMethods: React.FC = () => {
             <MenuItem value={20}>SV/SA</MenuItem>
           </Field>
         </FormControl>
-        <Grid item container>
+        <Grid item>
           <FaturationForm />
         </Grid>
       </Grid>
-      <Grid item container sm={6}>
+      <Grid item sm={6}>
         <PaymentDetails />
       </Grid>
     </Grid>

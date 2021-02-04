@@ -16,7 +16,7 @@ const AppBar: React.FC = () => {
     <>
       <App position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Hidden mdUp>
+          <Hidden xlUp>
             <IconButton
               color="inherit"
               aria-label="open drawer"
