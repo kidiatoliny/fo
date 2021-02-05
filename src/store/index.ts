@@ -3,12 +3,14 @@ import { logger } from 'redux-logger'
 import createSagaMiddleware from 'redux-saga'
 
 import { AuthState } from './ducks/auth/types'
+import { LocationState } from './ducks/locations/types'
 import rootReducer from './ducks/rootReducers'
 import rootSaga from './ducks/rootSagas'
 import { UserState } from './ducks/user/types'
 export interface ApplicationState {
   auth: AuthState
   user: UserState
+  location: LocationState
 }
 const sagaMiddleware = createSagaMiddleware()
 
