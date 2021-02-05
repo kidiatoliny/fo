@@ -7,6 +7,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 
 import { AuthProvider } from './contexts/AuthProvider'
+import { BookingProvider } from './contexts/BookingProvider'
 import { ToggleDrawerProvider } from './contexts/ToggleDrawerProvider'
 import Routes from './routes'
 import { store } from './store'
@@ -15,11 +16,13 @@ function App() {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={pt}>
-            <ToggleDrawerProvider>
-              <Routes />
-            </ToggleDrawerProvider>
-          </MuiPickersUtilsProvider>
+          <BookingProvider>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={pt}>
+              <ToggleDrawerProvider>
+                <Routes />
+              </ToggleDrawerProvider>
+            </MuiPickersUtilsProvider>
+          </BookingProvider>
         </AuthProvider>
       </ThemeProvider>
     </Provider>
