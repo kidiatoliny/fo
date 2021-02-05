@@ -3,6 +3,7 @@ import { selectors, actions } from '~/store/ducks/auth'
 import { Login } from '~/store/ducks/auth/types'
 import React, { createContext, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import { AuthContextData } from './types'
 
@@ -27,9 +28,13 @@ export const AuthProvider: React.FC = ({ children }) => {
   const token = useSelector((state: ApplicationState) =>
     selectors.getToken(state.auth)
   )
-  const login = (payload: Login) => dispatch(actions.loginRequest(payload))
+  const login = (payload: Login) => {
+    dispatch(actions.loginRequest(payload))
+  }
 
-  const logout = () => dispatch(actions.logout())
+  const logout = () => {
+    dispatch(actions.logout())
+  }
 
   return (
     <AuthContext.Provider

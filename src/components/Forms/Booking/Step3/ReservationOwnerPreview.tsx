@@ -13,12 +13,15 @@ import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import {
   MailIcon,
   MobileIcon,
+  PaymentIcon,
   PhoneIcon,
   ScheduleIcon,
   UserIcon
 } from '~/components/Icons'
+import { useBooking } from '~/contexts/BookingProvider'
 import React from 'react'
 const ReservationOwnerPreview: React.FC = () => {
+  const { nextStep } = useBooking()
   const [isReservationModalOpen, setIsReservationModalOpen] = React.useState(
     false
   )
@@ -50,6 +53,17 @@ const ReservationOwnerPreview: React.FC = () => {
                   onClick={handleReservationModalOpen}
                 >
                   Reservar
+                </Button>
+              </Grid>
+              <Grid item md={2} xs={12}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  startIcon={<PaymentIcon />}
+                  onClick={() => nextStep()}
+                  color="primary"
+                >
+                  Cobrar
                 </Button>
               </Grid>
             </Grid>

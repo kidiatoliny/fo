@@ -21,7 +21,12 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 const SearchTravel: React.FC = () => {
   const [departureDate, setDepartureDate] = useState<MaterialUiPickersDate>()
   const [returnDate, setReturnDate] = useState<MaterialUiPickersDate>()
+  const [departure, setDeparture] = useState('SA/SV')
   const [isReturnedTravel, setReturnedTravel] = useState(false)
+  const handleDeparture = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setDeparture(event.target.value as string)
+  }
+  console.log(departure)
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   return (
@@ -47,6 +52,8 @@ const SearchTravel: React.FC = () => {
               label="Selecionar Porto de Origem"
               component={Select}
               name="departure"
+              value={departure}
+              onChange={handleDeparture}
               inputProps={{
                 id: 'departure'
               }}
@@ -56,8 +63,8 @@ const SearchTravel: React.FC = () => {
                 </InputAdornment>
               }
             >
-              <MenuItem value={10}>SA/SV</MenuItem>
-              <MenuItem value={20}>SV/SA</MenuItem>
+              <MenuItem value="SA/SV">SA/SV</MenuItem>
+              <MenuItem value="SA/SV">SV/SA</MenuItem>
             </Field>
           </FormControl>
         </Grid>
@@ -68,6 +75,8 @@ const SearchTravel: React.FC = () => {
               component={Select}
               label=" Selecionar Porto de Origem"
               name="destination"
+              value={departure}
+              onChange={handleDeparture}
               inputProps={{
                 id: 'destination'
               }}
@@ -77,8 +86,8 @@ const SearchTravel: React.FC = () => {
                 </InputAdornment>
               }
             >
-              <MenuItem value={10}>SA/SV</MenuItem>
-              <MenuItem value={20}>SV/SA</MenuItem>
+              <MenuItem value="SA/SV">SA/SV</MenuItem>
+              <MenuItem value="SA/SV">SV/SA</MenuItem>
             </Field>
           </FormControl>
         </Grid>

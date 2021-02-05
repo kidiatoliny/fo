@@ -19,6 +19,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import LocalAtmIcon from '@material-ui/icons/LocalAtm'
 import VideoLabelIcon from '@material-ui/icons/VideoLabel'
+import { useBooking } from '~/contexts/BookingProvider'
 import clsx from 'clsx'
 import { Form, Formik, FormikConfig, FormikValues } from 'formik'
 import React, { useState } from 'react'
@@ -95,27 +96,23 @@ export function FormikStepper({
   children,
   ...props
 }: FormikConfig<FormikValues>) {
+  const { step, nextStep, backStep, isLastStep } = useBooking()
   const childrenArray = React.Children.toArray(
     children
   ) as React.ReactElement<FormikStepProps>[]
-  const [step, setStep] = useState(0)
   const currentChild = childrenArray[step]
   const [completed, setCompleted] = useState(false)
-
-  function isLastStep() {
-    return step === childrenArray.length - 1
-  }
 
   return (
     <Formik
       {...props}
       validationSchema={currentChild.props.validationSchema}
       onSubmit={async (values, helpers) => {
-        if (isLastStep()) {
+        if (isLastStep(childrenArray.length - 1)) {
           await props.onSubmit(values, helpers)
           setCompleted(true)
         } else {
-          setStep(s => s + 1)
+          nextStep()
           helpers.setTouched({})
         }
       }}
@@ -131,7 +128,7 @@ export function FormikStepper({
               nextButton={
                 <Button
                   size="small"
-                  onClick={() => setStep(s => s + 1)}
+                  onClick={() => nextStep()}
                   disabled={step === 5}
                 >
                   Proximo
@@ -140,7 +137,7 @@ export function FormikStepper({
               }
               backButton={
                 step > 0 && (
-                  <Button size="small" onClick={() => setStep(s => s - 1)}>
+                  <Button size="small" onClick={() => backStep()}>
                     <KeyboardArrowLeft />
                     Voltar
                   </Button>
@@ -170,38 +167,31 @@ export function FormikStepper({
 
           <Hidden mdDown>
             <Grid container justify="space-between">
-              {step > 0 && (
-                <Grid item sm={6} md={2}>
-                  <Button
-                    disabled={isSubmitting}
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => setStep(s => s - 1)}
-                    fullWidth
-                  >
-                    Voltar
-                  </Button>
-                </Grid>
-              )}
+              {step > 1 ||
+                (step < 3 && (
+                  <Grid item sm={6} md={2}>
+                    <Button
+                      disabled={isSubmitting}
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => backStep()}
+                      fullWidth
+                    >
+                      Voltar
+                    </Button>
+                  </Grid>
+                ))}
               <Grid item />
 
               <Grid item sm={6} md={2}>
-                {!isLastStep() && (
+                {step < 3 && (
                   <Button
-                    startIcon={
-                      isSubmitting ? <CircularProgress size="1rem" /> : null
-                    }
-                    disabled={isSubmitting}
                     variant="contained"
                     color="primary"
-                    type="submit"
                     fullWidth
+                    onClick={() => nextStep()}
                   >
-                    {isSubmitting
-                      ? 'Guardando...'
-                      : isLastStep()
-                      ? 'Guardar'
-                      : 'Proximo'}
+                    Proximo
                   </Button>
                 )}
               </Grid>
