@@ -16,9 +16,7 @@ export function* loginRequest({
     /** request login */
     const response = yield call(api.post, '/auth/login', { username, password })
     token = response.data.data.token
-
     yield put(actions.loginSuccess(token))
-    api.defaults.headers.authorization = `Bearer ${token}`
     yield put(actions.getRole(token))
     yield put(actions.getTokenExpirationDate(token))
     yield put(userProfileRequest())

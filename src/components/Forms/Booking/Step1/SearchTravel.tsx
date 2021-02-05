@@ -11,22 +11,26 @@ import {
   useTheme
 } from '@material-ui/core'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import { useLocations } from '~/hooks/useLocations'
+import { Location } from '~/store/ducks/locations/types'
 import { Field } from 'formik'
 import { Select } from 'formik-material-ui'
 import { DatePicker } from 'formik-material-ui-pickers'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
-
 const SearchTravel: React.FC = () => {
+  const { locations } = useLocations()
   const [departureDate, setDepartureDate] = useState<MaterialUiPickersDate>()
   const [returnDate, setReturnDate] = useState<MaterialUiPickersDate>()
-  const [departure, setDeparture] = useState('SA/SV')
+  const [departure, setDeparture] = useState({} as Location)
   const [isReturnedTravel, setReturnedTravel] = useState(false)
-  const handleDeparture = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setDeparture(event.target.value as string)
+
+  const handleDeparture = (event: React.ChangeEvent<{ value: Location }>) => {
+    setDeparture(event.target.value as Location)
   }
   console.log(departure)
+
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   return (
@@ -63,8 +67,11 @@ const SearchTravel: React.FC = () => {
                 </InputAdornment>
               }
             >
-              <MenuItem value="SA/SV">SA/SV</MenuItem>
-              <MenuItem value="SA/SV">SV/SA</MenuItem>
+              {locations.map(location => (
+                <MenuItem value={JSON.stringify(location)} key={location.id}>
+                  {location.name_1}
+                </MenuItem>
+              ))}
             </Field>
           </FormControl>
         </Grid>

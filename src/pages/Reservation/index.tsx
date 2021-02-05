@@ -20,19 +20,28 @@ import VehiclePreview from '~/components/Forms/Booking/Step3/Vehicle'
 import PaymentMethods from '~/components/Forms/Booking/Step4/PaymentMethods'
 import { FormikStep } from '~/components/Forms/Formik/FormikStep'
 import { FormikStepper } from '~/components/Forms/Formik/FormikStepper'
-import { MailIcon, MobileIcon, PhoneIcon, UsersIcon } from '~/components/Icons'
+import { MailIcon, MobileIcon, UsersIcon } from '~/components/Icons'
 import Layout from '~/components/Layout'
+import Loading from '~/components/Loading'
+import { useLocations } from '~/hooks/useLocations'
 import { mainContactValidation } from '~/validations/mainContactValidation'
 import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
+
 const initialValues = {
   main_contact: {
     first_name: ''
   }
 }
 const Reservation: React.FC = () => {
+  const { getLocations, locations, isLoading } = useLocations()
+
+  isLoading && <Loading />
+  useEffect(() => {
+    getLocations()
+  }, [])
   return (
     <Layout>
       <Card raised>

@@ -17,9 +17,7 @@ export function* loadProfile() {
     }
 
     /** request auth user */
-    const response = yield call(api.get, '/auth/me', {
-      headers: { Authorization: 'Bearer ' + accessToken }
-    })
+    const response = yield call(api.get, '/auth/me')
 
     yield put(actions.userProfileRequestSuccess(response.data.data))
     yield put(getRole(accessToken))
