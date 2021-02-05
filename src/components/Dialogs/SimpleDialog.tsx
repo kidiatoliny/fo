@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dialog, DialogTitle, Slide } from '@material-ui/core'
 import { TransitionProps } from '@material-ui/core/transitions'
 import React from 'react'

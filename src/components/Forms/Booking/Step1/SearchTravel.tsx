@@ -12,13 +12,12 @@ import {
 } from '@material-ui/core'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { Field } from 'formik'
-import { Select, TextField } from 'formik-material-ui'
+import { Select } from 'formik-material-ui'
 import { DatePicker } from 'formik-material-ui-pickers'
 import React, { useState } from 'react'
 import { AiOutlineClockCircle } from 'react-icons/ai'
-import { FiUsers } from 'react-icons/fi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { IoCarSport } from 'react-icons/io5'
+
 const SearchTravel: React.FC = () => {
   const [departureDate, setDepartureDate] = useState<MaterialUiPickersDate>()
   const [returnDate, setReturnDate] = useState<MaterialUiPickersDate>()

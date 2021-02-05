@@ -1,10 +1,9 @@
 import {
-  Avatar,
   Box,
   Button,
   Card,
   CardContent,
-  CardMedia,
+  CircularProgress,
   Grid,
   IconButton,
   InputAdornment,
@@ -21,7 +20,7 @@ import { LoginValidation } from '~/validations/LoginValidation'
 import { Field, Form, Formik } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React, { useEffect } from 'react'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 interface State {
   password: string
@@ -46,9 +45,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Login: React.FC = () => {
   const classes = useStyles()
-  const { login, error, isLoading, token, isTokenExpired } = useAuth()
+  const { login, error, token, isTokenExpired } = useAuth()
 
-  const history = useHistory()
   const [values, setValues] = React.useState<State>({
     password: '',
     showPassword: false
@@ -170,7 +168,13 @@ const Login: React.FC = () => {
                         size="large"
                         type="submit"
                         aria-label="large"
-                        endIcon={<LoginIcon />}
+                        endIcon={
+                          isSubmitting ? (
+                            <CircularProgress size="1rem" color="inherit" />
+                          ) : (
+                            <LoginIcon />
+                          )
+                        }
                       >
                         Login
                       </Button>

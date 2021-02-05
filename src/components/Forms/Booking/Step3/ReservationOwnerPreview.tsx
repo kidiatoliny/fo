@@ -7,14 +7,12 @@ import {
   Typography,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  Slide
+  DialogActions
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import {
   MailIcon,
   MobileIcon,
-  PaymentIcon,
   PhoneIcon,
   ScheduleIcon,
   UserIcon

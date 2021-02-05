@@ -7,18 +7,12 @@ import {
   MenuItem,
   Typography
 } from '@material-ui/core'
+import { UsersIcon } from '~/components/Icons'
 import { Field } from 'formik'
 import { Select, TextField } from 'formik-material-ui'
 import React from 'react'
-import {
-  AiOutlineClockCircle,
-  AiOutlineFileSearch,
-  AiOutlineUserAdd
-} from 'react-icons/ai'
-import { FiHash, FiPhone, FiSmartphone, FiUsers } from 'react-icons/fi'
-import { HiOutlineHashtag, HiOutlineMail } from 'react-icons/hi'
-import { IoCarSport } from 'react-icons/io5'
-
+import { AiOutlineFileSearch, AiOutlineUserAdd } from 'react-icons/ai'
+import { HiOutlineHashtag } from 'react-icons/hi'
 const PassengerData: React.FC = () => {
   return (
     <Box marginBottom={4}>
@@ -42,7 +36,7 @@ const PassengerData: React.FC = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <FiUsers />
+                    <UsersIcon />
                   </InputAdornment>
                 )
               }}
@@ -59,7 +53,7 @@ const PassengerData: React.FC = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <FiUsers />
+                    <UsersIcon />
                   </InputAdornment>
                 )
               }}

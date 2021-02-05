@@ -22,7 +22,6 @@ import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import { EditIcon } from '~/components/Icons'
 import React from 'react'
 
-import PassengerData from '../Step2/PassengerData'
 import VehicleData from '../Step2/VehicleData'
 
 const VehiclePreview: React.FC = () => {

@@ -16,7 +16,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Slide,
   Switch
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'

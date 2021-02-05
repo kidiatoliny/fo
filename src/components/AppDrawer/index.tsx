@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Avatar,
   Divider,
   Drawer,
@@ -12,7 +11,6 @@ import {
 } from '@material-ui/core'
 import DashBoardIcon from '@material-ui/icons/Dashboard'
 import { useStyles } from '~/config/useStyles'
-import { useAuth } from '~/contexts/AuthProvider'
 import { useToggleDrawer } from '~/contexts/ToggleDrawerProvider'
 import { useUser } from '~/hooks/useUser'
 import React from 'react'

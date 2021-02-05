@@ -5,25 +5,12 @@ import {
   InputAdornment,
   MenuItem,
   Typography,
-  Box,
-  Icon,
-  DialogContent,
-  DialogContentText,
-  Button,
-  DialogActions
+  Box
 } from '@material-ui/core'
-import SimpleDialog from '~/components/Dialogs/SimpleDialog'
-import {
-  MailIcon,
-  MobileIcon,
-  PaymentIcon,
-  PhoneIcon,
-  UserIcon
-} from '~/components/Icons'
+import { PaymentIcon } from '~/components/Icons'
 import { Field } from 'formik'
 import { Select } from 'formik-material-ui'
-import React, { useState } from 'react'
-import { HiOutlineLocationMarker } from 'react-icons/hi'
+import React from 'react'
 
 import FaturationForm from './FaturationForm'
 import PaymentDetails from './PaymentDetails'

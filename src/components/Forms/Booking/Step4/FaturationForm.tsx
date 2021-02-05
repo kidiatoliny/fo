@@ -1,25 +1,19 @@
 import {
   Box,
-  FormControl,
   Grid,
   InputAdornment,
-  InputLabel,
-  MenuItem,
   Switch,
   Typography
 } from '@material-ui/core'
-import { LocationIcon, MailIcon, PhoneIcon } from '~/components/Icons'
-import { Field } from 'formik'
-import { Select, TextField } from 'formik-material-ui'
-import React, { useState } from 'react'
 import {
-  AiOutlineClockCircle,
-  AiOutlineFileSearch,
-  AiOutlineUserAdd
-} from 'react-icons/ai'
-import { FiHash, FiPhone, FiSmartphone, FiUsers } from 'react-icons/fi'
-import { HiOutlineHashtag, HiOutlineMail } from 'react-icons/hi'
-import { IoCarSport } from 'react-icons/io5'
+  LocationIcon,
+  MailIcon,
+  PhoneIcon,
+  UsersIcon
+} from '~/components/Icons'
+import { Field } from 'formik'
+import { TextField } from 'formik-material-ui'
+import React, { useState } from 'react'
 
 const FaturationForm: React.FC = () => {
   const [isFaturation, setIsFaturation] = useState(true)
@@ -52,7 +46,7 @@ const FaturationForm: React.FC = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <FiUsers />
+                        <UsersIcon />
                       </InputAdornment>
                     )
                   }}
@@ -69,7 +63,7 @@ const FaturationForm: React.FC = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <FiUsers />
+                        <UsersIcon />
                       </InputAdornment>
                     )
                   }}
