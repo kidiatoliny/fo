@@ -1,7 +1,6 @@
 /* eslint-disable indent */
 import {
   Button,
-  CircularProgress,
   Grid,
   Hidden,
   makeStyles,
@@ -11,7 +10,9 @@ import {
   StepIconProps,
   StepLabel,
   Stepper,
-  withStyles
+  withStyles,
+  Box,
+  Typography
 } from '@material-ui/core'
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday'
 import GroupAddIcon from '@material-ui/icons/GroupAdd'
@@ -164,10 +165,14 @@ export function FormikStepper({
             </Stepper>
           </Hidden>
           {currentChild}
-
+          <Box m={1} mb={3}>
+            <Typography variant="body2" color="primary">
+              * Campos Obrigatórios
+            </Typography>
+          </Box>
           <Hidden mdDown>
             <Grid container justify="space-between">
-              {step > 1 ||
+              {step === 0 ||
                 (step < 3 && (
                   <Grid item sm={6} md={2}>
                     <Button
@@ -189,7 +194,7 @@ export function FormikStepper({
                     variant="contained"
                     color="primary"
                     fullWidth
-                    onClick={() => nextStep()}
+                    type="submit"
                   >
                     Proximo
                   </Button>

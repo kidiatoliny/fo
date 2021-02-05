@@ -8,15 +8,7 @@ import AppBar from '../AppBar'
 import AppDrawer from '../AppDrawer'
 const Layout: React.FC = ({ children }) => {
   const { classes } = useStyles()
-  const { isTokenExpired, token, logout } = useAuth()
-  useEffect(() => {
-    if (isTokenExpired) {
-      logout()
-    }
-  }, [])
-  if (!token || isTokenExpired) {
-    return <Redirect to="/" />
-  }
+
   return (
     <Grid container>
       <AppBar />
