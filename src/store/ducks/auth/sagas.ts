@@ -21,10 +21,11 @@ export function* loginRequest({
     yield put(actions.getTokenExpirationDate(token))
     yield put(userProfileRequest())
   } catch (err) {
+    console.log(err)
     yield put(
       actions.loginFailure({
-        code: err.status,
-        msg: err.data.message
+        code: err.response.status,
+        msg: err.response.data.message
       } as HttpResponseError)
     )
   }

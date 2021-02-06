@@ -25,8 +25,8 @@ export function* loadProfile() {
   } catch (err) {
     yield put(
       actions.userProfileRequestFailure({
-        code: err.status,
-        msg: err.data.message
+        code: err.response.status,
+        msg: err.response.data.message
       })
     )
   }

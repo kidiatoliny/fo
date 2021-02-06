@@ -1,12 +1,5 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  CircularProgress,
-  Grid
-} from '@material-ui/core'
+import { Box, CircularProgress, Grid } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
-import loading from '~/assets/loading.svg'
 import React from 'react'
 const Loading: React.FC = () => {
   return (

@@ -16,7 +16,7 @@ import { Location } from '~/store/ducks/locations/types'
 import { Field } from 'formik'
 import { Select } from 'formik-material-ui'
 import { DatePicker } from 'formik-material-ui-pickers'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 const SearchTravel: React.FC = () => {

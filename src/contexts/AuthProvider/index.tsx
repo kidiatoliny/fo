@@ -3,7 +3,6 @@ import { selectors, actions } from '~/store/ducks/auth'
 import { Login } from '~/store/ducks/auth/types'
 import React, { createContext, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 
 import { AuthContextData } from './types'
 

@@ -36,7 +36,7 @@ const initialValues = {
   }
 }
 const Reservation: React.FC = () => {
-  const { getLocations, locations, isLoading } = useLocations()
+  const { getLocations, isLoading } = useLocations()
 
   isLoading && <Loading />
   useEffect(() => {

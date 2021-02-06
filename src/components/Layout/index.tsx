@@ -1,8 +1,6 @@
 import { Grid } from '@material-ui/core'
 import { useStyles } from '~/config/useStyles'
-import { useAuth } from '~/contexts/AuthProvider'
-import React, { useEffect } from 'react'
-import { Redirect } from 'react-router-dom'
+import React from 'react'
 
 import AppBar from '../AppBar'
 import AppDrawer from '../AppDrawer'
