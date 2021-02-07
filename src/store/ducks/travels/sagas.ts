@@ -11,10 +11,11 @@ export function* getTravel({
 }: ActionType<typeof actions.travelRequest>) {
   const { departure, departureDate, destination, returnDate } = payload
 
+  console.log(payload)
   let url = `/booking/search/travel/${departure}/${destination}/${departureDate}/${returnDate}`
 
   url =
-    returnDate === ''
+    returnDate === '' || returnDate === null
       ? `/booking/search/travel/${departure}/${destination}/${departureDate}`
       : url
 

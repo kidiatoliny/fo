@@ -13,6 +13,7 @@ import {
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useLocations } from '~/hooks/useLocations'
+import { useTravel } from '~/hooks/useTravel'
 import { Location } from '~/store/ducks/locations/types'
 import { format } from 'date-fns'
 import { Field } from 'formik'
@@ -30,20 +31,24 @@ const SearchTravel: React.FC = () => {
     locations,
     destination,
     destinationId,
-    handleDestinationId
+    handleDestinationId,
+    departureScheduleId,
+    handleDepartureScheduleId,
+    isReturnedTravel,
+    setReturnedTravel,
+    passengerCount,
+    vehicleCount
   } = useBooking()
 
+  const { departureSchedules, returnSchedules } = useTravel()
   const [returnDate, setReturnDate] = useState<MaterialUiPickersDate>()
-
-  const [isReturnedTravel, setReturnedTravel] = useState(false)
 
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   return (
     <Grid container spacing={4} direction="column">
-      {departureId} - {destinationId}
+      {passengerCount}-{vehicleCount}
       <Grid item xs={12}>
-        {departureDate && format(departureDate, 'yyy-MM-dd')}
         <Box mt={isSmall ? 0 : 6}>
           <Grid item container>
             <Typography variant="h6">Viagem Ida e volta</Typography>
@@ -133,9 +138,12 @@ const SearchTravel: React.FC = () => {
             <Field
               component={Select}
               label=" Selecionar Porto de Origem"
-              name="destination"
+              name="departure_schedule_id"
+              disabled={!destinationId || !departureDate}
+              value={departureScheduleId}
+              onChange={handleDepartureScheduleId}
               inputProps={{
-                id: 'destination'
+                id: 'departure_schedule'
               }}
               startAdornment={
                 <InputAdornment position="start">
@@ -143,8 +151,11 @@ const SearchTravel: React.FC = () => {
                 </InputAdornment>
               }
             >
-              <MenuItem value={10}>SA/SV</MenuItem>
-              <MenuItem value={20}>SV/SA</MenuItem>
+              {departureSchedules?.map(schedule => (
+                <MenuItem value={schedule.id} key={schedule.id}>
+                  {schedule.departure_time}
+                </MenuItem>
+              ))}
             </Field>
           </FormControl>
         </Grid>
@@ -159,6 +170,7 @@ const SearchTravel: React.FC = () => {
                 minDate={new Date()}
                 size="small"
                 value={returnDate}
+                disabled={!departureScheduleId}
                 onChange={setReturnDate}
                 fullWidth
                 views={['year', 'month', 'date']}
@@ -170,10 +182,11 @@ const SearchTravel: React.FC = () => {
                 <InputLabel htmlFor="destination">Hora de retorno</InputLabel>
                 <Field
                   component={Select}
-                  label=" Selecionar Porto de Origem"
-                  name="destination"
+                  label=" Selecionar hora de retorno"
+                  name="return_schedule_id"
+                  // disabled={!returnDate}
                   inputProps={{
-                    id: 'destination'
+                    id: 'return_schedule'
                   }}
                   startAdornment={
                     <InputAdornment position="start">
@@ -181,8 +194,11 @@ const SearchTravel: React.FC = () => {
                     </InputAdornment>
                   }
                 >
-                  <MenuItem value={10}>SA/SV</MenuItem>
-                  <MenuItem value={20}>SV/SA</MenuItem>
+                  {returnSchedules?.map(schedule => (
+                    <MenuItem value={schedule.id} key={schedule.id}>
+                      {schedule.departure_time}
+                    </MenuItem>
+                  ))}
                 </Field>
               </FormControl>
             </Grid>

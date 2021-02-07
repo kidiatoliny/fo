@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   Grid,
   InputAdornment,
@@ -7,23 +8,29 @@ import {
   MenuItem,
   Typography
 } from '@material-ui/core'
-import { UsersIcon } from '~/components/Icons'
+import { AddUserIcon, UsersIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { format } from 'date-fns'
 import { Field } from 'formik'
 import { Select, TextField } from 'formik-material-ui'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineFileSearch, AiOutlineUserAdd } from 'react-icons/ai'
 import { HiOutlineHashtag } from 'react-icons/hi'
 const PassengerData: React.FC = () => {
-  const { departureDate } = useBooking()
+  const { departureDate, passengerCount } = useBooking()
+  const [total, setTotal] = useState(0)
+  useEffect(() => {
+    setTotal(passengerCount)
+  }, [])
   return (
     <Box marginBottom={4}>
       <Grid container spacing={4} direction="column">
         <Grid item xs={12}>
           <Box mt={2}>
             <Grid item>
-              <Typography variant="h6">Passageiro 1/1</Typography>
+              <Typography variant="h6">
+                Passageiro {passengerCount - total + 1}-{total}
+              </Typography>
             </Grid>
           </Box>
         </Grid>
@@ -146,6 +153,20 @@ const PassengerData: React.FC = () => {
           </Grid>
         </Box>
       </Box>
+      <Grid item container justify="flex-end">
+        <Grid item xs={12} md={6} lg={3}>
+          <Box mt={4}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              endIcon={<AddUserIcon />}
+            >
+              Adicionar Passageiro
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   )
 }

@@ -59,7 +59,7 @@ export interface Schedule {
 export interface SearchTravel {
   departure: number
   destination: number
-  departureDate?: string
+  departureDate?: string | null
   returnDate?: string | null
 }
 

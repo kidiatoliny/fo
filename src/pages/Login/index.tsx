@@ -79,7 +79,7 @@ const Login: React.FC = () => {
     event.preventDefault()
   }
 
-  if (token && !isTokenExpired) {
+  if (token) {
     return <Redirect to="/dashboard" />
   }
   return (

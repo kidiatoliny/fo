@@ -30,7 +30,7 @@ import React, { useEffect } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 const Reservation: React.FC = () => {
   const { getLocations, locations, isLoading } = useLocations()
-
+  const { passengerCount, vehicleCount } = useBooking()
   const initialValues = {
     main_contact: {
       first_name: ''
@@ -89,8 +89,8 @@ const Reservation: React.FC = () => {
                 {/* resevation owner end */}
               </FormikStep>
               <FormikStep label="Dados de Passageiro">
-                <PassengerData />
-                <VehicleData />
+                {passengerCount > 0 && <PassengerData />}
+                {vehicleCount > 0 && <VehicleData />}
               </FormikStep>
               <FormikStep label="Pre-Visualização">
                 <ReservationOwnerPreview />
