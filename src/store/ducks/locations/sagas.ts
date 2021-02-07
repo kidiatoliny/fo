@@ -21,8 +21,9 @@ export function* getLocations() {
   } catch (err) {
     yield put(
       actions.locationRequestFailure({
-        code: err.response.status,
-        msg: err.response.data.message
+        code: err.response?.status,
+        message: err.message,
+        isAxiosError: err.isAxiosError
       } as HttpResponseError)
     )
   }

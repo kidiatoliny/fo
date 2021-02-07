@@ -24,9 +24,10 @@ export function* loginRequest({
     console.log(err)
     yield put(
       actions.loginFailure({
-        code: err.response.status,
-        msg: err.response.data.message
-      } as HttpResponseError)
+        code: err.response?.status,
+        message: err.message,
+        isAxiosError: err.isAxiosError
+      })
     )
   }
 }

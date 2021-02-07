@@ -3,7 +3,10 @@ import {
   AiFillLock as LockIcon,
   AiOutlineLogin as LoginIcon
 } from 'react-icons/ai'
-import { BsSearch as SearchIcon } from 'react-icons/bs'
+import {
+  BsSearch as SearchIcon,
+  BsPersonPlus as AddUserIcon
+} from 'react-icons/bs'
 import {
   FiUser as UserIcon,
   FiPhone as PhoneIcon,
@@ -33,5 +36,6 @@ export {
   LockIcon,
   LocationIcon,
   SearchIcon,
-  LoginIcon
+  LoginIcon,
+  AddUserIcon
 }

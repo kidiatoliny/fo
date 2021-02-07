@@ -10,6 +10,7 @@ import {
   InputAdornment,
   Typography
 } from '@material-ui/core'
+import ReservationOwner from '~/components/Forms/Booking/Step1/ReservationOwner'
 import SearchTravel from '~/components/Forms/Booking/Step1/SearchTravel'
 import SetTickets from '~/components/Forms/Booking/Step1/SetTickets'
 import PassengerData from '~/components/Forms/Booking/Step2/PassengerData'
@@ -20,23 +21,37 @@ import VehiclePreview from '~/components/Forms/Booking/Step3/Vehicle'
 import PaymentMethods from '~/components/Forms/Booking/Step4/PaymentMethods'
 import { FormikStep } from '~/components/Forms/Formik/FormikStep'
 import { FormikStepper } from '~/components/Forms/Formik/FormikStepper'
-import { MailIcon, MobileIcon, UsersIcon } from '~/components/Icons'
 import Layout from '~/components/Layout'
 import Loading from '~/components/Loading'
+import { useBooking } from '~/contexts/BookingProvider'
 import { useLocations } from '~/hooks/useLocations'
-import { mainContactValidation } from '~/validations/mainContactValidation'
-import { Field } from 'formik'
-import { TextField } from 'formik-material-ui'
+import { format } from 'date-fns'
 import React, { useEffect } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
-
-const initialValues = {
-  main_contact: {
-    first_name: ''
-  }
-}
 const Reservation: React.FC = () => {
-  const { getLocations, isLoading } = useLocations()
+  const { getLocations, locations, isLoading } = useLocations()
+
+  const initialValues = {
+    main_contact: {
+      first_name: ''
+    },
+    passengers: [
+      {
+        first_name: '',
+        last_name: '',
+        fare_id: '',
+        document_type: '',
+        document_data: '',
+        routes: [
+          {
+            route_id: '',
+            schedule_id: '',
+            schedule_date: ''
+          }
+        ]
+      }
+    ]
+  }
 
   isLoading && <Loading />
   useEffect(() => {
@@ -66,95 +81,11 @@ const Reservation: React.FC = () => {
               {/* resevation owner start */}
               <FormikStep
                 label="Dados de Reserva"
-                validationSchema={mainContactValidation}
+                // validationSchema={mainContactValidation}
               >
                 <SearchTravel />
                 <SetTickets />
-                <Box mb={5}>
-                  <Grid container spacing={4} direction="column">
-                    <Grid item xs={12}>
-                      <Box mt={2}>
-                        <Grid item>
-                          <Typography variant="h6">
-                            Titular da Reserva
-                          </Typography>
-                        </Grid>
-                      </Box>
-                    </Grid>
-                    <Grid item container spacing={4}>
-                      <Grid item xs={12} sm={6}>
-                        <Field
-                          component={TextField}
-                          variant="outlined"
-                          label="Nome*"
-                          name="main_contact.first_name"
-                          size="small"
-                          fullWidth
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <UsersIcon />
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Field
-                          component={TextField}
-                          variant="outlined"
-                          label=" Apelido*"
-                          name="main_contact.last_name"
-                          size="small"
-                          fullWidth
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <UsersIcon />
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                    <Grid item container spacing={4}>
-                      <Grid item xs={12} sm={6}>
-                        <Field
-                          component={TextField}
-                          variant="outlined"
-                          label="E-mail*"
-                          name="main_contact.email"
-                          size="small"
-                          fullWidth
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <MailIcon />
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Field
-                          component={TextField}
-                          variant="outlined"
-                          label=" Contato*"
-                          name="main_contact.mobile"
-                          size="small"
-                          fullWidth
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <MobileIcon />
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Box>
+                <ReservationOwner />
                 {/* resevation owner end */}
               </FormikStep>
               <FormikStep label="Dados de Passageiro">

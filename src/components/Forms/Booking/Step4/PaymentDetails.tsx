@@ -117,6 +117,7 @@ const PaymentDetails: React.FC = () => {
                   <Button
                     color="primary"
                     variant="contained"
+                    type="submit"
                     startIcon={
                       isLoading ? (
                         <CircularProgress size="1rem" color="inherit" />

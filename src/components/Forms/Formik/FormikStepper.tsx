@@ -118,7 +118,7 @@ export function FormikStepper({
         }
       }}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, isValid, values }) => (
         <Form autoComplete="off">
           <Hidden mdUp>
             <MobileStepper
@@ -195,6 +195,7 @@ export function FormikStepper({
                     color="primary"
                     fullWidth
                     type="submit"
+                    disabled={!isValid}
                   >
                     Proximo
                   </Button>

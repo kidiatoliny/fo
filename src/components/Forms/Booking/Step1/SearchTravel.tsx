@@ -11,8 +11,10 @@ import {
   useTheme
 } from '@material-ui/core'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import { useBooking } from '~/contexts/BookingProvider'
 import { useLocations } from '~/hooks/useLocations'
 import { Location } from '~/store/ducks/locations/types'
+import { format } from 'date-fns'
 import { Field } from 'formik'
 import { Select } from 'formik-material-ui'
 import { DatePicker } from 'formik-material-ui-pickers'
@@ -20,22 +22,28 @@ import React, { useState } from 'react'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 const SearchTravel: React.FC = () => {
-  const { locations } = useLocations()
-  const [departureDate, setDepartureDate] = useState<MaterialUiPickersDate>()
-  const [returnDate, setReturnDate] = useState<MaterialUiPickersDate>()
-  const [departure, setDeparture] = useState({} as Location)
-  const [isReturnedTravel, setReturnedTravel] = useState(false)
+  const {
+    setDepartureDate,
+    departureDate,
+    departureId,
+    handleDepartureId,
+    locations,
+    destination,
+    destinationId,
+    handleDestinationId
+  } = useBooking()
 
-  const handleDeparture = (event: React.ChangeEvent<{ value: Location }>) => {
-    setDeparture(event.target.value as Location)
-  }
-  console.log(departure)
+  const [returnDate, setReturnDate] = useState<MaterialUiPickersDate>()
+
+  const [isReturnedTravel, setReturnedTravel] = useState(false)
 
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   return (
     <Grid container spacing={4} direction="column">
+      {departureId} - {destinationId}
       <Grid item xs={12}>
+        {departureDate && format(departureDate, 'yyy-MM-dd')}
         <Box mt={isSmall ? 0 : 6}>
           <Grid item container>
             <Typography variant="h6">Viagem Ida e volta</Typography>
@@ -46,7 +54,6 @@ const SearchTravel: React.FC = () => {
           </Grid>
         </Box>
       </Grid>
-
       {/* traveel */}
       <Grid item container spacing={4}>
         <Grid item container sm={6}>
@@ -56,8 +63,8 @@ const SearchTravel: React.FC = () => {
               label="Selecionar Porto de Origem"
               component={Select}
               name="departure"
-              value={departure}
-              onChange={handleDeparture}
+              value={departureId}
+              onChange={handleDepartureId}
               inputProps={{
                 id: 'departure'
               }}
@@ -68,7 +75,7 @@ const SearchTravel: React.FC = () => {
               }
             >
               {locations.map(location => (
-                <MenuItem value={JSON.stringify(location)} key={location.id}>
+                <MenuItem value={location.id} key={location.id}>
                   {location.name_1}
                 </MenuItem>
               ))}
@@ -82,8 +89,9 @@ const SearchTravel: React.FC = () => {
               component={Select}
               label=" Selecionar Porto de Origem"
               name="destination"
-              value={departure}
-              onChange={handleDeparture}
+              value={destinationId}
+              disabled={!departureId}
+              onChange={handleDestinationId}
               inputProps={{
                 id: 'destination'
               }}
@@ -93,28 +101,30 @@ const SearchTravel: React.FC = () => {
                 </InputAdornment>
               }
             >
-              <MenuItem value="SA/SV">SA/SV</MenuItem>
-              <MenuItem value="SA/SV">SV/SA</MenuItem>
+              {destination.map(location => (
+                <MenuItem value={location.id} key={location.id}>
+                  {location.name_1}
+                </MenuItem>
+              ))}
             </Field>
           </FormControl>
         </Grid>
       </Grid>
-
       {/* travel date */}
       <Grid item container spacing={4}>
         <Grid item xs={12} sm={6} md={3}>
           <Field
             component={DatePicker}
             label="Data de Partida"
-            name="departure"
+            name="departureDate"
             inputVariant="outlined"
             minDate={new Date()}
             size="small"
             value={departureDate}
             onChange={setDepartureDate}
             fullWidth
-            views={['year', 'month', 'date']}
             format="dd-MMMM-yyyy"
+            disabled={!destinationId}
           />
         </Grid>
         <Grid item container sm={6} md={3}>

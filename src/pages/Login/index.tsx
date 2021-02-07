@@ -10,11 +10,11 @@ import {
   Snackbar
 } from '@material-ui/core'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
-import CloseIcon from '@material-ui/icons/Close'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import logo from '~/assets/logo.png'
 import { LockIcon, LoginIcon, UserIcon } from '~/components/Icons'
+import SnackBar from '~/components/SnackBar'
 import { useAuth } from '~/contexts/AuthProvider'
 import { LoginValidation } from '~/validations/LoginValidation'
 import { Field, Form, Formik } from 'formik'
@@ -55,7 +55,7 @@ const Login: React.FC = () => {
   const [open, setOpen] = React.useState(false)
 
   useEffect(() => {
-    if (error?.code === 401) {
+    if (error) {
       !open && setOpen(true)
     }
   }, [error])
@@ -186,27 +186,14 @@ const Login: React.FC = () => {
           </Formik>
         </CardContent>
       </Card>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center'
-        }}
+      <SnackBar
         open={open}
-        autoHideDuration={5000}
         onClose={handleClose}
-        message="Crendências Invalidas"
-        action={
-          <React.Fragment>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleClose}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </React.Fragment>
-        }
+        message={`${
+          error?.message === 'Network Error'
+            ? 'Verifique a sua ligacao a internet'
+            : 'Crendências Invalidas'
+        }`}
       />
     </Grid>
   )
