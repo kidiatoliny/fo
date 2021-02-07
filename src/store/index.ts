@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import { AuthState } from './ducks/auth/types'
 import { LocationState } from './ducks/locations/types'
+import { PassengerState } from './ducks/passengers/types'
 import rootReducer from './ducks/rootReducers'
 import rootSaga from './ducks/rootSagas'
 import { TravelState } from './ducks/travels/types'
@@ -13,6 +14,7 @@ export interface ApplicationState {
   user: UserState
   location: LocationState
   travel: TravelState
+  passenger: PassengerState
 }
 const sagaMiddleware = createSagaMiddleware()
 
