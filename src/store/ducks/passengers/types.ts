@@ -10,6 +10,17 @@ export interface Passenger {
   phone: string
   mobile: string
   email: string
+  document_type: string
+  document_data: string
+  fare_id?: number
+  fare_tax?: [{ id: number }]
+  routes?: BookingRoute[]
+}
+
+export interface BookingRoute {
+  route_id: number
+  schedule_id: number
+  schedule_date: string
 }
 
 export interface DocumentType {

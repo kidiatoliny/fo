@@ -1,8 +1,10 @@
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { Location } from '~/store/ducks/locations/types'
+import { Passenger } from '~/store/ducks/passengers/types'
 
 export interface BookingContextData {
   step: number
+  setStep: React.Dispatch<React.SetStateAction<number>>
   isLastStep: (lastStep: number) => boolean
   nextStep: () => void
   backStep: () => void
@@ -26,6 +28,8 @@ export interface BookingContextData {
   handleVehicleCount: (event: React.ChangeEvent<{ value: string }>) => void
   passengerCount: number
   vehicleCount: number
-  handleAddPassenger: () => void
+  handleAddPassenger: (payload: Passenger) => void
   handleAddVehicle: () => void
+  passengers: Passenger[]
+  handleReturnScheduleId: (event: React.ChangeEvent<{ value: string }>) => void
 }

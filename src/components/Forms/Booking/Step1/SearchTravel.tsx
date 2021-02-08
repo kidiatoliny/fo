@@ -37,7 +37,8 @@ const SearchTravel: React.FC = () => {
     isReturnedTravel,
     setReturnedTravel,
     passengerCount,
-    vehicleCount
+    vehicleCount,
+    handleReturnScheduleId
   } = useBooking()
 
   const { departureSchedules, returnSchedules } = useTravel()
@@ -184,6 +185,7 @@ const SearchTravel: React.FC = () => {
                   component={Select}
                   label=" Selecionar hora de retorno"
                   name="return_schedule_id"
+                  onChange={handleReturnScheduleId}
                   // disabled={!returnDate}
                   inputProps={{
                     id: 'return_schedule'

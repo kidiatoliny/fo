@@ -2,7 +2,7 @@ import { all, call, fork, put, select, takeLatest } from 'redux-saga/effects'
 
 import { ApplicationState } from '../..'
 import api from '../../../services/api'
-import { getRole } from '../auth/actions'
+import { getRole, logout } from '../auth/actions'
 import { actions } from '../user'
 import { UserActionTypes } from './types'
 
@@ -23,6 +23,7 @@ export function* loadProfile() {
     yield put(getRole(accessToken))
     // call user profile request success success
   } catch (err) {
+    yield put(logout())
     yield put(
       actions.userProfileRequestFailure({
         code: err.response?.status,

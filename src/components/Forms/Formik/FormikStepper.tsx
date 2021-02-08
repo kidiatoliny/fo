@@ -173,7 +173,7 @@ export function FormikStepper({
           <Hidden mdDown>
             <Grid container justify="space-between">
               {step === 0 ||
-                (step < 3 && (
+                (step < 2 && (
                   <Grid item sm={6} md={2}>
                     <Button
                       disabled={isSubmitting}
@@ -189,7 +189,7 @@ export function FormikStepper({
               <Grid item />
 
               <Grid item sm={6} md={2}>
-                {step < 3 && (
+                {step < 1 && (
                   <Button
                     variant="contained"
                     color="primary"

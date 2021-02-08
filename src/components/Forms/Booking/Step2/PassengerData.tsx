@@ -12,14 +12,15 @@ import { AddUserIcon, UsersIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { usePassenger } from '~/hooks/usePassenger'
 import { useTravel } from '~/hooks/useTravel'
+import { BookingRoute, Passenger } from '~/store/ducks/passengers/types'
 import { format } from 'date-fns'
 import { Field } from 'formik'
 import { Select, TextField } from 'formik-material-ui'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { AiOutlineFileSearch, AiOutlineUserAdd } from 'react-icons/ai'
 import { HiOutlineHashtag } from 'react-icons/hi'
 const PassengerData: React.FC = () => {
-  const { departureDate, passengerCount, handleAddPassenger } = useBooking()
+  const { passengerCount, handleAddPassenger, passengers } = useBooking()
   const { getDocumentType, documentTypes } = usePassenger()
   const { passengerFares } = useTravel()
   const [total, setTotal] = useState(0)
@@ -27,8 +28,27 @@ const PassengerData: React.FC = () => {
     setTotal(passengerCount)
     getDocumentType()
   }, [])
+
+  const [passenger, setPassenger] = useState<Passenger>({} as Passenger)
+
+  const handleChange = useCallback(
+    (value: string, name: string) => {
+      setPassenger({
+        ...passenger,
+        [name]: value
+      } as Passenger)
+    },
+
+    [passenger]
+  )
+
+  const handlePassenger = () => {
+    setPassenger({} as Passenger)
+    handleAddPassenger(passenger)
+  }
   return (
     <Box marginBottom={4}>
+      {JSON.stringify(passengers)}
       <Grid container spacing={4} direction="column">
         <Grid item xs={12}>
           <Box mt={2}>
@@ -45,10 +65,16 @@ const PassengerData: React.FC = () => {
               required
               component={TextField}
               variant="outlined"
-              label=" Nome"
-              name="passengers.first_name"
+              label="Nome"
+              name="first_name"
               size="small"
               fullWidth
+              onBlur={(event: React.FormEvent<HTMLInputElement>) =>
+                handleChange(
+                  event.currentTarget.value,
+                  event.currentTarget.name
+                )
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -64,9 +90,15 @@ const PassengerData: React.FC = () => {
               required
               variant="outlined"
               label=" Apelido"
-              name="passengers.last_name"
+              name="last_name"
               size="small"
               fullWidth
+              onBlur={(event: React.FormEvent<HTMLInputElement>) =>
+                handleChange(
+                  event.currentTarget.value,
+                  event.currentTarget.name
+                )
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -87,10 +119,16 @@ const PassengerData: React.FC = () => {
                 <Field
                   component={Select}
                   label=" Tipo de Passageiro"
-                  name="passengers.fare_id"
+                  name="fare_id"
+                  disabled={!passenger.first_name && !passenger.last_name}
                   inputProps={{
                     id: 'fare_id'
                   }}
+                  onChange={(event: React.ChangeEvent<{ value: string }>) =>
+                    handleChange(event.target.value, 'fare_id')
+                  }
+                  displayEmpty
+                  value={'' || passenger.fare_id}
                   startAdornment={
                     <InputAdornment position="start">
                       <AiOutlineUserAdd />
@@ -104,21 +142,6 @@ const PassengerData: React.FC = () => {
                   ))}
                 </Field>
               </FormControl>
-              <Field
-                type="hidden"
-                name="passengers[0].routes[0].route_id"
-                value="1"
-              />
-              <Field
-                type="hidden"
-                name="passengers[0].routes[0].schedule_id"
-                value="1"
-              />
-              <Field
-                value={departureDate && format(departureDate, 'yyy-MM-dd')}
-                type="hidden"
-                name="passengers[0].routes[0].schedule_date"
-              />
             </Grid>
             <Grid item sm={6} md={4}>
               <FormControl fullWidth size="small" variant="outlined">
@@ -126,11 +149,16 @@ const PassengerData: React.FC = () => {
                 <Field
                   component={Select}
                   label="Tipo de documento"
-                  name="passengers.document_type"
-                  value={''}
+                  name="document_type"
+                  displayEmpty
+                  value={'' || passenger.document_type}
                   inputProps={{
                     id: 'document_type'
                   }}
+                  onChange={(event: React.ChangeEvent<{ value: string }>) =>
+                    handleChange(event.target.value, 'document_type')
+                  }
+                  disabled={!passenger.fare_id}
                   startAdornment={
                     <InputAdornment position="start">
                       <AiOutlineFileSearch />
@@ -149,11 +177,17 @@ const PassengerData: React.FC = () => {
               <Field
                 component={TextField}
                 variant="outlined"
+                disabled={!passenger.document_type}
                 label=" Numero de documento"
-                name="passengers[0].document_number"
+                name="document_data"
                 size="small"
                 fullWidth
-                value={''}
+                onBlur={(event: React.FormEvent<HTMLInputElement>) =>
+                  handleChange(
+                    event.currentTarget.value,
+                    event.currentTarget.name
+                  )
+                }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -174,8 +208,8 @@ const PassengerData: React.FC = () => {
               variant="contained"
               color="primary"
               endIcon={<AddUserIcon />}
-              type="button"
-              onClick={handleAddPassenger}
+              type="reset"
+              onClick={handlePassenger}
             >
               Adicionar Passageiro
             </Button>

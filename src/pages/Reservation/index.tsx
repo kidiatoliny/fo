@@ -2,14 +2,22 @@
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
+  createStyles,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
   Grid,
   Icon,
+  IconButton,
   InputAdornment,
+  Theme,
   Typography
 } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import ReservationOwner from '~/components/Forms/Booking/Step1/ReservationOwner'
 import SearchTravel from '~/components/Forms/Booking/Step1/SearchTravel'
@@ -22,42 +30,53 @@ import VehiclePreview from '~/components/Forms/Booking/Step3/Vehicle'
 import PaymentMethods from '~/components/Forms/Booking/Step4/PaymentMethods'
 import { FormikStep } from '~/components/Forms/Formik/FormikStep'
 import { FormikStepper } from '~/components/Forms/Formik/FormikStepper'
+import { DoneIcon } from '~/components/Icons'
 import Layout from '~/components/Layout'
 import Loading from '~/components/Loading'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useLocations } from '~/hooks/useLocations'
 import { format } from 'date-fns'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    iconButton: {
+      backgroundColor: theme.palette.success.main,
+      color: theme.palette.common.white
+    }
+  })
+)
 const Reservation: React.FC = () => {
+  const classes = useStyles()
   const { getLocations, locations, isLoading } = useLocations()
-  const { passengerCount, vehicleCount } = useBooking()
+  const { passengerCount, vehicleCount, setStep } = useBooking()
+  const [open, setOpen] = useState(false)
   const initialValues = {
     main_contact: {
       first_name: ''
     },
-    passengers: [
-      {
-        first_name: '',
-        last_name: '',
-        fare_id: '',
-        document_type: '',
-        document_data: '',
-        routes: [
-          {
-            route_id: '',
-            schedule_id: '',
-            schedule_date: ''
-          }
-        ]
-      }
-    ]
+    first_name: '',
+    last_name: '',
+    fare_id: '',
+    document_type: '',
+    document_data: ''
   }
 
   isLoading && <Loading />
   useEffect(() => {
     getLocations()
   }, [])
+  useEffect(() => {
+    setOpen(false)
+    if (passengerCount === 0 && vehicleCount === 0) {
+      setOpen(true)
+    }
+  }, [passengerCount, vehicleCount, setOpen])
+  const handleClose = () => {
+    setOpen(false)
+    setStep(2)
+  }
   return (
     <Layout>
       <Card raised>
@@ -93,10 +112,41 @@ const Reservation: React.FC = () => {
                 {passengerCount > 0 && <PassengerData />}
                 {vehicleCount > 0 && passengerCount === 0 && <VehicleData />}
                 <SimpleDialog
-                  open={passengerCount === 0 && vehicleCount === 0}
-                  onClose={() => passengerCount === 0}
-                  title="Dados Adicionadoss"
-                ></SimpleDialog>
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  title=""
+                >
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                      <Grid
+                        container
+                        spacing={4}
+                        alignItems="center"
+                        justify="center"
+                      >
+                        <Grid item xs={2}>
+                          <IconButton className={classes.iconButton}>
+                            <Icon>
+                              <DoneIcon />
+                            </Icon>
+                          </IconButton>
+                        </Grid>
+                        <Grid item xs={8}>
+                          Os dados de passageiros foram adicionados com successo
+                        </Grid>
+                      </Grid>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={handleClose}
+                      color="primary"
+                      variant="contained"
+                    >
+                      OK
+                    </Button>
+                  </DialogActions>
+                </SimpleDialog>
               </FormikStep>
               <FormikStep label="Pre-Visualização">
                 <ReservationOwnerPreview />

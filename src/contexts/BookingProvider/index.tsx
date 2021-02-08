@@ -2,6 +2,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { useLocations } from '~/hooks/useLocations'
 import { useTravel } from '~/hooks/useTravel'
 import { Location } from '~/store/ducks/locations/types'
+import { BookingRoute, Passenger } from '~/store/ducks/passengers/types'
 import { format } from 'date-fns'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { date } from 'yup/lib/locale'
@@ -12,22 +13,28 @@ const BookingContext = createContext<BookingContextData>(
   {} as BookingContextData
 )
 export const BookingProvider: React.FC = ({ children }) => {
+  const { passengerFareTax } = useTravel()
   const { locations } = useLocations()
-  const { getTravel } = useTravel()
+  const { getTravel, departureTravel, returnTravel } = useTravel()
   const [step, setStep] = useState(0)
   const [isReturnedTravel, setReturnedTravel] = useState(false)
   const [departureDate, setDepartureDate] = useState<MaterialUiPickersDate>(
     new Date()
   )
   const [returnDate, setReturnDate] = useState<MaterialUiPickersDate>(null)
+
   const [departureId, setDepartureId] = useState('')
   const [departureScheduleId, setDepartureScheduleId] = useState('')
+  const [returnId, setReturnId] = useState('')
+  const [returnScheduleId, setReturnScheduleId] = useState('')
 
   const [destinationId, setDestinationId] = useState('')
   const [destination, setDestination] = useState<Location[]>([])
 
   const [passengerCount, setPassengerCount] = useState(0)
   const [vehicleCount, setVehicleCount] = useState(0)
+
+  const [passengers, setPassengers] = useState<Passenger[]>([])
 
   const handlePassengerCount = (
     event: React.ChangeEvent<{ value: string }>
@@ -65,6 +72,12 @@ export const BookingProvider: React.FC = ({ children }) => {
     setDepartureScheduleId(id)
   }
 
+  const handleReturnScheduleId = (
+    event: React.ChangeEvent<{ value: string }>
+  ) => {
+    const id = event.target.value
+    setReturnScheduleId(id)
+  }
   const nextStep = () => setStep(prev => prev + 1)
   const backStep = () => setStep(prev => prev - 1)
   const isLastStep = (lastStep: number) => step === lastStep
@@ -78,15 +91,57 @@ export const BookingProvider: React.FC = ({ children }) => {
     })
   useEffect(() => {
     searchTravel()
-    console.log('ADSDA')
   }, [departureDate, returnDate])
 
-  const handleAddPassenger = () => setPassengerCount(prev => prev - 1)
+  const handleAddPassenger = (payload: Passenger) => {
+    const { first_name, last_name, document_type, document_data } = payload
+    let routes
+
+    if (isReturnedTravel) {
+      routes = [
+        {
+          route_id: departureTravel && departureTravel.route_id,
+          schedule_id: parseInt(departureScheduleId),
+          schedule_date:
+            departureDate && format(departureDate, 'yyy-MM-dd').toString()
+        } as BookingRoute,
+        {
+          route_id: returnTravel && returnTravel.route_id,
+          schedule_id: parseInt(returnScheduleId),
+          schedule_date:
+            returnDate && format(returnDate, 'yyy-MM-dd').toString()
+        } as BookingRoute
+      ]
+    } else {
+      routes = [
+        {
+          route_id: departureTravel && departureTravel.route_id,
+          schedule_id: parseInt(departureScheduleId),
+          schedule_date:
+            departureDate && format(departureDate, 'yyy-MM-dd').toString()
+        } as BookingRoute
+      ]
+    }
+
+    setPassengers([
+      ...passengers,
+      {
+        first_name,
+        last_name,
+        document_data,
+        document_type,
+        fare_tax: passengerFareTax,
+        routes
+      } as Passenger
+    ])
+    setPassengerCount(prev => prev - 1)
+  }
   const handleAddVehicle = () => setVehicleCount(prev => prev - 1)
   return (
     <BookingContext.Provider
       value={{
         step,
+        setStep,
         isLastStep,
         nextStep,
         backStep,
@@ -109,7 +164,9 @@ export const BookingProvider: React.FC = ({ children }) => {
         passengerCount,
         vehicleCount,
         handleAddPassenger,
-        handleAddVehicle
+        handleAddVehicle,
+        passengers,
+        handleReturnScheduleId
       }}
     >
       {children}

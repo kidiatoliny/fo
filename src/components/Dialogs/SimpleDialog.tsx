@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Dialog, DialogTitle, Slide } from '@material-ui/core'
+import { Dialog, DialogProps, DialogTitle, Slide } from '@material-ui/core'
 import { TransitionProps } from '@material-ui/core/transitions'
 import React from 'react'
 
@@ -8,17 +8,20 @@ interface SimpleDialogProps {
   onClose: () => void
   title: string
 }
+
+type Props = SimpleDialogProps & DialogProps
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
   ref: React.Ref<unknown>
 ) {
   return <Slide direction="down" ref={ref} {...props} />
 })
-const SimpleDialog: React.FC<SimpleDialogProps> = ({
+const SimpleDialog: React.FC<Props> = ({
   open,
   onClose,
   title,
-  children
+  children,
+  ...rest
 }) => {
   return (
     <Dialog
@@ -30,6 +33,7 @@ const SimpleDialog: React.FC<SimpleDialogProps> = ({
       aria-describedby={`${title}-dialog`}
       fullWidth
       maxWidth="sm"
+      {...rest}
     >
       <DialogTitle id={`${title}-dialog`}>{title}</DialogTitle>
       {children}
