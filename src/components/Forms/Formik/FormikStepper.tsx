@@ -118,7 +118,7 @@ export function FormikStepper({
         }
       }}
     >
-      {({ isSubmitting, isValid, values }) => (
+      {({ isSubmitting, isValid }) => (
         <Form autoComplete="off">
           <Hidden mdUp>
             <MobileStepper

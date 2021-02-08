@@ -1,11 +1,10 @@
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { useLocations } from '~/hooks/useLocations'
 import { useTravel } from '~/hooks/useTravel'
+import { BookingPassenger, BookingRoute } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
-import { BookingRoute, Passenger } from '~/store/ducks/passengers/types'
 import { format } from 'date-fns'
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { date } from 'yup/lib/locale'
 
 import { BookingContextData } from './types'
 
@@ -25,7 +24,7 @@ export const BookingProvider: React.FC = ({ children }) => {
 
   const [departureId, setDepartureId] = useState('')
   const [departureScheduleId, setDepartureScheduleId] = useState('')
-  const [returnId, setReturnId] = useState('')
+
   const [returnScheduleId, setReturnScheduleId] = useState('')
 
   const [destinationId, setDestinationId] = useState('')
@@ -34,7 +33,7 @@ export const BookingProvider: React.FC = ({ children }) => {
   const [passengerCount, setPassengerCount] = useState(0)
   const [vehicleCount, setVehicleCount] = useState(0)
 
-  const [passengers, setPassengers] = useState<Passenger[]>([])
+  const [passengers, setPassengers] = useState<BookingPassenger[]>([])
 
   const handlePassengerCount = (
     event: React.ChangeEvent<{ value: string }>
@@ -93,7 +92,7 @@ export const BookingProvider: React.FC = ({ children }) => {
     searchTravel()
   }, [departureDate, returnDate])
 
-  const handleAddPassenger = (payload: Passenger) => {
+  const handleAddPassenger = (payload: BookingPassenger) => {
     const { first_name, last_name, document_type, document_data } = payload
     let routes
 
@@ -132,7 +131,7 @@ export const BookingProvider: React.FC = ({ children }) => {
         document_type,
         fare_tax: passengerFareTax,
         routes
-      } as Passenger
+      } as BookingPassenger
     ])
     setPassengerCount(prev => prev - 1)
   }

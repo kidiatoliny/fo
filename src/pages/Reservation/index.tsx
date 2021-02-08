@@ -13,7 +13,6 @@ import {
   Grid,
   Icon,
   IconButton,
-  InputAdornment,
   Theme,
   Typography
 } from '@material-ui/core'
@@ -35,7 +34,6 @@ import Layout from '~/components/Layout'
 import Loading from '~/components/Loading'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useLocations } from '~/hooks/useLocations'
-import { format } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 
@@ -49,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 const Reservation: React.FC = () => {
   const classes = useStyles()
-  const { getLocations, locations, isLoading } = useLocations()
+  const { getLocations, isLoading } = useLocations()
   const { passengerCount, vehicleCount, setStep } = useBooking()
   const [open, setOpen] = useState(false)
   const initialValues = {

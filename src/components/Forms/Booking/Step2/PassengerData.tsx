@@ -12,8 +12,7 @@ import { AddUserIcon, UsersIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { usePassenger } from '~/hooks/usePassenger'
 import { useTravel } from '~/hooks/useTravel'
-import { BookingRoute, Passenger } from '~/store/ducks/passengers/types'
-import { format } from 'date-fns'
+import { BookingPassenger } from '~/store/ducks/bookings/types'
 import { Field } from 'formik'
 import { Select, TextField } from 'formik-material-ui'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -29,21 +28,23 @@ const PassengerData: React.FC = () => {
     getDocumentType()
   }, [])
 
-  const [passenger, setPassenger] = useState<Passenger>({} as Passenger)
+  const [passenger, setPassenger] = useState<BookingPassenger>(
+    {} as BookingPassenger
+  )
 
   const handleChange = useCallback(
     (value: string, name: string) => {
       setPassenger({
         ...passenger,
         [name]: value
-      } as Passenger)
+      } as BookingPassenger)
     },
 
     [passenger]
   )
 
   const handlePassenger = () => {
-    setPassenger({} as Passenger)
+    setPassenger({} as BookingPassenger)
     handleAddPassenger(passenger)
   }
   return (

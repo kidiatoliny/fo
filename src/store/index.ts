@@ -3,6 +3,7 @@ import { logger } from 'redux-logger'
 import createSagaMiddleware from 'redux-saga'
 
 import { AuthState } from './ducks/auth/types'
+import { BookingState } from './ducks/bookings/types'
 import { LocationState } from './ducks/locations/types'
 import { PassengerState } from './ducks/passengers/types'
 import rootReducer from './ducks/rootReducers'
@@ -15,6 +16,7 @@ export interface ApplicationState {
   location: LocationState
   travel: TravelState
   passenger: PassengerState
+  booking: BookingState
 }
 const sagaMiddleware = createSagaMiddleware()
 
