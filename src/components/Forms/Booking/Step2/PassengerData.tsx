@@ -28,6 +28,7 @@ const PassengerData: React.FC = () => {
     getDocumentType()
   }, [])
 
+  const [disabledAddButton, setDisabledAddButton] = useState(true)
   const [passenger, setPassenger] = useState<BookingPassenger>(
     {} as BookingPassenger
   )
@@ -189,6 +190,7 @@ const PassengerData: React.FC = () => {
                     event.currentTarget.name
                   )
                 }
+                onFocus={() => setDisabledAddButton(false)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -211,6 +213,7 @@ const PassengerData: React.FC = () => {
               endIcon={<AddUserIcon />}
               type="reset"
               onClick={handlePassenger}
+              disabled={disabledAddButton}
             >
               Adicionar Passageiro
             </Button>

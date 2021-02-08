@@ -1,7 +1,11 @@
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { useLocations } from '~/hooks/useLocations'
 import { useTravel } from '~/hooks/useTravel'
-import { BookingPassenger, BookingRoute } from '~/store/ducks/bookings/types'
+import {
+  BookingPassenger,
+  BookingRoute,
+  BookingVehicle
+} from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
 import { format } from 'date-fns'
 import React, { createContext, useContext, useEffect, useState } from 'react'
@@ -12,7 +16,7 @@ const BookingContext = createContext<BookingContextData>(
   {} as BookingContextData
 )
 export const BookingProvider: React.FC = ({ children }) => {
-  const { passengerFareTax } = useTravel()
+  const { passengerFareTax, vehicleFareTax } = useTravel()
   const { locations } = useLocations()
   const { getTravel, departureTravel, returnTravel } = useTravel()
   const [step, setStep] = useState(0)
@@ -34,6 +38,7 @@ export const BookingProvider: React.FC = ({ children }) => {
   const [vehicleCount, setVehicleCount] = useState(0)
 
   const [passengers, setPassengers] = useState<BookingPassenger[]>([])
+  const [vehicles, setVehicles] = useState<BookingVehicle[]>([])
 
   const handlePassengerCount = (
     event: React.ChangeEvent<{ value: string }>
@@ -92,8 +97,7 @@ export const BookingProvider: React.FC = ({ children }) => {
     searchTravel()
   }, [departureDate, returnDate])
 
-  const handleAddPassenger = (payload: BookingPassenger) => {
-    const { first_name, last_name, document_type, document_data } = payload
+  const routes = () => {
     let routes
 
     if (isReturnedTravel) {
@@ -121,7 +125,16 @@ export const BookingProvider: React.FC = ({ children }) => {
         } as BookingRoute
       ]
     }
-
+    return routes
+  }
+  const handleAddPassenger = (payload: BookingPassenger) => {
+    const {
+      first_name,
+      last_name,
+      document_type,
+      document_data,
+      fare_id
+    } = payload
     setPassengers([
       ...passengers,
       {
@@ -129,13 +142,28 @@ export const BookingProvider: React.FC = ({ children }) => {
         last_name,
         document_data,
         document_type,
+        fare_id,
         fare_tax: passengerFareTax,
-        routes
+        routes: routes()
       } as BookingPassenger
     ])
     setPassengerCount(prev => prev - 1)
   }
-  const handleAddVehicle = () => setVehicleCount(prev => prev - 1)
+  const handleAddVehicle = (payload: BookingVehicle) => {
+    const { brand, model, register_id, fare_id } = payload
+    setVehicles([
+      ...vehicles,
+      {
+        brand,
+        register_id,
+        model,
+        fare_id,
+        fare_tax: vehicleFareTax,
+        routes: routes()
+      } as BookingVehicle
+    ])
+    setVehicleCount(prev => prev - 1)
+  }
   return (
     <BookingContext.Provider
       value={{
@@ -165,7 +193,8 @@ export const BookingProvider: React.FC = ({ children }) => {
         handleAddPassenger,
         handleAddVehicle,
         passengers,
-        handleReturnScheduleId
+        handleReturnScheduleId,
+        vehicles
       }}
     >
       {children}
