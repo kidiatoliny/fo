@@ -18,6 +18,7 @@ import {
   HiOutlineMail as MailIcon,
   HiOutlineLocationMarker as LocationIcon
 } from 'react-icons/hi'
+import { IoCarSportSharp as VehicleIcon } from 'react-icons/io5'
 import {
   MdPayment as PaymentIcon,
   MdDeleteForever as DeleteForeverIcon
@@ -37,5 +38,6 @@ export {
   LocationIcon,
   SearchIcon,
   LoginIcon,
-  AddUserIcon
+  AddUserIcon,
+  VehicleIcon
 }

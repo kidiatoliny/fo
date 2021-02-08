@@ -80,6 +80,9 @@ export const BookingProvider: React.FC = ({ children }) => {
     searchTravel()
     console.log('ADSDA')
   }, [departureDate, returnDate])
+
+  const handleAddPassenger = () => setPassengerCount(prev => prev - 1)
+  const handleAddVehicle = () => setVehicleCount(prev => prev - 1)
   return (
     <BookingContext.Provider
       value={{
@@ -104,7 +107,9 @@ export const BookingProvider: React.FC = ({ children }) => {
         handlePassengerCount,
         handleVehicleCount,
         passengerCount,
-        vehicleCount
+        vehicleCount,
+        handleAddPassenger,
+        handleAddVehicle
       }}
     >
       {children}

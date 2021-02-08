@@ -10,6 +10,8 @@ import {
 } from '@material-ui/core'
 import { AddUserIcon, UsersIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
+import { usePassenger } from '~/hooks/usePassenger'
+import { useTravel } from '~/hooks/useTravel'
 import { format } from 'date-fns'
 import { Field } from 'formik'
 import { Select, TextField } from 'formik-material-ui'
@@ -17,10 +19,13 @@ import React, { useEffect, useState } from 'react'
 import { AiOutlineFileSearch, AiOutlineUserAdd } from 'react-icons/ai'
 import { HiOutlineHashtag } from 'react-icons/hi'
 const PassengerData: React.FC = () => {
-  const { departureDate, passengerCount } = useBooking()
+  const { departureDate, passengerCount, handleAddPassenger } = useBooking()
+  const { getDocumentType, documentTypes } = usePassenger()
+  const { passengerFares } = useTravel()
   const [total, setTotal] = useState(0)
   useEffect(() => {
     setTotal(passengerCount)
+    getDocumentType()
   }, [])
   return (
     <Box marginBottom={4}>
@@ -29,7 +34,7 @@ const PassengerData: React.FC = () => {
           <Box mt={2}>
             <Grid item>
               <Typography variant="h6">
-                Passageiro {passengerCount - total + 1}-{total}
+                Passageiro {total - passengerCount + 1}-{total}
               </Typography>
             </Grid>
           </Box>
@@ -41,7 +46,7 @@ const PassengerData: React.FC = () => {
               component={TextField}
               variant="outlined"
               label=" Nome"
-              name="passengers[0].first_name"
+              name="passengers.first_name"
               size="small"
               fullWidth
               InputProps={{
@@ -59,7 +64,7 @@ const PassengerData: React.FC = () => {
               required
               variant="outlined"
               label=" Apelido"
-              name="passengers[0].last_name"
+              name="passengers.last_name"
               size="small"
               fullWidth
               InputProps={{
@@ -75,14 +80,14 @@ const PassengerData: React.FC = () => {
       </Grid>
       <Box>
         <Box marginTop={3}>
-          <Grid container spacing={1}>
+          <Grid container spacing={4}>
             <Grid item sm={6} md={4}>
               <FormControl fullWidth size="small" variant="outlined">
                 <InputLabel htmlFor="fare_id">Tipo de Passageiro</InputLabel>
                 <Field
                   component={Select}
                   label=" Tipo de Passageiro"
-                  name="passengers[0].fare_id"
+                  name="passengers.fare_id"
                   inputProps={{
                     id: 'fare_id'
                   }}
@@ -92,8 +97,11 @@ const PassengerData: React.FC = () => {
                     </InputAdornment>
                   }
                 >
-                  <MenuItem value={10}>SA/SV</MenuItem>
-                  <MenuItem value={20}>SV/SA</MenuItem>
+                  {passengerFares?.map(fare => (
+                    <MenuItem value={fare.id} key={fare.id}>
+                      {fare.fare_description}
+                    </MenuItem>
+                  ))}
                 </Field>
               </FormControl>
               <Field
@@ -118,7 +126,8 @@ const PassengerData: React.FC = () => {
                 <Field
                   component={Select}
                   label="Tipo de documento"
-                  name="passengers[0].document_type"
+                  name="passengers.document_type"
+                  value={''}
                   inputProps={{
                     id: 'document_type'
                   }}
@@ -128,8 +137,11 @@ const PassengerData: React.FC = () => {
                     </InputAdornment>
                   }
                 >
-                  <MenuItem value={10}>SA/SV</MenuItem>
-                  <MenuItem value={20}>SV/SA</MenuItem>
+                  {documentTypes.map(document => (
+                    <MenuItem value={document.id} key={document.id}>
+                      {document.name}
+                    </MenuItem>
+                  ))}
                 </Field>
               </FormControl>
             </Grid>
@@ -141,6 +153,7 @@ const PassengerData: React.FC = () => {
                 name="passengers[0].document_number"
                 size="small"
                 fullWidth
+                value={''}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -161,6 +174,8 @@ const PassengerData: React.FC = () => {
               variant="contained"
               color="primary"
               endIcon={<AddUserIcon />}
+              type="button"
+              onClick={handleAddPassenger}
             >
               Adicionar Passageiro
             </Button>

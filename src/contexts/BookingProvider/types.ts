@@ -26,4 +26,6 @@ export interface BookingContextData {
   handleVehicleCount: (event: React.ChangeEvent<{ value: string }>) => void
   passengerCount: number
   vehicleCount: number
+  handleAddPassenger: () => void
+  handleAddVehicle: () => void
 }

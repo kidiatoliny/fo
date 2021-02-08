@@ -10,6 +10,7 @@ import {
   InputAdornment,
   Typography
 } from '@material-ui/core'
+import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import ReservationOwner from '~/components/Forms/Booking/Step1/ReservationOwner'
 import SearchTravel from '~/components/Forms/Booking/Step1/SearchTravel'
 import SetTickets from '~/components/Forms/Booking/Step1/SetTickets'
@@ -90,7 +91,12 @@ const Reservation: React.FC = () => {
               </FormikStep>
               <FormikStep label="Dados de Passageiro">
                 {passengerCount > 0 && <PassengerData />}
-                {vehicleCount > 0 && <VehicleData />}
+                {vehicleCount > 0 && passengerCount === 0 && <VehicleData />}
+                <SimpleDialog
+                  open={passengerCount === 0 && vehicleCount === 0}
+                  onClose={() => passengerCount === 0}
+                  title="Dados Adicionadoss"
+                ></SimpleDialog>
               </FormikStep>
               <FormikStep label="Pre-Visualização">
                 <ReservationOwnerPreview />
