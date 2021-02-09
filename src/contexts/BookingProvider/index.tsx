@@ -8,7 +8,13 @@ import {
 } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
 import { format } from 'date-fns'
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 
 import { BookingContextData } from './types'
 
@@ -144,7 +150,8 @@ export const BookingProvider: React.FC = ({ children }) => {
         document_type,
         fare_id,
         fare_tax: passengerFareTax,
-        routes: routes()
+        routes: routes(),
+        id: first_name + document_data
       } as BookingPassenger
     ])
     setPassengerCount(prev => prev - 1)
@@ -164,6 +171,21 @@ export const BookingProvider: React.FC = ({ children }) => {
     ])
     setVehicleCount(prev => prev - 1)
   }
+
+  const updatePassengers = (value: string, name: string, id: string) => {
+    const objIndex = passengers.findIndex(passenger => passenger.id === id)
+    const passenger = passengers[objIndex]
+    const updatedPassenger = { ...passenger, [name]: value }
+
+    const updatedPassengers = [
+      ...passengers.slice(0, objIndex),
+      updatedPassenger,
+      ...passengers.slice(objIndex + 1)
+    ]
+
+    setPassengers(updatedPassengers)
+  }
+
   return (
     <BookingContext.Provider
       value={{
@@ -194,7 +216,9 @@ export const BookingProvider: React.FC = ({ children }) => {
         handleAddVehicle,
         passengers,
         handleReturnScheduleId,
-        vehicles
+        vehicles,
+        returnScheduleId,
+        updatePassengers
       }}
     >
       {children}

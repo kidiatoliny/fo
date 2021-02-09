@@ -14,10 +14,13 @@ export const useLocations = () => {
   const isLoading = useSelector((state: ApplicationState) =>
     selectors.isLoading(state.location)
   )
+
   /**
    * Locations methods
    */
   const getLocations = () => dispatch(actions.locationRequest())
+  const getLocationById = (id: number) =>
+    locations.find(location => location.id === id)
 
-  return { locations, isLoading, getLocations }
+  return { locations, isLoading, getLocations, getLocationById }
 }

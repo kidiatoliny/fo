@@ -46,6 +46,35 @@ export const useTravel = () => {
   const vehicleFareTax = useSelector((state: ApplicationState) =>
     selectors.vehicleFareTax(state.travel)
   )
+
+  const departureSchedulesById = (id: number) =>
+    departureSchedules?.find(schedule => schedule.id === id)
+
+  const returnSchedulesById = (id: number) =>
+    departureSchedules?.find(schedule => schedule.id === id)
+
+  const getPassengerFareById = (id: number) =>
+    passengerFares?.find(schedule => schedule.id === id)
+
+  const getVehicleFareById = (id: number) =>
+    vehicleFares?.find(schedule => schedule.id === id)
+
+  const getPassengerFareAmountPerTravel = (
+    id: number,
+    isReturnedTravel?: boolean
+  ) => {
+    let amount
+    const passengerFare = getPassengerFareById(id)
+    const parcialAmount = passengerFare?.amount
+    if (isReturnedTravel) {
+      amount = parcialAmount && parcialAmount ? parseInt(parcialAmount) * 2 : 0
+    } else {
+      amount = parcialAmount || 0
+    }
+    return {
+      amount
+    }
+  }
   return {
     getTravel,
     error,
@@ -57,6 +86,11 @@ export const useTravel = () => {
     passengerFares,
     passengerFareTax,
     vehicleFareTax,
-    vehicleFares
+    vehicleFares,
+    departureSchedulesById,
+    returnSchedulesById,
+    getPassengerFareById,
+    getVehicleFareById,
+    getPassengerFareAmountPerTravel
   }
 }
