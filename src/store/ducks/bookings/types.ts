@@ -39,14 +39,14 @@ export interface BookingVehicle {
   routes: BookingRoute[]
 }
 export interface BookingPassenger {
-  id: string
+  id?: string
   first_name: string
   last_name: string
   document_type: number
   document_data: string
   fare_id: number
-  fare_tax: FareTax[]
-  routes: BookingRoute[]
+  fare_tax?: FareTax[]
+  routes?: BookingRoute[]
 }
 export interface Booking {
   main_contact: BookingMainContact

@@ -64,8 +64,9 @@ const SearchTravel: React.FC = () => {
         <Grid item container spacing={4}>
           <Grid item container sm={6}>
             <FormControl fullWidth size="small" variant="outlined">
-              <InputLabel htmlFor="departure">Porto de Origem</InputLabel>
+              <InputLabel htmlFor="departure">Porto de Origem*</InputLabel>
               <Field
+                required
                 label="Selecionar Porto de Origem"
                 component={Select}
                 name="departure"
@@ -90,8 +91,9 @@ const SearchTravel: React.FC = () => {
           </Grid>
           <Grid item container sm={6}>
             <FormControl fullWidth size="small" variant="outlined">
-              <InputLabel htmlFor="destination">Porto de destino</InputLabel>
+              <InputLabel htmlFor="destination">Porto de destino*</InputLabel>
               <Field
+                required
                 component={Select}
                 label=" Selecionar Porto de Origem"
                 name="destination"
@@ -121,7 +123,7 @@ const SearchTravel: React.FC = () => {
           <Grid item xs={12} sm={6} md={3}>
             <Field
               component={DatePicker}
-              label="Data de Partida"
+              label="Data de Partida*"
               name="departureDate"
               inputVariant="outlined"
               minDate={new Date()}
@@ -131,14 +133,16 @@ const SearchTravel: React.FC = () => {
               fullWidth
               format="dd-MMMM-yyyy"
               disabled={!destinationId}
+              required
             />
           </Grid>
           <Grid item container sm={6} md={3}>
             <FormControl fullWidth size="small" variant="outlined">
-              <InputLabel htmlFor="destination">Hora de embarque</InputLabel>
+              <InputLabel htmlFor="destination">Hora de embarque*</InputLabel>
               <Field
+                required
                 component={Select}
-                label=" Selecionar Porto de Origem"
+                label=" Selecionar Porto de Origem*"
                 name="departure_schedule_id"
                 disabled={!destinationId || !departureDate}
                 value={departureScheduleId}
@@ -165,7 +169,8 @@ const SearchTravel: React.FC = () => {
               <Grid item xs={12} sm={6} md={3}>
                 <Field
                   component={DatePicker}
-                  label="Data de retorno"
+                  label="Data de retorno*"
+                  required
                   name="return"
                   inputVariant="outlined"
                   minDate={new Date()}
@@ -181,9 +186,12 @@ const SearchTravel: React.FC = () => {
               </Grid>
               <Grid item container sm={6} md={3}>
                 <FormControl fullWidth size="small" variant="outlined">
-                  <InputLabel htmlFor="destination">Hora de retorno</InputLabel>
+                  <InputLabel htmlFor="destination">
+                    Hora de retorno*
+                  </InputLabel>
                   <Field
                     component={Select}
+                    required
                     label=" Selecionar hora de retorno"
                     name="return_schedule_id"
                     onChange={handleReturnScheduleId}

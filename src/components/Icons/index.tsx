@@ -3,6 +3,7 @@ import {
   AiFillLock as LockIcon,
   AiOutlineLogin as LoginIcon
 } from 'react-icons/ai'
+import { BiBlock as StopIcon } from 'react-icons/bi'
 import {
   BsSearch as SearchIcon,
   BsPersonPlus as AddUserIcon
@@ -45,5 +46,6 @@ export {
   VehicleIcon,
   DoneIcon,
   NextIcon,
-  BackIcon
+  BackIcon,
+  StopIcon
 }

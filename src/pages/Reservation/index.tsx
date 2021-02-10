@@ -5,51 +5,26 @@ import {
   Card,
   CardContent,
   CardHeader,
-  createStyles,
   Icon,
-  Theme,
   Typography
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
 import BookingStepper from '~/components/BookingStepper'
 import BookingStep from '~/components/BookingStepper/BookingStep'
 import Step1 from '~/components/Forms/Booking/Step1'
-import PassengerData from '~/components/Forms/Booking/Step2/PassengerData'
+import Step2 from '~/components/Forms/Booking/Step2'
 import Layout from '~/components/Layout'
 import Loading from '~/components/Loading'
-import { useBooking } from '~/contexts/BookingProvider'
 import { useLocations } from '~/hooks/useLocations'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    iconButton: {
-      backgroundColor: theme.palette.success.main,
-      color: theme.palette.common.white
-    }
-  })
-)
 const Reservation: React.FC = () => {
-  const classes = useStyles()
   const { getLocations, isLoading } = useLocations()
-  const { passengerCount, vehicleCount, setStep } = useBooking()
-  const [open, setOpen] = useState(false)
 
   isLoading && <Loading />
   useEffect(() => {
     getLocations()
   }, [])
-  useEffect(() => {
-    setOpen(false)
-    if (passengerCount === 0 && vehicleCount === 0) {
-      setOpen(true)
-    }
-  }, [passengerCount, vehicleCount, setOpen])
-  const handleClose = () => {
-    setOpen(false)
-    setStep(2)
-  }
+
   return (
     <Layout>
       <Card raised>
@@ -67,12 +42,10 @@ const Reservation: React.FC = () => {
           <CardContent>
             <BookingStepper>
               <BookingStep label="Dados de Reserva">
-                {/* <SearchTravel /> */}
-                {/* <ReservationOwner /> */}
                 <Step1 />
               </BookingStep>
               <BookingStep label="Dados de Viagem">
-                {passengerCount > 0 && <PassengerData />}
+                <Step2 />
               </BookingStep>
             </BookingStepper>
             {/* <FormikStepper
