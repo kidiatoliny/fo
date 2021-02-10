@@ -39,6 +39,7 @@ export interface BookingVehicle {
   routes: BookingRoute[]
 }
 export interface BookingPassenger {
+  id: string
   first_name: string
   last_name: string
   document_type: number

@@ -1,10 +1,9 @@
-import { Box, Grid, Typography, InputAdornment } from '@material-ui/core'
-import { UsersIcon, MailIcon, MobileIcon } from '~/components/Icons'
+import { Box, Grid, InputAdornment, Typography } from '@material-ui/core'
+import { UsersIcon, MailIcon, MobileIcon, PhoneIcon } from '~/components/Icons'
 import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React from 'react'
-
-const ReservationOwner: React.FC = () => {
+const ReservationOwnerForm: React.FC = () => {
   return (
     <Box mb={5}>
       <Grid container spacing={4} direction="column">
@@ -52,7 +51,7 @@ const ReservationOwner: React.FC = () => {
           </Grid>
         </Grid>
         <Grid item container spacing={4}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} md={4}>
             <Field
               component={TextField}
               variant="outlined"
@@ -69,11 +68,11 @@ const ReservationOwner: React.FC = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} md={4}>
             <Field
               component={TextField}
               variant="outlined"
-              label=" Contato*"
+              label=" Movel*"
               name="main_contact.mobile"
               size="small"
               fullWidth
@@ -86,10 +85,28 @@ const ReservationOwner: React.FC = () => {
               }}
             />
           </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Field
+              component={TextField}
+              variant="outlined"
+              label=" Telefone"
+              name="main_contact.phone"
+              size="small"
+              fullWidth
+              validateOnBlur
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PhoneIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </Box>
   )
 }
 
-export default ReservationOwner
+export default ReservationOwnerForm

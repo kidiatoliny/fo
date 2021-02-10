@@ -33,4 +33,5 @@ export interface BookingContextData {
   vehicles: BookingVehicle[]
   handleReturnScheduleId: (event: React.ChangeEvent<{ value: string }>) => void
   returnScheduleId: string
+  updatePassengers: (value: string, name: string, id: string) => void
 }

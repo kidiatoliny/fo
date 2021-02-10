@@ -2,34 +2,19 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
   createStyles,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  Grid,
   Icon,
-  IconButton,
   Theme,
   Typography
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import SimpleDialog from '~/components/Dialogs/SimpleDialog'
-import ReservationOwner from '~/components/Forms/Booking/Step1/ReservationOwner'
-import SearchTravel from '~/components/Forms/Booking/Step1/SearchTravel'
-import SetTickets from '~/components/Forms/Booking/Step1/SetTickets'
+import BookingStepper from '~/components/BookingStepper'
+import BookingStep from '~/components/BookingStepper/BookingStep'
+import Step1 from '~/components/Forms/Booking/Step1'
 import PassengerData from '~/components/Forms/Booking/Step2/PassengerData'
-import VehicleData from '~/components/Forms/Booking/Step2/VehicleData'
-import PassengerPreview from '~/components/Forms/Booking/Step3/PassengerPreview'
-import ReservationOwnerPreview from '~/components/Forms/Booking/Step3/ReservationOwnerPreview'
-import VehiclePreview from '~/components/Forms/Booking/Step3/Vehicle'
-import PaymentMethods from '~/components/Forms/Booking/Step4/PaymentMethods'
-import { FormikStep } from '~/components/Forms/Formik/FormikStep'
-import { FormikStepper } from '~/components/Forms/Formik/FormikStepper'
-import { DoneIcon } from '~/components/Icons'
 import Layout from '~/components/Layout'
 import Loading from '~/components/Loading'
 import { useBooking } from '~/contexts/BookingProvider'
@@ -50,16 +35,6 @@ const Reservation: React.FC = () => {
   const { getLocations, isLoading } = useLocations()
   const { passengerCount, vehicleCount, setStep } = useBooking()
   const [open, setOpen] = useState(false)
-  const initialValues = {
-    main_contact: {
-      first_name: ''
-    },
-    first_name: '',
-    last_name: '',
-    fare_id: '',
-    document_type: '',
-    document_data: ''
-  }
 
   isLoading && <Loading />
   useEffect(() => {
@@ -90,21 +65,31 @@ const Reservation: React.FC = () => {
         />
         <Box padding={5}>
           <CardContent>
-            <FormikStepper
+            <BookingStepper>
+              <BookingStep label="Dados de Reserva">
+                {/* <SearchTravel /> */}
+                {/* <ReservationOwner /> */}
+                <Step1 />
+              </BookingStep>
+              <BookingStep label="Dados de Viagem">
+                {passengerCount > 0 && <PassengerData />}
+              </BookingStep>
+            </BookingStepper>
+            {/* <FormikStepper
               initialValues={initialValues}
               onSubmit={async values => {
                 console.log('values', values)
               }}
             >
-              {/* resevation owner start */}
+
               <FormikStep
                 label="Dados de Reserva"
-                // validationSchema={mainContactValidation}
+
               >
                 <SearchTravel />
                 <SetTickets />
                 <ReservationOwner />
-                {/* resevation owner end */}
+
               </FormikStep>
               <FormikStep label="Dados de Passageiro">
                 {passengerCount > 0 && <PassengerData />}
@@ -154,7 +139,7 @@ const Reservation: React.FC = () => {
               <FormikStep label="Pagamento">
                 <PaymentMethods />
               </FormikStep>
-            </FormikStepper>
+            </FormikStepper> */}
           </CardContent>
         </Box>
       </Card>

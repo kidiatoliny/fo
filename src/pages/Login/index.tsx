@@ -6,8 +6,7 @@ import {
   CircularProgress,
   Grid,
   IconButton,
-  InputAdornment,
-  Snackbar
+  InputAdornment
 } from '@material-ui/core'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Visibility from '@material-ui/icons/Visibility'

@@ -27,7 +27,7 @@ export function* loginRequest({
         code: err.response?.status,
         message: err.message,
         isAxiosError: err.isAxiosError
-      })
+      } as HttpResponseError)
     )
   }
 }

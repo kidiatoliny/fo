@@ -22,7 +22,9 @@ import { IoMdDoneAll as DoneIcon } from 'react-icons/io'
 import { IoCarSportSharp as VehicleIcon } from 'react-icons/io5'
 import {
   MdPayment as PaymentIcon,
-  MdDeleteForever as DeleteForeverIcon
+  MdDeleteForever as DeleteForeverIcon,
+  MdNavigateNext as NextIcon,
+  MdNavigateBefore as BackIcon
 } from 'react-icons/md'
 
 export {
@@ -41,5 +43,7 @@ export {
   LoginIcon,
   AddUserIcon,
   VehicleIcon,
-  DoneIcon
+  DoneIcon,
+  NextIcon,
+  BackIcon
 }
