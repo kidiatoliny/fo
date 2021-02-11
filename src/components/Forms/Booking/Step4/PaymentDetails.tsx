@@ -24,12 +24,15 @@ import {
   PhoneIcon,
   UserIcon
 } from '~/components/Icons'
+import { useModal } from '~/hooks/useModal'
 import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React, { useState } from 'react'
 const PaymentDetails: React.FC = () => {
   const [paymemtModal, setPaymentModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const { open, openModal, closeModal } = useModal()
 
   const sleep = (time: number) =>
     new Promise(resolve => setTimeout(resolve, time))
@@ -136,9 +139,9 @@ const PaymentDetails: React.FC = () => {
         </CardContent>
       </Box>
       <SimpleDialog
+        open={open}
         title="Pagamento Processado com Sucesso"
-        open={paymemtModal}
-        onClose={() => setPaymentModal(false)}
+        onClose={closeModal}
       >
         <DialogContent>
           <DialogContentText id="reservation">
@@ -188,11 +191,7 @@ const PaymentDetails: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => setPaymentModal(false)}
-            color="primary"
-            variant="contained"
-          >
+          <Button onClick={closeModal} color="primary" variant="contained">
             OK
           </Button>
         </DialogActions>

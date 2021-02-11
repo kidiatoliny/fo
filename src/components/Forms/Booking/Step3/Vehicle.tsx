@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import { EditIcon } from '~/components/Icons'
+import { useModal } from '~/hooks/useModal'
 import React from 'react'
 
 import VehicleData from '../Step2/VehicleData'
@@ -65,6 +66,7 @@ const VehiclePreview: React.FC = () => {
     })
   )(TableRow)
   const [openPassengerModal, setOpenPassagerModal] = React.useState(false)
+  const { open, closeModal, openModal } = useModal()
   const [viewVehicle, setViewVehicle] = React.useState(true)
   return (
     <Box mb={5}>
@@ -130,11 +132,7 @@ const VehiclePreview: React.FC = () => {
         )}
       </Grid>
 
-      <SimpleDialog
-        title="Editar Veículo"
-        open={openPassengerModal}
-        onClose={() => setOpenPassagerModal(false)}
-      >
+      {/* <SimpleDialog title="Editar Veículo">
         <DialogContent>
           <DialogContentText id="reservation">
             <VehicleData />
@@ -156,7 +154,7 @@ const VehiclePreview: React.FC = () => {
             Guardar
           </Button>
         </DialogActions>
-      </SimpleDialog>
+      </SimpleDialog> */}
     </Box>
   )
 }

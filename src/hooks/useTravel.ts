@@ -64,6 +64,7 @@ export const useTravel = () => {
     isReturnedTravel?: boolean
   ) => {
     let amount
+    // const rsp = typeof id === 'string' ? parseInt(id) : id
     const passengerFare = getPassengerFareById(id)
     const parcialAmount = passengerFare?.amount
     if (isReturnedTravel) {

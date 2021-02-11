@@ -1,5 +1,9 @@
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
-import { BookingPassenger, BookingVehicle } from '~/store/ducks/bookings/types'
+import {
+  BookingMainContact,
+  BookingPassenger,
+  BookingVehicle
+} from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
 export interface BookingContextData {
   step: number
@@ -33,5 +37,9 @@ export interface BookingContextData {
   vehicles: BookingVehicle[]
   handleReturnScheduleId: (event: React.ChangeEvent<{ value: string }>) => void
   returnScheduleId: string
-  updatePassengers: (value: string, name: string, id: string) => void
+  updatePassengers: (payload: BookingPassenger) => void
+  mainContact: BookingMainContact
+  handleMainContact: (payload: BookingMainContact) => void
+  getPassengerById: (id: string) => void
+  passenger: BookingPassenger
 }

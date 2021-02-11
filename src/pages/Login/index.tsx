@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Login: React.FC = () => {
   const classes = useStyles()
-  const { login, error, token, isTokenExpired } = useAuth()
+  const { login, error, token, isTokenExpired, isLoading } = useAuth()
 
   const [values, setValues] = React.useState<State>({
     password: '',
@@ -168,7 +168,7 @@ const Login: React.FC = () => {
                         type="submit"
                         aria-label="large"
                         endIcon={
-                          isSubmitting ? (
+                          isSubmitting || isLoading ? (
                             <CircularProgress size="1rem" color="inherit" />
                           ) : (
                             <LoginIcon />

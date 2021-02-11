@@ -13,9 +13,11 @@ import {
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import { DoneIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
+import { useModal } from '~/hooks/useModal'
 import React, { useEffect, useState } from 'react'
 
 import PassengerData from './PassengerData'
+import PassengerForm from './PassengerForm'
 import VehicleData from './VehicleData'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,23 +30,27 @@ const useStyles = makeStyles((theme: Theme) =>
 const Step2: React.FC = () => {
   const classes = useStyles()
   const { passengerCount, vehicleCount, setStep } = useBooking()
-  const [open, setOpen] = useState(false)
+  const { open, openModal, closeModal } = useModal()
 
   const handleClose = () => {
-    setOpen(false)
+    closeModal()
     setStep(2)
   }
   useEffect(() => {
-    setOpen(false)
+    closeModal()
     if (passengerCount === 0 && vehicleCount === 0) {
-      setOpen(true)
+      openModal()
     }
-  }, [passengerCount, vehicleCount, setOpen])
+  }, [passengerCount, vehicleCount])
   return (
     <>
-      {passengerCount > 0 && <PassengerData />}
+      {passengerCount > 0 && (
+        <PassengerForm>
+          <PassengerData />
+        </PassengerForm>
+      )}
       {vehicleCount > 0 && passengerCount === 0 && <VehicleData />}
-      <SimpleDialog open={open} onClose={() => setOpen(false)} title="">
+      <SimpleDialog open={open} onClose={closeModal} title="">
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             <Grid container spacing={4} alignItems="center" justify="center">

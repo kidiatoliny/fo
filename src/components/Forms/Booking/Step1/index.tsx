@@ -1,33 +1,43 @@
 import { Button, Grid } from '@material-ui/core'
 import { NextIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
+import { usePassenger } from '~/hooks/usePassenger'
+import { BookingMainContact } from '~/store/ducks/bookings/types'
 import { step1Validation } from '~/validations/step1Validation'
 import { Form, Formik } from 'formik'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import ReservationOwner from './ReservationOwner'
 import SearchTravel from './SearchTravel'
 import SetTickets from './SetTickets'
 
 const Step1: React.FC = () => {
-  const { nextStep } = useBooking()
+  const { nextStep, handleMainContact } = useBooking()
+  const { getDocumentType } = usePassenger()
+
+  useEffect(() => {
+    getDocumentType()
+  }, [])
   const initialValues = {
     passenger_number: 2,
     vehicle_number: '',
 
     main_contact: {
-      first_name: '',
-      last_name: '',
-      email: '',
+      first_name: 'kid',
+      last_name: 'gonc',
+      email: 'kid@gm.com',
       phone: '',
-      mobile: ''
-    }
+      mobile: '599 38 18'
+    } as BookingMainContact
   }
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={values => nextStep()}
+      onSubmit={values => {
+        handleMainContact(values.main_contact)
+        nextStep()
+      }}
       validationSchema={step1Validation}
     >
       {({ isValid }) => (
@@ -43,7 +53,6 @@ const Step1: React.FC = () => {
                 endIcon={<NextIcon />}
                 fullWidth
                 type="submit"
-                disabled={!isValid}
               >
                 Proximo
               </Button>

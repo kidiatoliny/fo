@@ -17,26 +17,29 @@ import {
   DialogContentText,
   DialogActions,
   Switch,
-  TextField,
   InputAdornment,
   FormControl,
   InputLabel,
   MenuItem
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
-import { EditIcon, UsersIcon } from '~/components/Icons'
+import { AddUserIcon, EditIcon, UsersIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useFormatDate } from '~/hooks/useFormatDate'
 import { useLocations } from '~/hooks/useLocations'
+import { useModal } from '~/hooks/useModal'
 import { usePassenger } from '~/hooks/usePassenger'
 import { useTravel } from '~/hooks/useTravel'
 import { BookingPassenger } from '~/store/ducks/bookings/types'
 import { Passenger } from '~/store/ducks/passengers/types'
-import { Field } from 'formik'
-import { Select } from 'formik-material-ui'
+import { Field, Form, Formik } from 'formik'
+import { Select, TextField } from 'formik-material-ui'
 import React, { useState } from 'react'
 import { AiOutlineFileSearch, AiOutlineUserAdd } from 'react-icons/ai'
 import { HiOutlineHashtag } from 'react-icons/hi'
+
+import PassengerData from '../Step2/PassengerData'
+import PassengerForm from '../Step2/PassengerForm'
 
 const PassengerPreview: React.FC = () => {
   const {
@@ -46,9 +49,13 @@ const PassengerPreview: React.FC = () => {
     returnScheduleId,
     destinationId,
     departureDate,
-    returnDate
+    returnDate,
+    getPassengerById,
+    passenger,
+    updatePassengers
   } = useBooking()
   const { getLocationById } = useLocations()
+  const { open, closeModal, openModal } = useModal()
   const {
     departureSchedulesById,
     returnSchedulesById,
@@ -61,11 +68,11 @@ const PassengerPreview: React.FC = () => {
   const [viewPassenger, setViewPassenger] = React.useState(true)
   const departureLocation = getLocationById(parseInt(departureId))
   const returnLocation = getLocationById(parseInt(destinationId))
-  const [passenger, setPassenger] = useState({} as BookingPassenger)
+  // const [passenger, setPassenger] = useState({} as BookingPassenger)
 
-  const openModal = (payload: BookingPassenger) => {
-    setOpenPassagerModal(true)
-    setPassenger(payload)
+  const handleOpenModal = (id: string | undefined) => {
+    openModal()
+    id && getPassengerById(id)
   }
 
   const departureSchedule = departureSchedulesById(
@@ -158,7 +165,7 @@ const PassengerPreview: React.FC = () => {
                                 color="primary"
                                 variant="outlined"
                                 startIcon={<EditIcon />}
-                                onClick={() => openModal(passenger)}
+                                onClick={() => handleOpenModal(passenger.id)}
                               >
                                 Editar
                               </Button>
@@ -166,169 +173,6 @@ const PassengerPreview: React.FC = () => {
                           </Grid>
                         </StyledTableCell>
                       </StyledTableRow>
-                      <SimpleDialog
-                        title={`Editar Passageiro ${index}`}
-                        open={openPassengerModal}
-                        onClose={() => setOpenPassagerModal(false)}
-                        maxWidth="md"
-                      >
-                        <DialogContent>
-                          <DialogContentText id="reservation">
-                            <Grid container spacing={4} direction="column">
-                              <Grid item container spacing={4}>
-                                <Grid item xs={12} sm={6}>
-                                  <Field
-                                    component={TextField}
-                                    variant="outlined"
-                                    label="Nome"
-                                    name="first_name"
-                                    size="small"
-                                    fullWidth
-                                    value={'' || passenger.first_name}
-                                    InputProps={{
-                                      startAdornment: (
-                                        <InputAdornment position="start">
-                                          <UsersIcon />
-                                        </InputAdornment>
-                                      )
-                                    }}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                  <Field
-                                    component={TextField}
-                                    required
-                                    variant="outlined"
-                                    label=" Apelido"
-                                    name="last_name"
-                                    value={'' || passenger.last_name}
-                                    size="small"
-                                    fullWidth
-                                    InputProps={{
-                                      startAdornment: (
-                                        <InputAdornment position="start">
-                                          <UsersIcon />
-                                        </InputAdornment>
-                                      )
-                                    }}
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                            <Box>
-                              <Box marginTop={3}>
-                                <Grid container spacing={4}>
-                                  <Grid item sm={6} md={4}>
-                                    <FormControl
-                                      fullWidth
-                                      size="small"
-                                      variant="outlined"
-                                    >
-                                      <InputLabel htmlFor="fare_id">
-                                        Tipo de Passageiro
-                                      </InputLabel>
-                                      <Field
-                                        component={Select}
-                                        label=" Tipo de Passageiro"
-                                        name="fare_id"
-                                        inputProps={{
-                                          id: 'fare_id'
-                                        }}
-                                        displayEmpty
-                                        value={'' || passenger.fare_id}
-                                        startAdornment={
-                                          <InputAdornment position="start">
-                                            <AiOutlineUserAdd />
-                                          </InputAdornment>
-                                        }
-                                      >
-                                        {passengerFares?.map(fare => (
-                                          <MenuItem
-                                            value={fare.id}
-                                            key={fare.id}
-                                          >
-                                            {fare.fare_description}
-                                          </MenuItem>
-                                        ))}
-                                      </Field>
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid item sm={6} md={4}>
-                                    <FormControl
-                                      fullWidth
-                                      size="small"
-                                      variant="outlined"
-                                    >
-                                      <InputLabel htmlFor="document_type">
-                                        Tipo documento
-                                      </InputLabel>
-                                      <Field
-                                        component={Select}
-                                        label="Tipo de documento"
-                                        name="document_type"
-                                        displayEmpty
-                                        value={'' || passenger.document_type}
-                                        inputProps={{
-                                          id: 'document_type'
-                                        }}
-                                        disabled={!passenger.fare_id}
-                                        startAdornment={
-                                          <InputAdornment position="start">
-                                            <AiOutlineFileSearch />
-                                          </InputAdornment>
-                                        }
-                                      >
-                                        {documentTypes.map(document => (
-                                          <MenuItem
-                                            value={document.id}
-                                            key={document.id}
-                                          >
-                                            {document.name}
-                                          </MenuItem>
-                                        ))}
-                                      </Field>
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid item xs={12} sm={6} md={4}>
-                                    <Field
-                                      component={TextField}
-                                      variant="outlined"
-                                      disabled={!passenger.document_type}
-                                      label=" Numero de documento"
-                                      name="document_data"
-                                      size="small"
-                                      fullWidth
-                                      InputProps={{
-                                        startAdornment: (
-                                          <InputAdornment position="start">
-                                            <HiOutlineHashtag />
-                                          </InputAdornment>
-                                        )
-                                      }}
-                                    />
-                                  </Grid>
-                                </Grid>
-                              </Box>
-                            </Box>
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button
-                            onClick={() => setOpenPassagerModal(false)}
-                            color="primary"
-                            variant="outlined"
-                          >
-                            Cancelar
-                          </Button>
-                          <Button
-                            onClick={() => setOpenPassagerModal(false)}
-                            color="primary"
-                            variant="contained"
-                          >
-                            Guardar
-                          </Button>
-                        </DialogActions>
-                      </SimpleDialog>
                     </>
                   ))}
                 </TableBody>
@@ -336,6 +180,66 @@ const PassengerPreview: React.FC = () => {
             </TableContainer>
           </Box>
         )}
+        <SimpleDialog
+          title={`Editar Passageiro ${passenger.first_name}`}
+          open={open}
+          onClose={closeModal}
+          maxWidth="md"
+        >
+          <DialogContent>
+            <Formik
+              enableReinitialize
+              initialValues={
+                {
+                  first_name: passenger.first_name,
+                  last_name: passenger.last_name,
+                  fare_id: passenger.fare_id,
+                  document_type: passenger.document_type,
+                  document_data: passenger.document_data
+                } as BookingPassenger
+              }
+              onSubmit={(values, helpers) => {
+                updatePassengers(values)
+                helpers.resetForm()
+                closeModal()
+              }}
+            >
+              <Form>
+                <PassengerData />
+                <Grid container justify="flex-end">
+                  <Grid item xs={12} sm={3}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      fullWidth
+                      endIcon={<AddUserIcon />}
+                      color="primary"
+                    >
+                      atualizar
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Form>
+            </Formik>
+            {/* <PassengerData update passenger={passenger} /> */}
+          </DialogContent>
+          {/* <DialogActions>
+            <Button
+              onClick={() => setOpenPassagerModal(false)}
+              color="primary"
+              variant="outlined"
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => setOpenPassagerModal(false)}
+              color="primary"
+              variant="contained"
+            >
+              Guardar
+            </Button>
+          </DialogActions> */}
+        </SimpleDialog>
       </Grid>
     </Box>
   )

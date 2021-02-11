@@ -42,7 +42,10 @@ const VehicleData: React.FC = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={vehicleValidation}
-      onSubmit={values => handleAddVehicle(values)}
+      onSubmit={(values, helpers) => {
+        handleAddVehicle(values)
+        helpers.resetForm()
+      }}
     >
       {({ isValid }) => (
         <Form>
@@ -153,7 +156,6 @@ const VehicleData: React.FC = () => {
                       color="primary"
                       endIcon={isValid ? <VehicleIcon /> : <StopIcon />}
                       type="submit"
-                      disabled={!isValid}
                     >
                       Adicionar Veiculo
                     </Button>
