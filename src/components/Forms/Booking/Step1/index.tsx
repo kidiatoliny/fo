@@ -1,5 +1,5 @@
 import { Button, Grid } from '@material-ui/core'
-import { NextIcon } from '~/components/Icons'
+import { NextIcon, StopIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { usePassenger } from '~/hooks/usePassenger'
 import { BookingMainContact } from '~/store/ducks/bookings/types'
@@ -50,7 +50,7 @@ const Step1: React.FC = () => {
               <Button
                 variant="contained"
                 color="primary"
-                endIcon={<NextIcon />}
+                endIcon={isValid ? <NextIcon /> : <StopIcon />}
                 fullWidth
                 type="submit"
               >

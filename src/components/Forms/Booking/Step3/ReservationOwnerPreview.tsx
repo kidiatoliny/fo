@@ -3,21 +3,13 @@ import {
   Button,
   Grid,
   Hidden,
-  Icon,
   Typography,
   DialogContent,
   DialogContentText,
   DialogActions
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
-import {
-  MailIcon,
-  MobileIcon,
-  PaymentIcon,
-  PhoneIcon,
-  ScheduleIcon,
-  UserIcon
-} from '~/components/Icons'
+import { PaymentIcon, ScheduleIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useModal } from '~/hooks/useModal'
 import React from 'react'
@@ -27,16 +19,7 @@ const ReservationOwnerPreview: React.FC = () => {
   const { nextStep, mainContact } = useBooking()
 
   const { open, closeModal, openModal } = useModal()
-  // const [isReservationModalOpen, setIsReservationModalOpen] = React.useState(
-  //   false
-  // )
 
-  // const handleReservationModalOpen = () => {
-  //   setIsReservationModalOpen(true)
-  // }
-  // const handleReservationModalClose = () => {
-  //   setIsReservationModalOpen(false)
-  // }
   return (
     <Box mb={5}>
       <Grid container spacing={4} direction="column">
@@ -76,7 +59,7 @@ const ReservationOwnerPreview: React.FC = () => {
         </Grid>
         <MainContactPreview mainContact={mainContact} />
       </Grid>
-      {/* reservation Dialog */}
+
       <Box>
         <SimpleDialog
           title="RESERVADO COM SUCESSO"

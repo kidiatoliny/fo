@@ -31,6 +31,7 @@ export interface BookingRoute {
 }
 
 export interface BookingVehicle {
+  id?: string
   brand: string
   model: string
   register_id: string

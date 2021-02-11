@@ -42,4 +42,7 @@ export interface BookingContextData {
   handleMainContact: (payload: BookingMainContact) => void
   getPassengerById: (id: string) => void
   passenger: BookingPassenger
+  vehicle: BookingVehicle
+  updateVehicles: (payload: BookingVehicle) => void
+  getVehicleById: (id: string) => void
 }

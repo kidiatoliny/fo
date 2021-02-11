@@ -29,7 +29,6 @@ import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React, { useState } from 'react'
 const PaymentDetails: React.FC = () => {
-  const [paymemtModal, setPaymentModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const { open, openModal, closeModal } = useModal()
@@ -40,7 +39,7 @@ const PaymentDetails: React.FC = () => {
   const handlePayment = async () => {
     setIsLoading(true)
     await sleep(2000)
-    setPaymentModal(true)
+    openModal()
     setIsLoading(false)
   }
   return (

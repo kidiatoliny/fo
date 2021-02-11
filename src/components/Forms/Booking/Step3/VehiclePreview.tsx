@@ -14,36 +14,22 @@ import {
   Theme,
   createStyles,
   DialogContent,
-  DialogContentText,
-  DialogActions,
   Switch
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
-import { EditIcon } from '~/components/Icons'
+import { EditIcon, VehicleIcon } from '~/components/Icons'
+import { useBooking } from '~/contexts/BookingProvider'
 import { useModal } from '~/hooks/useModal'
+import { useTravel } from '~/hooks/useTravel'
+import { BookingVehicle } from '~/store/ducks/bookings/types'
+import { Form, Formik } from 'formik'
 import React from 'react'
 
 import VehicleData from '../Step2/VehicleData'
 
 const VehiclePreview: React.FC = () => {
-  const passengers = [
-    {
-      name: 'john Down',
-      departure: '21/21/21',
-      return: '18/18/18',
-      departureTime: '17',
-      returnTime: '15',
-      amount: '600'
-    },
-    {
-      name: 'jown',
-      departure: '21/21/21',
-      return: '18/18/18',
-      departureTime: '17',
-      returnTime: '15',
-      amount: '600'
-    }
-  ]
+  const { vehicles, vehicle, getVehicleById, updateVehicles } = useBooking()
+  const { getVehicleFareById, getVehicleFareAmountPerTravel } = useTravel()
   const StyledTableCell = withStyles((theme: Theme) =>
     createStyles({
       head: {
@@ -65,9 +51,14 @@ const VehiclePreview: React.FC = () => {
       }
     })
   )(TableRow)
-  const [openPassengerModal, setOpenPassagerModal] = React.useState(false)
+
   const { open, closeModal, openModal } = useModal()
   const [viewVehicle, setViewVehicle] = React.useState(true)
+  const handleOpenModal = (id: string | undefined) => {
+    openModal()
+    id && getVehicleById(id)
+  }
+
   return (
     <Box mb={5}>
       <Grid container spacing={4} direction="column">
@@ -87,26 +78,28 @@ const VehiclePreview: React.FC = () => {
                 <TableHead>
                   <StyledTableRow>
                     <StyledTableCell>TIPO</StyledTableCell>
-                    <StyledTableCell align="left">MARCA/MODELO</StyledTableCell>
+                    <StyledTableCell align="left">
+                      MARCA - MODELO
+                    </StyledTableCell>
                     <StyledTableCell align="left">MATRICULA</StyledTableCell>
                     <StyledTableCell align="left">VALOR</StyledTableCell>
                     <StyledTableCell align="left">Ações</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                  {passengers.map(passenger => (
-                    <StyledTableRow key={passenger.name}>
+                  {vehicles.map(vehicle => (
+                    <StyledTableRow key={vehicle.id}>
                       <StyledTableCell component="th" scope="row">
-                        {passenger.name}
+                        {getVehicleFareById(vehicle.fare_id)?.fare_description}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {passenger.departure} - {passenger.return}
+                        {vehicle?.brand} - {vehicle?.model}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {passenger.departureTime}-{passenger.returnTime}
+                        {vehicle.register_id}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {passenger.amount}
+                        {getVehicleFareAmountPerTravel(vehicle.fare_id).amount}
                       </StyledTableCell>
                       <StyledTableCell align="left">
                         <Grid container alignItems="center" spacing={1}>
@@ -116,7 +109,7 @@ const VehiclePreview: React.FC = () => {
                               color="primary"
                               variant="outlined"
                               startIcon={<EditIcon />}
-                              onClick={() => setOpenPassagerModal(true)}
+                              onClick={() => handleOpenModal(vehicle.id)}
                             >
                               Editar
                             </Button>
@@ -132,29 +125,48 @@ const VehiclePreview: React.FC = () => {
         )}
       </Grid>
 
-      {/* <SimpleDialog title="Editar Veículo">
+      <SimpleDialog
+        title="Editar Veículo"
+        open={open}
+        onClose={closeModal}
+        maxWidth="md"
+      >
         <DialogContent>
-          <DialogContentText id="reservation">
-            <VehicleData />
-          </DialogContentText>
+          <Formik
+            enableReinitialize
+            initialValues={
+              {
+                brand: vehicle.brand,
+                fare_id: vehicle.fare_id,
+                model: vehicle.model,
+                register_id: vehicle.register_id
+              } as BookingVehicle
+            }
+            onSubmit={(values, helpers) => {
+              updateVehicles(values)
+              helpers.resetForm()
+              closeModal()
+            }}
+          >
+            <Form>
+              <VehicleData />
+              <Grid container justify="flex-end">
+                <Grid item xs={12} sm={3}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    endIcon={<VehicleIcon />}
+                    color="primary"
+                  >
+                    atualizar
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
+          </Formik>
         </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setOpenPassagerModal(false)}
-            color="primary"
-            variant="outlined"
-          >
-            Cancelar
-          </Button>
-          <Button
-            onClick={() => setOpenPassagerModal(false)}
-            color="primary"
-            variant="contained"
-          >
-            Guardar
-          </Button>
-        </DialogActions>
-      </SimpleDialog> */}
+      </SimpleDialog>
     </Box>
   )
 }

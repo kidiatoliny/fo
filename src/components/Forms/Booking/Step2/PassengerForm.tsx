@@ -1,32 +1,16 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  Typography
-} from '@material-ui/core'
-import { AddUserIcon, StopIcon, UsersIcon } from '~/components/Icons'
+import { Box, Button, Grid, Typography } from '@material-ui/core'
+import { AddUserIcon, StopIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
-import { useModal } from '~/hooks/useModal'
-import { usePassenger } from '~/hooks/usePassenger'
-import { useTravel } from '~/hooks/useTravel'
 import { BookingPassenger } from '~/store/ducks/bookings/types'
 import { passengerValidation } from '~/validations/passengerValidation'
-import { Field, Form, Formik } from 'formik'
-import { Select, TextField } from 'formik-material-ui'
+import { Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
-import { AiOutlineFileSearch, AiOutlineUserAdd } from 'react-icons/ai'
-import { HiOutlineHashtag } from 'react-icons/hi'
-const PassengerForm: React.FC = ({ children }) => {
+
+import PassengerData from './PassengerData'
+const PassengerForm: React.FC = () => {
   const { passengerCount, handleAddPassenger, passenger } = useBooking()
-  const { passengerFares } = useTravel()
+
   const [total, setTotal] = useState(0)
-  const { documentTypes } = usePassenger()
-  const defaultFareValue = passengerFares?.find(e => e.fare_code === 'PAXSTD')
-  const defaultDocumentTypeValue = documentTypes.find(e => e.code === 'CNI')
   useEffect(() => {
     setTotal(passengerCount)
   }, [])
@@ -61,7 +45,7 @@ const PassengerForm: React.FC = ({ children }) => {
                 </Box>
               </Grid>
             </Grid>
-            {children}
+            <PassengerData />
             <Grid item container justify="flex-end">
               <Grid item xs={12} md={6} lg={3}>
                 <Box mt={4}>

@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Login: React.FC = () => {
   const classes = useStyles()
-  const { login, error, token, isTokenExpired, isLoading } = useAuth()
+  const { login, error, token, isLoading } = useAuth()
 
   const [values, setValues] = React.useState<State>({
     password: '',

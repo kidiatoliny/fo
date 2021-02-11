@@ -1,26 +1,22 @@
 import {
   Box,
-  Button,
   FormControl,
   Grid,
   InputAdornment,
   InputLabel,
-  MenuItem,
-  Typography
+  MenuItem
 } from '@material-ui/core'
-import { AddUserIcon, StopIcon, UsersIcon } from '~/components/Icons'
+import { UsersIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { usePassenger } from '~/hooks/usePassenger'
 import { useTravel } from '~/hooks/useTravel'
-import { BookingPassenger } from '~/store/ducks/bookings/types'
-import { passengerValidation } from '~/validations/passengerValidation'
-import { Field, Form, Formik } from 'formik'
+import { Field } from 'formik'
 import { Select, TextField } from 'formik-material-ui'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { AiOutlineFileSearch, AiOutlineUserAdd } from 'react-icons/ai'
 import { HiOutlineHashtag } from 'react-icons/hi'
 const PassengerData: React.FC = () => {
-  const { passengerCount, handleAddPassenger, passenger } = useBooking()
+  const { passenger } = useBooking()
   const { passengerFares } = useTravel()
   const { documentTypes } = usePassenger()
   return (

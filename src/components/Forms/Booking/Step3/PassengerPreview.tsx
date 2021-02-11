@@ -14,33 +14,20 @@ import {
   Theme,
   createStyles,
   DialogContent,
-  DialogContentText,
-  DialogActions,
-  Switch,
-  InputAdornment,
-  FormControl,
-  InputLabel,
-  MenuItem
+  Switch
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
-import { AddUserIcon, EditIcon, UsersIcon } from '~/components/Icons'
+import { AddUserIcon, EditIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useFormatDate } from '~/hooks/useFormatDate'
 import { useLocations } from '~/hooks/useLocations'
 import { useModal } from '~/hooks/useModal'
-import { usePassenger } from '~/hooks/usePassenger'
 import { useTravel } from '~/hooks/useTravel'
 import { BookingPassenger } from '~/store/ducks/bookings/types'
-import { Passenger } from '~/store/ducks/passengers/types'
-import { Field, Form, Formik } from 'formik'
-import { Select, TextField } from 'formik-material-ui'
-import React, { useState } from 'react'
-import { AiOutlineFileSearch, AiOutlineUserAdd } from 'react-icons/ai'
-import { HiOutlineHashtag } from 'react-icons/hi'
+import { Form, Formik } from 'formik'
+import React from 'react'
 
 import PassengerData from '../Step2/PassengerData'
-import PassengerForm from '../Step2/PassengerForm'
-
 const PassengerPreview: React.FC = () => {
   const {
     passengers,
@@ -59,16 +46,13 @@ const PassengerPreview: React.FC = () => {
   const {
     departureSchedulesById,
     returnSchedulesById,
-    getPassengerFareAmountPerTravel,
-    passengerFares
+    getPassengerFareAmountPerTravel
   } = useTravel()
   const { displayDate } = useFormatDate()
-  const { documentTypes } = usePassenger()
-  const [openPassengerModal, setOpenPassagerModal] = React.useState(false)
+
   const [viewPassenger, setViewPassenger] = React.useState(true)
   const departureLocation = getLocationById(parseInt(departureId))
   const returnLocation = getLocationById(parseInt(destinationId))
-  // const [passenger, setPassenger] = useState({} as BookingPassenger)
 
   const handleOpenModal = (id: string | undefined) => {
     openModal()
@@ -181,7 +165,7 @@ const PassengerPreview: React.FC = () => {
           </Box>
         )}
         <SimpleDialog
-          title={`Editar Passageiro ${passenger.first_name}`}
+          title="Editar Passageiro"
           open={open}
           onClose={closeModal}
           maxWidth="md"

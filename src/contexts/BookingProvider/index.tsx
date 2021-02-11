@@ -9,13 +9,7 @@ import {
 } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
 import { format } from 'date-fns'
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState
-} from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 import { BookingContextData } from './types'
 
@@ -27,27 +21,31 @@ export const BookingProvider: React.FC = ({ children }) => {
   const { locations } = useLocations()
   const { getTravel, departureTravel, returnTravel } = useTravel()
   const [step, setStep] = useState(0)
+
   const [isReturnedTravel, setReturnedTravel] = useState(false)
+
+  const [mainContact, setMainContact] = useState({} as BookingMainContact)
+
   const [departureDate, setDepartureDate] = useState<MaterialUiPickersDate>(
     new Date()
   )
   const [returnDate, setReturnDate] = useState<MaterialUiPickersDate>(null)
-
   const [departureId, setDepartureId] = useState('')
   const [departureScheduleId, setDepartureScheduleId] = useState('')
 
-  const [returnScheduleId, setReturnScheduleId] = useState('')
-
   const [destinationId, setDestinationId] = useState('')
   const [destination, setDestination] = useState<Location[]>([])
+  const [returnScheduleId, setReturnScheduleId] = useState('')
 
   const [passengerCount, setPassengerCount] = useState(0)
   const [vehicleCount, setVehicleCount] = useState(0)
 
   const [passengers, setPassengers] = useState<BookingPassenger[]>([])
-  const [vehicles, setVehicles] = useState<BookingVehicle[]>([])
-  const [mainContact, setMainContact] = useState({} as BookingMainContact)
   const [passenger, setPassenger] = useState({} as BookingPassenger)
+
+  const [vehicles, setVehicles] = useState<BookingVehicle[]>([])
+  const [vehicle, setVehicle] = useState({} as BookingVehicle)
+
   const handlePassengerCount = (
     event: React.ChangeEvent<{ value: string }>
   ) => {
@@ -168,21 +166,6 @@ export const BookingProvider: React.FC = ({ children }) => {
     ])
     setPassengerCount(prev => prev - 1)
   }
-  const handleAddVehicle = (payload: BookingVehicle) => {
-    const { brand, model, register_id, fare_id } = payload
-    setVehicles([
-      ...vehicles,
-      {
-        brand,
-        register_id,
-        model,
-        fare_id,
-        fare_tax: vehicleFareTax,
-        routes: routes()
-      } as BookingVehicle
-    ])
-    setVehicleCount(prev => prev - 1)
-  }
 
   const updatePassengers = (payload: BookingPassenger) => {
     const objIndex = passengers.findIndex(p => p.id === passenger.id)
@@ -218,6 +201,59 @@ export const BookingProvider: React.FC = ({ children }) => {
   const getPassengerById = (id: string) => {
     const resp = passengers.filter(passenger => passenger.id === id).shift()
     resp && setPassenger(resp)
+  }
+
+  const getVehicleById = (id: string) => {
+    const resp = vehicles.filter(vehicle => vehicle.id === id).shift()
+    resp && setVehicle(resp)
+  }
+  const handleAddVehicle = (payload: BookingVehicle) => {
+    const { brand, model, register_id, fare_id } = payload
+    setVehicle({
+      brand,
+      register_id,
+      model,
+      fare_id,
+      fare_tax: vehicleFareTax,
+      routes: routes(),
+      id: brand + model + register_id
+    } as BookingVehicle)
+    setVehicles([
+      ...vehicles,
+      {
+        brand,
+        register_id,
+        model,
+        fare_id,
+        fare_tax: vehicleFareTax,
+        routes: routes(),
+        id: brand + model + register_id
+      } as BookingVehicle
+    ])
+    setVehicleCount(prev => prev - 1)
+  }
+
+  const updateVehicles = (payload: BookingVehicle) => {
+    const objIndex = vehicles.findIndex(v => v.id === vehicle.id)
+
+    const { brand, model, register_id, fare_id } = payload
+
+    const updatedVehicles = [
+      ...vehicles.slice(0, objIndex),
+      {
+        brand,
+        register_id,
+        model,
+        fare_id,
+        fare_tax: vehicleFareTax,
+        routes: routes(),
+        id: brand + model + register_id
+      } as BookingVehicle,
+
+      ...vehicles.slice(objIndex + 1)
+    ]
+
+    setVehicles(updatedVehicles)
   }
 
   return (
@@ -256,7 +292,10 @@ export const BookingProvider: React.FC = ({ children }) => {
         mainContact,
         handleMainContact,
         getPassengerById,
-        passenger
+        passenger,
+        vehicle,
+        updateVehicles,
+        getVehicleById
       }}
     >
       {children}

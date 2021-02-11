@@ -1,9 +1,11 @@
+import { useBooking } from '~/contexts/BookingProvider'
 import { ApplicationState } from '~/store'
 import { actions, selectors } from '~/store/ducks/travels'
 import { SearchTravel } from '~/store/ducks/travels/types'
 import { useDispatch, useSelector } from 'react-redux'
 export const useTravel = () => {
   const dispatch = useDispatch()
+  const { isReturnedTravel } = useBooking()
 
   const getTravel = (payload: SearchTravel) => {
     return dispatch(actions.travelRequest(payload))
@@ -59,23 +61,45 @@ export const useTravel = () => {
   const getVehicleFareById = (id: number) =>
     vehicleFares?.find(schedule => schedule.id === id)
 
-  const getPassengerFareAmountPerTravel = (
-    id: number,
-    isReturnedTravel?: boolean
-  ) => {
-    let amount
-    // const rsp = typeof id === 'string' ? parseInt(id) : id
-    const passengerFare = getPassengerFareById(id)
-    const parcialAmount = passengerFare?.amount
+  const getPassengerFareAmount = (id: number) => {
+    const rsp = getPassengerFareById(id)
+    if (rsp) {
+      return parseInt(rsp.amount)
+    }
+  }
+
+  const getPassengerFareAmountPerTravel = (id: number) => {
+    let amount: number | undefined
+    const parcialAmount = getPassengerFareAmount(id)
     if (isReturnedTravel) {
-      amount = parcialAmount && parcialAmount ? parseInt(parcialAmount) * 2 : 0
+      amount = parcialAmount && parcialAmount * 2
     } else {
-      amount = parcialAmount || 0
+      amount = parcialAmount
     }
     return {
       amount
     }
   }
+
+  const getVehicleFareAmount = (id: number) => {
+    const rsp = getVehicleFareById(id)
+    if (rsp) {
+      return parseInt(rsp.amount)
+    }
+  }
+  const getVehicleFareAmountPerTravel = (id: number) => {
+    let amount: number | undefined
+    const parcialAmount = getVehicleFareAmount(id)
+    if (isReturnedTravel) {
+      amount = parcialAmount && parcialAmount * 2
+    } else {
+      amount = parcialAmount
+    }
+    return {
+      amount
+    }
+  }
+
   return {
     getTravel,
     error,
@@ -92,6 +116,7 @@ export const useTravel = () => {
     returnSchedulesById,
     getPassengerFareById,
     getVehicleFareById,
-    getPassengerFareAmountPerTravel
+    getPassengerFareAmountPerTravel,
+    getVehicleFareAmountPerTravel
   }
 }

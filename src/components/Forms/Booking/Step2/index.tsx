@@ -14,11 +14,11 @@ import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import { DoneIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useModal } from '~/hooks/useModal'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import PassengerData from './PassengerData'
 import PassengerForm from './PassengerForm'
-import VehicleData from './VehicleData'
+import VehicleForm from './VehicleForm'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     iconButton: {
@@ -49,7 +49,7 @@ const Step2: React.FC = () => {
           <PassengerData />
         </PassengerForm>
       )}
-      {vehicleCount > 0 && passengerCount === 0 && <VehicleData />}
+      {vehicleCount > 0 && passengerCount === 0 && <VehicleForm />}
       <SimpleDialog open={open} onClose={closeModal} title="">
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
