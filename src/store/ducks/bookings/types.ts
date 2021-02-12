@@ -54,8 +54,23 @@ export interface Booking {
   passengers: BookingPassenger[]
   vehicles: BookingVehicle[]
 }
+
+export interface BookedTicket {
+  id: number
+  first_name: string
+  last_name: string
+  phone: string
+  mobile: string
+  email: string
+  status: string
+  payment_data: {
+    ticket_amount: string
+    ticket_tax_amount: string
+    total_booking: string
+  }
+}
 export interface BookingState {
-  readonly booking: Booking
+  readonly bookedTicket: BookedTicket
   readonly success: boolean
   readonly loading: boolean
   readonly error: HttpResponseError

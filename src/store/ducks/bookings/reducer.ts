@@ -1,10 +1,10 @@
 import { HttpResponseError } from '~/types'
 import { Reducer } from 'redux'
 
-import { Booking, BookingActionTypes, BookingState } from './types'
+import { BookingActionTypes, BookingState, BookedTicket } from './types'
 
 export const INITIAL_STATE: BookingState = {
-  booking: {} as Booking,
+  bookedTicket: {} as BookedTicket,
   success: false,
   loading: false,
   error: {} as HttpResponseError
@@ -20,14 +20,18 @@ const reducer: Reducer<BookingState> = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         success: true,
-        booking: action.payload
+        bookedTicket: action.payload
       }
 
     case BookingActionTypes.BOOKING_SAVE_REQUEST_FAILURE:
       return { ...state, loading: false, error: action.payload }
 
     case BookingActionTypes.CLEAR_ERROR:
-      return { ...state, error: {} as HttpResponseError }
+      return {
+        ...state,
+        error: {} as HttpResponseError,
+        bookedTicket: {} as BookedTicket
+      }
     default:
       return state
   }

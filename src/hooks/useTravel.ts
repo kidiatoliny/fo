@@ -5,7 +5,7 @@ import { SearchTravel } from '~/store/ducks/travels/types'
 import { useDispatch, useSelector } from 'react-redux'
 export const useTravel = () => {
   const dispatch = useDispatch()
-  const { isReturnedTravel } = useBooking()
+  const { isReturnedTravel, passengers, vehicles } = useBooking()
 
   const getTravel = (payload: SearchTravel) => {
     return dispatch(actions.travelRequest(payload))
@@ -99,7 +99,30 @@ export const useTravel = () => {
       amount
     }
   }
+  const passengersFareTotal = () => {
+    const total: number[] = []
+    passengers.map(p =>
+      total.push(getPassengerFareAmountPerTravel(p.fare_id).amount as number)
+    )
 
+    return total.reduce(
+      (accumulator, currenValue) => accumulator + currenValue,
+      0
+    )
+  }
+  const vehiclesFareTotal = () => {
+    const total: number[] = []
+    vehicles.map(v =>
+      total.push(getVehicleFareAmountPerTravel(v.fare_id).amount as number)
+    )
+
+    return total.reduce(
+      (accumulator, currenValue) => accumulator + currenValue,
+      0
+    )
+  }
+
+  const totalFare = () => vehiclesFareTotal() + passengersFareTotal()
   return {
     getTravel,
     error,
@@ -117,6 +140,9 @@ export const useTravel = () => {
     getPassengerFareById,
     getVehicleFareById,
     getPassengerFareAmountPerTravel,
-    getVehicleFareAmountPerTravel
+    getVehicleFareAmountPerTravel,
+    passengersFareTotal,
+    vehiclesFareTotal,
+    totalFare
   }
 }

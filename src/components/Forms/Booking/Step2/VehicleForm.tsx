@@ -25,6 +25,7 @@ const VehicleForm: React.FC = () => {
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize
       validationSchema={vehicleValidation}
       onSubmit={(values, helpers) => {
         handleAddVehicle(values)

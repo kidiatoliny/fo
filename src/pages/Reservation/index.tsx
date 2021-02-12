@@ -13,7 +13,7 @@ import BookingStep from '~/components/BookingStepper/BookingStep'
 import Step1 from '~/components/Forms/Booking/Step1'
 import Step2 from '~/components/Forms/Booking/Step2'
 import Step3 from '~/components/Forms/Booking/Step3'
-import PaymentMethods from '~/components/Forms/Booking/Step4/PaymentMethods'
+import Step4 from '~/components/Forms/Booking/Step4'
 import Layout from '~/components/Layout'
 import Loading from '~/components/Loading'
 import { useLocations } from '~/hooks/useLocations'
@@ -53,7 +53,7 @@ const Reservation: React.FC = () => {
                 <Step3 />
               </BookingStep>
               <BookingStep label="Pagamento">
-                <PaymentMethods />
+                <Step4 />
               </BookingStep>
             </BookingStepper>
           </CardContent>

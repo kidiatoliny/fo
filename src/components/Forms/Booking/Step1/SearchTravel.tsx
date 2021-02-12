@@ -34,8 +34,7 @@ const SearchTravel: React.FC = () => {
     handleDepartureScheduleId,
     isReturnedTravel,
     setReturnedTravel,
-    passengerCount,
-    vehicleCount,
+
     handleReturnScheduleId
   } = useBooking()
 
@@ -48,7 +47,6 @@ const SearchTravel: React.FC = () => {
   return (
     <>
       <Grid container spacing={4} direction="column">
-        {passengerCount}-{vehicleCount}
         <Grid item xs={12}>
           <Box mt={isSmall ? 0 : 6}>
             <Grid item container>

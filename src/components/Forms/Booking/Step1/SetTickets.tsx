@@ -6,11 +6,7 @@ import { FiUsers } from 'react-icons/fi'
 import { IoCarSport } from 'react-icons/io5'
 
 const SetTickets: React.FC = () => {
-  const {
-    handlePassengerCount,
-    handleVehicleCount,
-    departureScheduleId
-  } = useBooking()
+  const { handlePassengerCount, handleVehicleCount } = useBooking()
   return (
     <Box mt={2}>
       <Grid container spacing={4}>

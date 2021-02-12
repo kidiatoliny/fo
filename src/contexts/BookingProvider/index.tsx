@@ -1,6 +1,8 @@
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { useLocations } from '~/hooks/useLocations'
 import { useTravel } from '~/hooks/useTravel'
+import { ApplicationState } from '~/store'
+import { actions, selectors } from '~/store/ducks/bookings'
 import {
   BookingMainContact,
   BookingPassenger,
@@ -10,6 +12,7 @@ import {
 import { Location } from '~/store/ducks/locations/types'
 import { format } from 'date-fns'
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { BookingContextData } from './types'
 
@@ -17,11 +20,18 @@ const BookingContext = createContext<BookingContextData>(
   {} as BookingContextData
 )
 export const BookingProvider: React.FC = ({ children }) => {
+  /**
+   * HOOKS IMPORT
+   */
+  const dispatch = useDispatch()
   const { passengerFareTax, vehicleFareTax } = useTravel()
   const { locations } = useLocations()
   const { getTravel, departureTravel, returnTravel } = useTravel()
-  const [step, setStep] = useState(0)
 
+  /**
+   * COMPONENT STATE'S
+   */
+  const [step, setStep] = useState(0)
   const [isReturnedTravel, setReturnedTravel] = useState(false)
 
   const [mainContact, setMainContact] = useState({} as BookingMainContact)
@@ -45,7 +55,15 @@ export const BookingProvider: React.FC = ({ children }) => {
 
   const [vehicles, setVehicles] = useState<BookingVehicle[]>([])
   const [vehicle, setVehicle] = useState({} as BookingVehicle)
-
+  /**
+   * SELECTORS
+   */
+  const isLoading = useSelector((state: ApplicationState) =>
+    selectors.isLoading(state.booking)
+  )
+  const bookedTicket = useSelector((state: ApplicationState) =>
+    selectors.getBookedTicket(state.booking)
+  )
   const handlePassengerCount = (
     event: React.ChangeEvent<{ value: string }>
   ) => {
@@ -256,6 +274,36 @@ export const BookingProvider: React.FC = ({ children }) => {
     setVehicles(updatedVehicles)
   }
 
+  /**
+   * ACTIONS DISPATCH
+   */
+  const handleReservation = () => {
+    dispatch(
+      actions.bookingSaveRequest({
+        main_contact: mainContact,
+        passengers,
+        vehicles
+      })
+    )
+  }
+  const clear = () => dispatch(actions.clearError())
+  const clearBooking = () => {
+    setReturnedTravel(false)
+    setReturnDate(null)
+    setDepartureId('')
+    setDestinationId('')
+    setDestination([])
+    setReturnScheduleId('')
+    setVehicles([])
+    setVehicle({} as BookingVehicle)
+    setPassengers([])
+    setPassenger({} as BookingPassenger)
+    setMainContact({} as BookingMainContact)
+    setDepartureScheduleId('')
+    setReturnScheduleId('')
+    clear()
+    setStep(0)
+  }
   return (
     <BookingContext.Provider
       value={{
@@ -295,7 +343,12 @@ export const BookingProvider: React.FC = ({ children }) => {
         passenger,
         vehicle,
         updateVehicles,
-        getVehicleById
+        getVehicleById,
+        handleReservation,
+        isLoading,
+        bookedTicket,
+        clear,
+        clearBooking
       }}
     >
       {children}

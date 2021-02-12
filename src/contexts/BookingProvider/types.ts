@@ -1,5 +1,8 @@
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import {
+  BookedTicket,
+  Booking,
+  BookingActionTypes,
   BookingMainContact,
   BookingPassenger,
   BookingVehicle
@@ -45,4 +48,11 @@ export interface BookingContextData {
   vehicle: BookingVehicle
   updateVehicles: (payload: BookingVehicle) => void
   getVehicleById: (id: string) => void
+  handleReservation: () => void
+  isLoading: boolean
+  bookedTicket: BookedTicket
+  clear: () => {
+    type: BookingActionTypes.CLEAR_ERROR
+  }
+  clearBooking: () => void
 }

@@ -205,24 +205,7 @@ const PassengerPreview: React.FC = () => {
                 </Grid>
               </Form>
             </Formik>
-            {/* <PassengerData update passenger={passenger} /> */}
           </DialogContent>
-          {/* <DialogActions>
-            <Button
-              onClick={() => setOpenPassagerModal(false)}
-              color="primary"
-              variant="outlined"
-            >
-              Cancelar
-            </Button>
-            <Button
-              onClick={() => setOpenPassagerModal(false)}
-              color="primary"
-              variant="contained"
-            >
-              Guardar
-            </Button>
-          </DialogActions> */}
         </SimpleDialog>
       </Grid>
     </Box>

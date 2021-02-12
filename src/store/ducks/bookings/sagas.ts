@@ -23,7 +23,7 @@ export function* saveBooking({
 
     yield put(actions.clearError())
 
-    yield put(actions.bookingSaveRequestSuccess(response.data.data))
+    yield put(actions.bookingSaveRequestSuccess(response.data.data.booking))
   } catch (err) {
     console.log(err)
     yield put(
