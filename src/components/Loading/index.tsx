@@ -18,7 +18,7 @@ const Loading: React.FC = () => {
       >
         <CircularProgress disableShrink size={'3rem'} />
         <Box m={3}>
-          <Typography> Agurade um momento ...</Typography>
+          <Typography> Por favor aguarde um momento ...</Typography>
         </Box>
       </Grid>
     </Grid>

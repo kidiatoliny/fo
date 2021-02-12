@@ -10,6 +10,7 @@ import {
   BookingVehicle
 } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
+import { BillingUser } from '~/store/ducks/payments/types'
 import { format } from 'date-fns'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -286,6 +287,18 @@ export const BookingProvider: React.FC = ({ children }) => {
       })
     )
   }
+  /** payments */
+  const [paymentMethod, setPaymentMethod] = useState('')
+  const [isFaturation, setIsFaturation] = useState(false)
+  const handlePaymentMethod = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    setPaymentMethod(event.target.value as string)
+  }
+
+  const [invoice, setInvoice] = useState({} as BillingUser)
+  const handleInvoiceData = (payload: BillingUser) => setInvoice(payload)
+
   const clear = () => dispatch(actions.clearError())
   const clearBooking = () => {
     setReturnedTravel(false)
@@ -348,7 +361,13 @@ export const BookingProvider: React.FC = ({ children }) => {
         isLoading,
         bookedTicket,
         clear,
-        clearBooking
+        clearBooking,
+        paymentMethod,
+        handlePaymentMethod,
+        isFaturation,
+        setIsFaturation,
+        invoice,
+        handleInvoiceData
       }}
     >
       {children}

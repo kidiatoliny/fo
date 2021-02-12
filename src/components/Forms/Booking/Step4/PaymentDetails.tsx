@@ -9,29 +9,42 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  Divider,
   Grid,
   Icon,
   InputAdornment,
   Typography,
-  CircularProgress
+  CircularProgress,
+  TextField,
+  FormControl
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import {
   MailIcon,
   MobileIcon,
+  MoneyIcon,
   PaymentIcon,
   PhoneIcon,
   UserIcon
 } from '~/components/Icons'
+import { useBooking } from '~/contexts/BookingProvider'
 import { useModal } from '~/hooks/useModal'
-import { Field } from 'formik'
-import { TextField } from 'formik-material-ui'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 const PaymentDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
-
   const { open, openModal, closeModal } = useModal()
+  const { isFaturation, invoice, bookedTicket, paymentMethod } = useBooking()
+
+  const [dislabedPaymentButton, setDisablePaymentButton] = useState(false)
+
+  const [change, setChange] = useState(0)
+  const [value, setValue] = useState(0)
+  useEffect(() => {
+    if (isFaturation && !dislabedPaymentButton && invoice) {
+      setDisablePaymentButton(true)
+    } else {
+      setDisablePaymentButton(false)
+    }
+  }, [isFaturation])
 
   const sleep = (time: number) =>
     new Promise(resolve => setTimeout(resolve, time))
@@ -41,6 +54,17 @@ const PaymentDetails: React.FC = () => {
     await sleep(2000)
     openModal()
     setIsLoading(false)
+  }
+  const handlePaymentChange = (value: string) => {
+    const money = parseInt(value)
+    setValue(money)
+
+    if (isNaN(money)) {
+      return setChange(0)
+    }
+    const change =
+      money - Math.ceil(parseInt(bookedTicket.payment_data.total_booking))
+    setChange(change)
   }
   return (
     <Card style={{ width: '100%', marginBottom: '2rem' }} raised>
@@ -56,61 +80,83 @@ const PaymentDetails: React.FC = () => {
           title={<Typography variant="h6">Detalhes de pagamento</Typography>}
         />
         <CardContent>
-          <Box p={2}>
-            <Grid container spacing={6} wrap="wrap">
-              <Grid item md={3}>
-                <Typography variant="body1">Passageiros</Typography>
-                <Typography variant="body2">
-                  <b>800$00</b>
-                </Typography>
+          {bookedTicket.id && (
+            <Box p={2}>
+              <Grid container spacing={6} justify="center">
+                <Grid item md={3}>
+                  <Typography variant="body1">Sub Total</Typography>
+                  <Typography variant="body2">
+                    <b>
+                      {Math.ceil(
+                        parseInt(bookedTicket.payment_data.ticket_amount)
+                      )}
+                      $00
+                    </b>
+                  </Typography>
+                </Grid>
+                <Grid item md={3}>
+                  <Typography variant="body1">Taxas</Typography>
+                  <Typography variant="body2">
+                    <b>
+                      {Math.ceil(
+                        parseInt(bookedTicket.payment_data.ticket_tax_amount)
+                      )}
+                      $00
+                    </b>
+                  </Typography>
+                </Grid>
+
+                <Grid item md={3}>
+                  <Typography variant="body1">Total</Typography>
+                  <Typography variant="h6">
+                    <b>
+                      {Math.ceil(
+                        parseInt(bookedTicket.payment_data.total_booking)
+                      )}
+                      $00
+                    </b>
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item md={3}>
-                <Typography variant="body1">Veiculos</Typography>
-                <Typography variant="body2">
-                  <b>800$00</b>
-                </Typography>
-              </Grid>
-              <Grid item md={3}>
-                <Typography variant="body1">Taxas</Typography>
-                <Typography variant="body2">
-                  <b>800$00</b>
-                </Typography>
-              </Grid>
-              <Grid item md={3}>
-                <Typography variant="body1">Total</Typography>
-                <Typography variant="h6">
-                  <b>800$00</b>
-                </Typography>
-              </Grid>
-            </Grid>
-          </Box>
+            </Box>
+          )}
           <Box mt={1} mb={5}>
-            <Divider />
+            {/* <Divider /> */}
           </Box>
-          <Grid container alignItems="center" spacing={4}>
-            <Grid item xs={12} sm={6}>
-              <Field
-                component={TextField}
-                variant="outlined"
-                label="VALOR RECEBIDO"
-                name="last_name"
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PaymentIcon />
-                    </InputAdornment>
-                  )
-                }}
-              />
+          {parseInt(paymentMethod) === 1 && (
+            <Grid container alignItems="center" spacing={4} justify="center">
+              <Grid item xs={12}>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    variant="outlined"
+                    label="VALOR RECEBIDO"
+                    onChange={(event: any) =>
+                      handlePaymentChange(event.target.value as string)
+                    }
+                  />
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    variant="outlined"
+                    label="TROCO"
+                    value={change}
+                    error={change < 0}
+                    helperText={change < 0 && 'O troco não pode ser negativo'}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <MoneyIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </FormControl>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="body1">TROCO</Typography>
-              <Typography variant="h6">
-                <b>800$00</b>
-              </Typography>
-            </Grid>
-          </Grid>
+          )}
 
           <CardActions>
             <Grid container justify="flex-end">
@@ -120,6 +166,7 @@ const PaymentDetails: React.FC = () => {
                     color="primary"
                     variant="contained"
                     type="submit"
+                    disabled={dislabedPaymentButton || paymentMethod === ''}
                     startIcon={
                       isLoading ? (
                         <CircularProgress size="1rem" color="inherit" />

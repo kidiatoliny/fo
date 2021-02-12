@@ -8,6 +8,7 @@ import {
   BookingVehicle
 } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
+import { BillingUser } from '~/store/ducks/payments/types'
 export interface BookingContextData {
   step: number
   setStep: React.Dispatch<React.SetStateAction<number>>
@@ -55,4 +56,15 @@ export interface BookingContextData {
     type: BookingActionTypes.CLEAR_ERROR
   }
   clearBooking: () => void
+  paymentMethod: string
+  handlePaymentMethod: (
+    event: React.ChangeEvent<{
+      value: unknown
+    }>
+  ) => void
+
+  isFaturation: boolean
+  setIsFaturation: React.Dispatch<React.SetStateAction<boolean>>
+  invoice: BillingUser
+  handleInvoiceData: (payload: BillingUser) => void
 }

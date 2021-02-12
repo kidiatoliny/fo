@@ -12,6 +12,7 @@ import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import { PaymentIcon, ScheduleIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useModal } from '~/hooks/useModal'
+import { usePayment } from '~/hooks/usePayment'
 import React, { useEffect } from 'react'
 
 import MainContactPreview from './MainContactPreview'
@@ -26,6 +27,7 @@ const ReservationOwnerPreview: React.FC = () => {
   } = useBooking()
 
   const { open, closeModal, openModal } = useModal()
+  const { getPaymentMethods } = usePayment()
 
   useEffect(() => {
     bookedTicket.id && openModal()
@@ -33,6 +35,12 @@ const ReservationOwnerPreview: React.FC = () => {
 
   const handleBookingReservation = async () => {
     handleReservation()
+  }
+
+  const handleReservationPayment = () => {
+    handleReservation()
+    getPaymentMethods()
+    nextStep()
   }
 
   const handleCloseModal = () => {
@@ -72,7 +80,7 @@ const ReservationOwnerPreview: React.FC = () => {
                 variant="contained"
                 fullWidth
                 startIcon={<PaymentIcon />}
-                onClick={() => nextStep()}
+                onClick={handleReservationPayment}
                 color="primary"
               >
                 Cobrar

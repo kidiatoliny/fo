@@ -5,17 +5,22 @@ import {
   InputAdornment,
   MenuItem,
   Typography,
-  Box
+  Box,
+  Select
 } from '@material-ui/core'
 import { PaymentIcon } from '~/components/Icons'
+import { useBooking } from '~/contexts/BookingProvider'
+import { usePayment } from '~/hooks/usePayment'
 import { Field } from 'formik'
-import { Select } from 'formik-material-ui'
-import React from 'react'
+import React, { useState } from 'react'
 
 import FaturationForm from './FaturationForm'
 import PaymentDetails from './PaymentDetails'
 
 const PaymentMethods: React.FC = () => {
+  const { paymentMethods } = usePayment()
+  const { paymentMethod, handlePaymentMethod } = useBooking()
+
   return (
     <Grid container spacing={4}>
       <Grid item xs={12}>
@@ -23,33 +28,29 @@ const PaymentMethods: React.FC = () => {
           <Typography variant="h6">Pagamento</Typography>
         </Box>
       </Grid>
-      <Grid item sm={6}>
+      <Grid item xs={12}>
         <FormControl fullWidth size="small" variant="outlined">
-          <InputLabel htmlFor="departure">Metodos de Pagamento</InputLabel>
-          <Field
-            label="metodos de pagamento"
-            component={Select}
-            name="departure"
-            inputProps={{
-              id: 'departure'
-            }}
-            startAdornment={
-              <InputAdornment position="start">
-                <PaymentIcon />
-              </InputAdornment>
-            }
+          <InputLabel id="demo-simple-select-label">
+            Métodos de Pagamento
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            label=" Métodos de Pagamento"
+            id="demo-simple-select"
+            value={paymentMethod}
+            onChange={handlePaymentMethod}
           >
-            <MenuItem value={10}>SA/SV</MenuItem>
-            <MenuItem value={20}>SV/SA</MenuItem>
-          </Field>
+            {paymentMethods.map(paymentMethod => (
+              <MenuItem value={paymentMethod.id} key={paymentMethod.id}>
+                {paymentMethod.name}
+              </MenuItem>
+            ))}
+          </Select>
         </FormControl>
-        <Grid item>
-          <FaturationForm />
-        </Grid>
       </Grid>
-      <Grid item sm={6}>
+      {/* <Grid item sm={6}>
         <PaymentDetails />
-      </Grid>
+      </Grid> */}
     </Grid>
   )
 }

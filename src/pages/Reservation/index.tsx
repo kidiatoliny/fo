@@ -21,12 +21,12 @@ import React, { useEffect } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 const Reservation: React.FC = () => {
   const { getLocations, isLoading } = useLocations()
-
-  isLoading && <Loading />
   useEffect(() => {
     getLocations()
   }, [])
-
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <Layout>
       <Card raised>

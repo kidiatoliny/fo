@@ -27,6 +27,7 @@ import {
   MdNavigateNext as NextIcon,
   MdNavigateBefore as BackIcon
 } from 'react-icons/md'
+import { RiMoneyDollarCircleFill as MoneyIcon } from 'react-icons/ri'
 
 export {
   UserIcon,
@@ -47,5 +48,6 @@ export {
   DoneIcon,
   NextIcon,
   BackIcon,
-  StopIcon
+  StopIcon,
+  MoneyIcon
 }
