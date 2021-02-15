@@ -62,7 +62,7 @@ const PassengerData: React.FC = () => {
       <Box>
         <Box marginTop={3}>
           <Grid container spacing={4}>
-            <Grid item sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <FormControl fullWidth size="small" variant="outlined">
                 <InputLabel htmlFor="fare_id">Tipo de Passageiro*</InputLabel>
                 <Field
@@ -88,7 +88,7 @@ const PassengerData: React.FC = () => {
                 </Field>
               </FormControl>
             </Grid>
-            <Grid item sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <FormControl fullWidth size="small" variant="outlined">
                 <InputLabel htmlFor="document_type">Tipo documento*</InputLabel>
                 <Field
