@@ -40,5 +40,5 @@ export interface AuthState {
   readonly loading: boolean
   readonly error: HttpResponseError | null
   readonly role: UserRole
-  readonly tokenExpirationDate: Date
+  readonly tokenExpirationDate: Date | null
 }

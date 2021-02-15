@@ -8,7 +8,7 @@ export const INITIAL_STATE: AuthState = {
   error: null,
   isLogdin: !!localStorage.getItem('token'),
   role: {} as UserRole,
-  tokenExpirationDate: new Date()
+  tokenExpirationDate: null
 }
 
 const reducer: Reducer<AuthState> = (state = INITIAL_STATE, action) => {

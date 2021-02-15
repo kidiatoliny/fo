@@ -42,7 +42,6 @@ const VehicleForm: React.FC = () => {
                     <Typography variant="h6">
                       Veículo {total - vehicleCount + 1}-{total}
                     </Typography>
-                    {JSON.stringify(vehicles)}
                   </Grid>
                 </Box>
               </Grid>

@@ -48,9 +48,6 @@ const PaymentMethods: React.FC = () => {
           </Select>
         </FormControl>
       </Grid>
-      {/* <Grid item sm={6}>
-        <PaymentDetails />
-      </Grid> */}
     </Grid>
   )
 }

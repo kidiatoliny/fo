@@ -17,7 +17,11 @@ import {
   TextField,
   FormControl,
   LinearProgress,
-  Divider
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import {
@@ -56,7 +60,9 @@ const PaymentDetails: React.FC = () => {
     handlePaymentRequest,
     setStep,
     clearBooking,
-    mainContact
+    mainContact,
+    passengers,
+    vehicles
   } = useBooking()
   const [dislabedPaymentButton, setDisablePaymentButton] = useState(false)
   useEffect(() => {
@@ -214,13 +220,106 @@ const PaymentDetails: React.FC = () => {
       </Box>
       <SimpleDialog
         open={open}
-        title="Pagamento Processado com Sucesso"
+        title={`Pagamento Processado com Sucesso - #NVASV-${bookedTicket.id}`}
         onClose={closeModal}
         disableBackdropClick
       >
         <DialogContent>
           <DialogContentText id="reservation">
-            <Grid container spacing={3} justify="space-around">
+            {bookedTicket.id && (
+              <>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Box m={2}>
+                      <Typography variant="body1">
+                        Titular da Reserva:
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item>
+                    <ListItem alignItems="center">
+                      <ListItemAvatar>
+                        <Avatar>
+                          <Icon>
+                            <UserIcon />
+                          </Icon>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={`${bookedTicket.first_name}  ${bookedTicket.last_name}`}
+                      />
+                    </ListItem>
+                  </Grid>
+                  <Grid item>
+                    <ListItem alignItems="center">
+                      <ListItemAvatar>
+                        <Avatar>
+                          <Icon>
+                            <MailIcon />
+                          </Icon>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={bookedTicket.email} />
+                    </ListItem>
+                  </Grid>
+                  <Grid item>
+                    <ListItem alignItems="center">
+                      <ListItemAvatar>
+                        <Avatar>
+                          <Icon>
+                            <MobileIcon />
+                          </Icon>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={bookedTicket.mobile} />
+                    </ListItem>
+                  </Grid>
+                </Grid>
+                <Box m={2}>
+                  <Divider />
+                </Box>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Box m={2}>
+                      <Typography variant="body1">Dados de Pagameto</Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item>
+                    <ListItem alignItems="center">
+                      <ListItemAvatar>
+                        <Avatar>{passengers.length}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="passageiros" />
+                    </ListItem>
+                  </Grid>
+                  <Grid item>
+                    <ListItem alignItems="center">
+                      <ListItemAvatar>
+                        <Avatar>{vehicles.length}</Avatar>
+                      </ListItemAvatar>
+
+                      <ListItemText primary="veiculos" />
+                    </ListItem>
+                  </Grid>
+                  <Grid item>
+                    <ListItem alignItems="center">
+                      <ListItemAvatar>
+                        <Avatar>
+                          <Icon>
+                            <MoneyIcon />
+                          </Icon>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={bookedTicket.payment_data.total_booking}
+                      />
+                    </ListItem>
+                  </Grid>
+                </Grid>
+              </>
+            )}
+
+            {/* <Grid container spacing={3} justify="space-around">
               <Grid item>
                 <Typography variant="h6">Titular da Reserva</Typography>
 
@@ -274,7 +373,7 @@ const PaymentDetails: React.FC = () => {
                   </Typography>
                 </Grid>
               </Grid>
-            </Grid>
+            </Grid> */}
           </DialogContentText>
           <Divider />
         </DialogContent>
@@ -283,38 +382,32 @@ const PaymentDetails: React.FC = () => {
           <LinearProgress />
         ) : (
           <DialogActions>
-            <Grid container spacing={3} justify="center">
-              <Grid item>
-                <Button
-                  onClick={() => printPdf('ticket')}
-                  variant="outlined"
-                  color="primary"
-                  startIcon={<PrinterPosIcon />}
-                >
-                  Imprimir
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  onClick={() => printPdf('pos')}
-                  variant="outlined"
-                  color="primary"
-                  startIcon={<PrinterPosIcon />}
-                >
-                  imprimir POS
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  onClick={() => newSale()}
-                  color="primary"
-                  variant="contained"
-                  startIcon={<ShoppingIcon />}
-                >
-                  Nova Venda
-                </Button>
-              </Grid>
-            </Grid>
+            <Button
+              onClick={() => printPdf('ticket')}
+              variant="outlined"
+              color="primary"
+              startIcon={<PrinterPosIcon />}
+            >
+              Imprimir
+            </Button>
+
+            <Button
+              onClick={() => printPdf('pos')}
+              variant="outlined"
+              color="primary"
+              startIcon={<PrinterPosIcon />}
+            >
+              imprimir POS
+            </Button>
+
+            <Button
+              onClick={() => newSale()}
+              color="primary"
+              variant="contained"
+              startIcon={<ShoppingIcon />}
+            >
+              Nova Venda
+            </Button>
           </DialogActions>
         )}
       </SimpleDialog>

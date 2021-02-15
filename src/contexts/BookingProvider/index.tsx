@@ -291,7 +291,7 @@ export const BookingProvider: React.FC = ({ children }) => {
   }
   /** payments */
   const [paymentMethod, setPaymentMethod] = useState('')
-  const [isFaturation, setIsFaturation] = useState(false)
+  const [isFaturation, setIsFaturation] = useState(true)
   const handlePaymentMethod = (
     event: React.ChangeEvent<{ value: unknown }>
   ) => {

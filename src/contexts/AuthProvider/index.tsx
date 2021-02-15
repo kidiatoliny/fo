@@ -44,7 +44,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         isLoading,
         isLogdIn,
         role,
-        isTokenExpired,
+        isTokenExpired: !!isTokenExpired,
         token
       }}
     >
