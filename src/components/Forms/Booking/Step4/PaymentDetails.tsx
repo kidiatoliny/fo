@@ -28,16 +28,28 @@ import {
 } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useModal } from '~/hooks/useModal'
+import { usePayment } from '~/hooks/usePayment'
+import { usePrint } from '~/hooks/usePrint'
 import React, { useEffect, useState } from 'react'
 const PaymentDetails: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const { isLoading, paymentData } = usePayment()
+  const { handleBookingPrint } = useBooking()
+  const { printPdf } = usePrint()
   const { open, openModal, closeModal } = useModal()
-  const { isFaturation, invoice, bookedTicket, paymentMethod } = useBooking()
-
+  const {
+    isFaturation,
+    invoice,
+    bookedTicket,
+    paymentMethod,
+    handlePaymentRequest
+  } = useBooking()
   const [dislabedPaymentButton, setDisablePaymentButton] = useState(false)
-
+  useEffect(() => {
+    paymentData.booking_id && openModal()
+  }, [paymentData])
   const [change, setChange] = useState(0)
   const [value, setValue] = useState(0)
+
   useEffect(() => {
     if (isFaturation && !dislabedPaymentButton && invoice) {
       setDisablePaymentButton(true)
@@ -45,15 +57,8 @@ const PaymentDetails: React.FC = () => {
       setDisablePaymentButton(false)
     }
   }, [isFaturation])
-
-  const sleep = (time: number) =>
-    new Promise(resolve => setTimeout(resolve, time))
-
   const handlePayment = async () => {
-    setIsLoading(true)
-    await sleep(2000)
-    openModal()
-    setIsLoading(false)
+    handlePaymentRequest()
   }
   const handlePaymentChange = (value: string) => {
     const money = parseInt(value)
@@ -190,55 +195,34 @@ const PaymentDetails: React.FC = () => {
         onClose={closeModal}
       >
         <DialogContent>
-          <DialogContentText id="reservation">
-            <Typography variant="h6" style={{ marginBottom: '1rem' }}>
-              <b> Codigo de Bilhete</b> - <i> #uy32789j</i>
-            </Typography>
-
-            <Box>
-              <Typography variant="h6" style={{ marginBottom: '1rem' }}>
-                <b>Titular da Reserva</b>
-              </Typography>
-              <Grid container spacing={1} md={10}>
-                <Grid item container alignItems="center" md={6}>
-                  <Icon>
-                    <UserIcon />
-                  </Icon>
-                  <Typography style={{ marginLeft: '1rem' }}>
-                    Jhon Doe
-                  </Typography>
-                </Grid>
-                <Grid item container style={{ marginTop: 4 }} md={6}>
-                  <Icon>
-                    <MailIcon />
-                  </Icon>
-                  <Typography style={{ marginLeft: '1rem' }}>
-                    example@example.com
-                  </Typography>
-                </Grid>
-                <Grid item container style={{ marginTop: 4 }} md={6}>
-                  <Icon>
-                    <MobileIcon />
-                  </Icon>
-                  <Typography style={{ marginLeft: '1rem' }}>
-                    999 99 99
-                  </Typography>
-                </Grid>
-                <Grid item container style={{ marginTop: 4 }} md={6}>
-                  <Icon>
-                    <PhoneIcon />
-                  </Icon>
-                  <Typography style={{ marginLeft: '1rem' }}>
-                    999 99 99
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Box>
-          </DialogContentText>
+          <DialogContentText id="reservation"></DialogContentText>
         </DialogContent>
         <DialogActions>
+          <Button
+            onClick={() =>
+              handleBookingPrint({
+                booking_id: paymentData.booking_id,
+                output: 'show',
+                opt: 'ticket'
+              })
+            }
+            color="primary"
+            variant="contained"
+          >
+            Imprimir
+          </Button>
+          <Button
+            onClick={() => printPdf()}
+            color="primary"
+            variant="contained"
+          >
+            imprimir POS
+          </Button>
           <Button onClick={closeModal} color="primary" variant="contained">
-            OK
+            Download
+          </Button>
+          <Button onClick={closeModal} color="primary" variant="contained">
+            Download POS
           </Button>
         </DialogActions>
       </SimpleDialog>

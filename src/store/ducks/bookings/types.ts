@@ -11,6 +11,11 @@ export enum BookingActionTypes {
   DEPARTURE_BOOKING_SAVE_REQUEST_SUCCESS = '@booking/BOOKING_SAVE_REQUEST_SUCCESS',
   RETURN_BOOKING_SAVE_REQUEST_SUCCESS = '@booking/BOOKING_SAVE_REQUEST_SUCCESS',
   BOOKING_SAVE_REQUEST_FAILURE = '@booking/BOOKING_SAVE_REQUEST_FAILURE',
+
+  BOOKING_PRINT_REQUEST = '@booking/BOOKING_PRINT_REQUEST',
+  BOOKING_PRINT_REQUEST_SUCCESS = '@booking/BOOKING_PRINT_REQUEST_SUCCESS',
+  BOOKING_PRINT_REQUEST_FAILURE = '@booking/BOOKING_PRINT_REQUEST_FAILURE',
+
   CLEAR_ERROR = '@booking/CLEAR_ERROR'
 }
 
@@ -69,8 +74,15 @@ export interface BookedTicket {
     total_booking: string
   }
 }
+
+export interface PrintRequest {
+  booking_id: number
+  output: 'show' | 'download'
+  opt: 'ticket' | 'pos'
+}
 export interface BookingState {
   readonly bookedTicket: BookedTicket
+  readonly printTicket: any
   readonly success: boolean
   readonly loading: boolean
   readonly error: HttpResponseError

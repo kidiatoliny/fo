@@ -1,4 +1,5 @@
 import { all, call, put, select, takeLatest } from 'redux-saga/effects'
+import { ActionType } from 'typesafe-actions'
 
 import { actions } from '.'
 import { ApplicationState } from '../..'
@@ -28,6 +29,36 @@ export function* getPaymentMethods() {
   }
 }
 
+export function* paymentRequest({
+  payload
+}: ActionType<typeof actions.paymentRequest>) {
+  const url = '/payment/save'
+
+  try {
+    const accessToken = yield select(
+      (state: ApplicationState) => state.auth.token
+    )
+
+    if (!accessToken) {
+      return
+    }
+    const response = yield call(api.post, url, payload)
+
+    yield put(actions.paymentRequestSuccess(response.data.data))
+
+    yield put(actions.clearError())
+  } catch (err) {
+    yield put(
+      actions.paymentRequestFailure({
+        code: err.response?.status,
+        message: err.message,
+        isAxiosError: err.isAxiosError
+      })
+    )
+  }
+}
+
 export default all([
-  takeLatest(PaymentActionTypes.PAYMENT_METHODS_REQUEST, getPaymentMethods)
+  takeLatest(PaymentActionTypes.PAYMENT_METHODS_REQUEST, getPaymentMethods),
+  takeLatest(PaymentActionTypes.PAYMENT_REQUEST, paymentRequest)
 ])

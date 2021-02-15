@@ -5,7 +5,8 @@ import {
   BookingActionTypes,
   BookingMainContact,
   BookingPassenger,
-  BookingVehicle
+  BookingVehicle,
+  PrintRequest
 } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
 import { BillingUser } from '~/store/ducks/payments/types'
@@ -67,4 +68,13 @@ export interface BookingContextData {
   setIsFaturation: React.Dispatch<React.SetStateAction<boolean>>
   invoice: BillingUser
   handleInvoiceData: (payload: BillingUser) => void
+
+  handlePaymentRequest: () => void
+
+  handleBookingPrint: (
+    payload: PrintRequest
+  ) => {
+    type: BookingActionTypes.BOOKING_PRINT_REQUEST
+    payload: PrintRequest
+  }
 }

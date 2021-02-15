@@ -1,7 +1,12 @@
 import { HttpResponseError } from '~/types'
 import { action } from 'typesafe-actions'
 
-import { PaymentActionTypes, PaymentMethod } from './types'
+import {
+  Payment,
+  PaymentActionTypes,
+  PaymentData,
+  PaymentMethod
+} from './types'
 
 /**
  * request payment
@@ -26,3 +31,12 @@ export const paymentMethodRequestFailure = (payload: HttpResponseError) =>
  * clear payments request errors
  */
 export const clearError = () => action(PaymentActionTypes.CLEAR_ERROR)
+
+export const paymentRequest = (payload: Payment) =>
+  action(PaymentActionTypes.PAYMENT_REQUEST, payload)
+
+export const paymentRequestSuccess = (payload: PaymentData) =>
+  action(PaymentActionTypes.PAYMENT_REQUEST_SUCCESS, payload)
+
+export const paymentRequestFailure = (payload: HttpResponseError) =>
+  action(PaymentActionTypes.PAYMENT_REQUEST_FAILURE, payload)

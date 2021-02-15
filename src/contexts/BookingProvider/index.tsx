@@ -7,9 +7,11 @@ import {
   BookingMainContact,
   BookingPassenger,
   BookingRoute,
-  BookingVehicle
+  BookingVehicle,
+  PrintRequest
 } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
+import { paymentRequest } from '~/store/ducks/payments/actions'
 import { BillingUser } from '~/store/ducks/payments/types'
 import { format } from 'date-fns'
 import React, { createContext, useContext, useEffect, useState } from 'react'
@@ -299,6 +301,20 @@ export const BookingProvider: React.FC = ({ children }) => {
   const [invoice, setInvoice] = useState({} as BillingUser)
   const handleInvoiceData = (payload: BillingUser) => setInvoice(payload)
 
+  const handlePaymentRequest = () => {
+    dispatch(
+      paymentRequest({
+        booking_id: bookedTicket.id,
+        payment_method_id: parseInt(paymentMethod),
+        payment_amount: parseInt(bookedTicket.payment_data.total_booking),
+        invoice
+      })
+    )
+  }
+
+  const handleBookingPrint = (payload: PrintRequest) =>
+    dispatch(actions.bookingPrintRequest(payload))
+
   const clear = () => dispatch(actions.clearError())
   const clearBooking = () => {
     setReturnedTravel(false)
@@ -367,7 +383,9 @@ export const BookingProvider: React.FC = ({ children }) => {
         isFaturation,
         setIsFaturation,
         invoice,
-        handleInvoiceData
+        handleInvoiceData,
+        handlePaymentRequest,
+        handleBookingPrint
       }}
     >
       {children}

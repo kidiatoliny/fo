@@ -14,6 +14,11 @@ export enum PaymentActionTypes {
   PAYMENT_METHODS_REQUEST = '@payments/PAYMENTS_METHOD_REQUEST',
   PAYMENT_METHODS_REQUEST_SUCCESS = '@payments/PAYMENTS_METHOD_REQUEST_SUCCESS',
   PAYMENT_METHODS_REQUEST_FAILURE = '@payments/PAYMENTS_METHOD_REQUEST_FAILURE',
+
+  PAYMENT_REQUEST = '@payments/PAYMENT_REQUEST',
+  PAYMENT_REQUEST_SUCCESS = '@payments/PAYMENT_REQUEST_SUCCESS',
+  PAYMENT_REQUEST_FAILURE = '@payments/PAYMENT_REQUEST_FAILURE',
+
   CLEAR_ERROR = '@payments/CLEAR_ERROR'
 }
 /**
@@ -33,9 +38,46 @@ export interface BillingUser {
   email: string
   phone_number: string
 }
-
+export interface PaymentData {
+  booking_id: number
+  booking_status: string
+  resume: {
+    booking_owner: {
+      name: string
+      email: string
+      mobile: string
+      phone: string
+      booking_total_amount: string
+    }
+    travel_route: [
+      {
+        route: string
+        travelDate: string
+        time: string
+        departureLocation: string
+        destinationLocation: string
+      }
+    ]
+    passengers: [
+      {
+        id: number
+        nome: string
+        document_type: string
+        document_data: string
+      }
+    ]
+    vehicle: []
+  }
+}
+export interface Payment {
+  booking_id: number
+  payment_method_id: number
+  payment_amount: number
+  invoice: BillingUser
+}
 export interface PaymentState {
   readonly paymentMethods: Array<PaymentMethod>
+  readonly paymentData: PaymentData
   readonly loading: boolean
   readonly error: HttpResponseError
 }

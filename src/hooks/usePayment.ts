@@ -16,5 +16,9 @@ export const usePayment = () => {
 
   const getPaymentMethods = () => dispatch(actions.paymentMethodRequest())
 
-  return { paymentMethods, isLoading, getPaymentMethods }
+  const paymentData = useSelector((state: ApplicationState) =>
+    selectors.getPaymentData(state.payment)
+  )
+
+  return { paymentMethods, isLoading, getPaymentMethods, paymentData }
 }
