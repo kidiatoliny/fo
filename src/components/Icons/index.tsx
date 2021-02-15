@@ -1,7 +1,9 @@
 import {
   AiFillSchedule as ScheduleIcon,
   AiFillLock as LockIcon,
-  AiOutlineLogin as LoginIcon
+  AiOutlineLogin as LoginIcon,
+  AiOutlineShoppingCart as ShoppingIcon,
+  AiFillPrinter as PrinterIcon
 } from 'react-icons/ai'
 import { BiBlock as StopIcon } from 'react-icons/bi'
 import {
@@ -28,6 +30,7 @@ import {
   MdNavigateBefore as BackIcon
 } from 'react-icons/md'
 import { RiMoneyDollarCircleFill as MoneyIcon } from 'react-icons/ri'
+import { TiPrinter as PrinterPosIcon } from 'react-icons/ti'
 
 export {
   UserIcon,
@@ -49,5 +52,8 @@ export {
   NextIcon,
   BackIcon,
   StopIcon,
-  MoneyIcon
+  MoneyIcon,
+  ShoppingIcon,
+  PrinterIcon,
+  PrinterPosIcon
 }

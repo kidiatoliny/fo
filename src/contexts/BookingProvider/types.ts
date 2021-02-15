@@ -5,8 +5,7 @@ import {
   BookingActionTypes,
   BookingMainContact,
   BookingPassenger,
-  BookingVehicle,
-  PrintRequest
+  BookingVehicle
 } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
 import { BillingUser } from '~/store/ducks/payments/types'
@@ -70,11 +69,4 @@ export interface BookingContextData {
   handleInvoiceData: (payload: BillingUser) => void
 
   handlePaymentRequest: () => void
-
-  handleBookingPrint: (
-    payload: PrintRequest
-  ) => {
-    type: BookingActionTypes.BOOKING_PRINT_REQUEST
-    payload: PrintRequest
-  }
 }

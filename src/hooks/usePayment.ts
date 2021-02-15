@@ -20,5 +20,13 @@ export const usePayment = () => {
     selectors.getPaymentData(state.payment)
   )
 
-  return { paymentMethods, isLoading, getPaymentMethods, paymentData }
+  const clearPaymentData = () => dispatch(actions.clearError())
+
+  return {
+    paymentMethods,
+    isLoading,
+    getPaymentMethods,
+    paymentData,
+    clearPaymentData
+  }
 }

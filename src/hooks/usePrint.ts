@@ -1,32 +1,36 @@
-import api from '~/services/api'
 import { ApplicationState } from '~/store'
-import { selectors } from '~/store/ducks/bookings'
-import { useSelector } from 'react-redux'
+import { selectors, actions } from '~/store/ducks/prints'
+import { PrintRequest } from '~/store/ducks/prints/types'
+import { useDispatch, useSelector } from 'react-redux'
 export const usePrint = () => {
-  const printData = useSelector((state: ApplicationState) =>
-    selectors.printTicketData(state.booking)
+  const dispatch = useDispatch()
+  const ticket = useSelector((state: ApplicationState) =>
+    selectors.getTicket(state.print)
   )
-  const printPdf = () => {
-    const file = new Blob([printData], { type: 'application/pdf' })
+
+  const pos = useSelector((state: ApplicationState) =>
+    selectors.getPos(state.print)
+  )
+  const isLoading = useSelector((state: ApplicationState) =>
+    selectors.isLoading(state.print)
+  )
+
+  const printPdf = (option: 'ticket' | 'pos') => {
+    let data
+    if (option === 'ticket') {
+      data = ticket
+    } else {
+      data = pos
+    }
+    const file = new Blob([data], { type: 'application/pdf' })
     const fileURL = URL.createObjectURL(file)
-
     window.open(fileURL)
-
-    // api(`/booking/ticket/print/${bookingId}/show`, {
-    //   method: 'GET',
-    //   responseType: 'blob' // Force to receive data in a Blob Format
-    // })
-    //   .then(response => {
-    //     // Create a Blob from the PDF Stream
-    //     const file = new Blob([response.data.data], { type: 'application/pdf' })
-    //     // Build a URL from the file
-    //     const fileURL = URL.createObjectURL(file)
-    //     // Open the URL on new Window
-    //     window.open(fileURL)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
   }
-  return { printPdf }
+
+  const printTicketRequest = (payload: PrintRequest) =>
+    dispatch(actions.printTicketRequest(payload))
+
+  const printPosRequest = (payload: PrintRequest) =>
+    dispatch(actions.printPosRequest(payload))
+  return { printPdf, printTicketRequest, printPosRequest, isLoading }
 }

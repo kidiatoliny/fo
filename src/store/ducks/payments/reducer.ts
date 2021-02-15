@@ -33,7 +33,11 @@ const reducer: Reducer<PaymentState> = (state = INITIAL_STATE, action) => {
       return { ...state, loading: false, paymentData: action.payload }
 
     case PaymentActionTypes.CLEAR_ERROR:
-      return { ...state, error: {} as HttpResponseError }
+      return {
+        ...state,
+        error: {} as HttpResponseError,
+        paymentData: {} as PaymentData
+      }
     default:
       return state
   }

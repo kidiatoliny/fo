@@ -5,7 +5,6 @@ import { BookingActionTypes, BookingState, BookedTicket } from './types'
 
 export const INITIAL_STATE: BookingState = {
   bookedTicket: {} as BookedTicket,
-  printTicket: {},
   success: false,
   loading: false,
   error: {} as HttpResponseError
@@ -14,7 +13,6 @@ export const INITIAL_STATE: BookingState = {
 const reducer: Reducer<BookingState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case BookingActionTypes.BOOKING_SAVE_REQUEST:
-    case BookingActionTypes.BOOKING_PRINT_REQUEST:
       return { ...state, loading: true }
 
     case BookingActionTypes.DEPARTURE_BOOKING_SAVE_REQUEST_SUCCESS:
@@ -24,11 +22,8 @@ const reducer: Reducer<BookingState> = (state = INITIAL_STATE, action) => {
         success: true,
         bookedTicket: action.payload
       }
-    case BookingActionTypes.BOOKING_PRINT_REQUEST_SUCCESS:
-      return { ...state, loading: false, printTicket: action.payload }
 
     case BookingActionTypes.BOOKING_SAVE_REQUEST_FAILURE:
-    case BookingActionTypes.BOOKING_PRINT_REQUEST_FAILURE:
       return {
         ...state,
         loading: false,

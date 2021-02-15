@@ -21,7 +21,7 @@ export const printTicketRequestFailure = (payload: HttpResponseError) =>
  * PRINT POS ACTIONS
  */
 export const printPosRequest = (payload: PrintRequest) =>
-  action(PrintActionTypes.PRINT_TICKET_REQUEST, payload)
+  action(PrintActionTypes.PRINT_POS_REQUEST, payload)
 
 export const printPosRequestSuccess = (payload: Blob) =>
   action(PrintActionTypes.PRINT_POS_REQUEST_SUCCESS, payload)

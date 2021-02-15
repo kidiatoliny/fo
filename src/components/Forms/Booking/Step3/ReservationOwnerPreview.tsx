@@ -98,6 +98,7 @@ const ReservationOwnerPreview: React.FC = () => {
             open={open}
             onClose={closeModal}
             maxWidth="sm"
+            disableBackdropClick
           >
             <DialogContent>
               <Grid container spacing={3} direction="column">

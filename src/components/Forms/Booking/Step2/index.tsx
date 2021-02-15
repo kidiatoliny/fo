@@ -50,7 +50,12 @@ const Step2: React.FC = () => {
         </PassengerForm>
       )}
       {vehicleCount > 0 && passengerCount === 0 && <VehicleForm />}
-      <SimpleDialog open={open} onClose={closeModal} title="">
+      <SimpleDialog
+        open={open}
+        onClose={closeModal}
+        title=""
+        disableBackdropClick
+      >
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             <Grid container spacing={4} alignItems="center" justify="center">

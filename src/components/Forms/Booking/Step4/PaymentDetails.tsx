@@ -15,7 +15,9 @@ import {
   Typography,
   CircularProgress,
   TextField,
-  FormControl
+  FormControl,
+  LinearProgress,
+  Divider
 } from '@material-ui/core'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import {
@@ -24,32 +26,53 @@ import {
   MoneyIcon,
   PaymentIcon,
   PhoneIcon,
+  PrinterPosIcon,
+  ShoppingIcon,
   UserIcon
 } from '~/components/Icons'
+import Loading from '~/components/Loading'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useModal } from '~/hooks/useModal'
 import { usePayment } from '~/hooks/usePayment'
 import { usePrint } from '~/hooks/usePrint'
 import React, { useEffect, useState } from 'react'
+
+import MainContactPreview from '../Step3/MainContactPreview'
 const PaymentDetails: React.FC = () => {
   const { isLoading, paymentData } = usePayment()
-  const { handleBookingPrint } = useBooking()
-  const { printPdf } = usePrint()
+
+  const {
+    printPdf,
+    printTicketRequest,
+    printPosRequest,
+    isLoading: loadingPrintInfo
+  } = usePrint()
   const { open, openModal, closeModal } = useModal()
   const {
     isFaturation,
     invoice,
     bookedTicket,
     paymentMethod,
-    handlePaymentRequest
+    handlePaymentRequest,
+    setStep,
+    clearBooking,
+    mainContact
   } = useBooking()
   const [dislabedPaymentButton, setDisablePaymentButton] = useState(false)
   useEffect(() => {
-    paymentData.booking_id && openModal()
+    if (paymentData.booking_id) {
+      printTicketRequest({ booking_id: paymentData.booking_id, output: 'show' })
+      printPosRequest({ booking_id: paymentData.booking_id, output: 'show' })
+      openModal()
+    }
   }, [paymentData])
   const [change, setChange] = useState(0)
   const [value, setValue] = useState(0)
 
+  const newSale = () => {
+    closeModal()
+    clearBooking()
+  }
   useEffect(() => {
     if (isFaturation && !dislabedPaymentButton && invoice) {
       setDisablePaymentButton(true)
@@ -193,38 +216,107 @@ const PaymentDetails: React.FC = () => {
         open={open}
         title="Pagamento Processado com Sucesso"
         onClose={closeModal}
+        disableBackdropClick
       >
         <DialogContent>
-          <DialogContentText id="reservation"></DialogContentText>
+          <DialogContentText id="reservation">
+            <Grid container spacing={3} justify="space-around">
+              <Grid item>
+                <Typography variant="h6">Titular da Reserva</Typography>
+
+                <Grid container alignItems="center">
+                  <Typography variant="body2" style={{ marginRight: '1rem' }}>
+                    <b>Nome:</b>
+                  </Typography>
+                  <Typography>
+                    {bookedTicket.first_name} {bookedTicket.last_name}
+                  </Typography>
+                </Grid>
+                <Grid item container alignItems="center">
+                  <Typography variant="body2" style={{ marginRight: '1rem' }}>
+                    <b>Email:</b>
+                  </Typography>
+                  <Typography>{bookedTicket.email}</Typography>
+                </Grid>
+                <Grid item container alignItems="center">
+                  <Typography variant="body2" style={{ marginRight: '1rem' }}>
+                    <b>Contato:</b>
+                  </Typography>
+                  <Typography>{bookedTicket.mobile}</Typography>
+                </Grid>
+              </Grid>
+
+              <Grid item>
+                <Typography variant="h6">Detalhes de Pagamento</Typography>
+
+                <Grid item container alignItems="center">
+                  <Typography variant="body2" style={{ marginRight: '1rem' }}>
+                    <b>Bilhte:</b>
+                  </Typography>
+                  <Typography>
+                    {bookedTicket.payment_data.ticket_amount} $00
+                  </Typography>
+                </Grid>
+                <Grid item container alignItems="center">
+                  <Typography variant="body2" style={{ marginRight: '1rem' }}>
+                    <b>Taxas:</b>
+                  </Typography>
+                  <Typography>
+                    {bookedTicket.payment_data.ticket_tax_amount} $00
+                  </Typography>
+                </Grid>
+                <Grid item container alignItems="center">
+                  <Typography variant="body2" style={{ marginRight: '1rem' }}>
+                    <b>Total:</b>
+                  </Typography>
+                  <Typography>
+                    {bookedTicket.payment_data.total_booking} $00
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </DialogContentText>
+          <Divider />
         </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() =>
-              handleBookingPrint({
-                booking_id: paymentData.booking_id,
-                output: 'show',
-                opt: 'ticket'
-              })
-            }
-            color="primary"
-            variant="contained"
-          >
-            Imprimir
-          </Button>
-          <Button
-            onClick={() => printPdf()}
-            color="primary"
-            variant="contained"
-          >
-            imprimir POS
-          </Button>
-          <Button onClick={closeModal} color="primary" variant="contained">
-            Download
-          </Button>
-          <Button onClick={closeModal} color="primary" variant="contained">
-            Download POS
-          </Button>
-        </DialogActions>
+
+        {loadingPrintInfo ? (
+          <LinearProgress />
+        ) : (
+          <DialogActions>
+            <Grid container spacing={3} justify="center">
+              <Grid item>
+                <Button
+                  onClick={() => printPdf('ticket')}
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<PrinterPosIcon />}
+                >
+                  Imprimir
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  onClick={() => printPdf('pos')}
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<PrinterPosIcon />}
+                >
+                  imprimir POS
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  onClick={() => newSale()}
+                  color="primary"
+                  variant="contained"
+                  startIcon={<ShoppingIcon />}
+                >
+                  Nova Venda
+                </Button>
+              </Grid>
+            </Grid>
+          </DialogActions>
+        )}
       </SimpleDialog>
     </Card>
   )

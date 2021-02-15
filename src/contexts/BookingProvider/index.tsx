@@ -1,5 +1,6 @@
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { useLocations } from '~/hooks/useLocations'
+import { usePayment } from '~/hooks/usePayment'
 import { useTravel } from '~/hooks/useTravel'
 import { ApplicationState } from '~/store'
 import { actions, selectors } from '~/store/ducks/bookings'
@@ -7,8 +8,7 @@ import {
   BookingMainContact,
   BookingPassenger,
   BookingRoute,
-  BookingVehicle,
-  PrintRequest
+  BookingVehicle
 } from '~/store/ducks/bookings/types'
 import { Location } from '~/store/ducks/locations/types'
 import { paymentRequest } from '~/store/ducks/payments/actions'
@@ -30,7 +30,7 @@ export const BookingProvider: React.FC = ({ children }) => {
   const { passengerFareTax, vehicleFareTax } = useTravel()
   const { locations } = useLocations()
   const { getTravel, departureTravel, returnTravel } = useTravel()
-
+  const { clearPaymentData } = usePayment()
   /**
    * COMPONENT STATE'S
    */
@@ -312,9 +312,6 @@ export const BookingProvider: React.FC = ({ children }) => {
     )
   }
 
-  const handleBookingPrint = (payload: PrintRequest) =>
-    dispatch(actions.bookingPrintRequest(payload))
-
   const clear = () => dispatch(actions.clearError())
   const clearBooking = () => {
     setReturnedTravel(false)
@@ -331,6 +328,8 @@ export const BookingProvider: React.FC = ({ children }) => {
     setDepartureScheduleId('')
     setReturnScheduleId('')
     clear()
+    clearPaymentData()
+    setInvoice({} as BillingUser)
     setStep(0)
   }
   return (
@@ -384,8 +383,7 @@ export const BookingProvider: React.FC = ({ children }) => {
         setIsFaturation,
         invoice,
         handleInvoiceData,
-        handlePaymentRequest,
-        handleBookingPrint
+        handlePaymentRequest
       }}
     >
       {children}
