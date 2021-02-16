@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Avatar,
   Box,
@@ -17,32 +18,33 @@ import {
   TextField,
   FormControl,
   LinearProgress,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText
+  Divider
 } from '@material-ui/core'
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
+import done from '~/assets/done.svg'
 import SimpleDialog from '~/components/Dialogs/SimpleDialog'
 import {
-  MailIcon,
-  MobileIcon,
   MoneyIcon,
   PaymentIcon,
-  PhoneIcon,
   PrinterPosIcon,
-  ShoppingIcon,
-  UserIcon
+  ShoppingIcon
 } from '~/components/Icons'
-import Loading from '~/components/Loading'
 import { useBooking } from '~/contexts/BookingProvider'
 import { useModal } from '~/hooks/useModal'
 import { usePayment } from '~/hooks/usePayment'
 import { usePrint } from '~/hooks/usePrint'
 import React, { useEffect, useState } from 'react'
 
-import MainContactPreview from '../Step3/MainContactPreview'
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    img: {
+      width: theme.spacing(40),
+      height: 'auto'
+    }
+  })
+)
 const PaymentDetails: React.FC = () => {
+  const classes = useStyles()
   const { isLoading, paymentData } = usePayment()
 
   const {
@@ -58,11 +60,8 @@ const PaymentDetails: React.FC = () => {
     bookedTicket,
     paymentMethod,
     handlePaymentRequest,
-    setStep,
-    clearBooking,
-    mainContact,
-    passengers,
-    vehicles
+
+    clearBooking
   } = useBooking()
   const [dislabedPaymentButton, setDisablePaymentButton] = useState(false)
   useEffect(() => {
@@ -73,8 +72,6 @@ const PaymentDetails: React.FC = () => {
     }
   }, [paymentData])
   const [change, setChange] = useState(0)
-  const [value, setValue] = useState(0)
-
   const newSale = () => {
     closeModal()
     clearBooking()
@@ -91,7 +88,6 @@ const PaymentDetails: React.FC = () => {
   }
   const handlePaymentChange = (value: string) => {
     const money = parseInt(value)
-    setValue(money)
 
     if (isNaN(money)) {
       return setChange(0)
@@ -220,7 +216,7 @@ const PaymentDetails: React.FC = () => {
       </Box>
       <SimpleDialog
         open={open}
-        title={`Pagamento Processado com Sucesso - #NVASV-${bookedTicket.id}`}
+        title=""
         onClose={closeModal}
         disableBackdropClick
       >
@@ -228,8 +224,26 @@ const PaymentDetails: React.FC = () => {
           <DialogContentText id="reservation">
             {bookedTicket.id && (
               <>
-                <Grid container>
+                <Grid container justify="center">
                   <Grid item xs={12}>
+                    <Typography>BNVASV#{bookedTicket.id}</Typography>
+                  </Grid>
+                  <Grid item container justify="flex-end" xs={12}>
+                    <Button
+                      onClick={() => newSale()}
+                      color="primary"
+                      variant="contained"
+                      startIcon={<ShoppingIcon />}
+                    >
+                      Nova Venda
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Box m={2}>
+                      <img src={done} alt="done" className={classes.img} />
+                    </Box>
+                  </Grid>
+                  {/* <Grid item xs={12}>
                     <Box m={2}>
                       <Typography variant="body1">
                         Titular da Reserva:
@@ -273,12 +287,13 @@ const PaymentDetails: React.FC = () => {
                       </ListItemAvatar>
                       <ListItemText primary={bookedTicket.mobile} />
                     </ListItem>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
-                <Box m={2}>
+                {/* <Box m={2}>
                   <Divider />
-                </Box>
-                <Grid container>
+                  <img src={done} alt="done" className={classes.img} />
+                </Box> */}
+                {/* <Grid container>
                   <Grid item xs={12}>
                     <Box m={2}>
                       <Typography variant="body1">Dados de Pagameto</Typography>
@@ -315,7 +330,7 @@ const PaymentDetails: React.FC = () => {
                       />
                     </ListItem>
                   </Grid>
-                </Grid>
+                </Grid> */}
               </>
             )}
 
@@ -382,32 +397,29 @@ const PaymentDetails: React.FC = () => {
           <LinearProgress />
         ) : (
           <DialogActions>
-            <Button
-              onClick={() => printPdf('ticket')}
-              variant="outlined"
-              color="primary"
-              startIcon={<PrinterPosIcon />}
-            >
-              Imprimir
-            </Button>
+            <Grid container justify="center" spacing={1}>
+              <Grid item>
+                <Button
+                  onClick={() => printPdf('ticket')}
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<PrinterPosIcon />}
+                >
+                  Imprimir
+                </Button>
+              </Grid>
 
-            <Button
-              onClick={() => printPdf('pos')}
-              variant="outlined"
-              color="primary"
-              startIcon={<PrinterPosIcon />}
-            >
-              imprimir POS
-            </Button>
-
-            <Button
-              onClick={() => newSale()}
-              color="primary"
-              variant="contained"
-              startIcon={<ShoppingIcon />}
-            >
-              Nova Venda
-            </Button>
+              <Grid item>
+                <Button
+                  onClick={() => printPdf('pos')}
+                  variant="outlined"
+                  startIcon={<PrinterPosIcon />}
+                  fullWidth
+                >
+                  imprimir POS
+                </Button>
+              </Grid>
+            </Grid>
           </DialogActions>
         )}
       </SimpleDialog>

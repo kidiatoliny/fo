@@ -16,6 +16,7 @@ import {
 } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { BillingUser } from '~/store/ducks/payments/types'
+import { invoiceValidation } from '~/validations/invoiceValidation'
 import { Field, Form, Formik } from 'formik'
 import { TextField } from 'formik-material-ui'
 
@@ -52,6 +53,7 @@ const FaturationForm: React.FC = () => {
                   phone_number: invoice.phone_number
                 } as BillingUser
               }
+              validationSchema={invoiceValidation}
               onSubmit={values => {
                 handleInvoiceData(values)
                 setIsFaturation(prev => !prev)

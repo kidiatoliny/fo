@@ -2,20 +2,15 @@ import {
   Grid,
   FormControl,
   InputLabel,
-  InputAdornment,
   MenuItem,
   Typography,
   Box,
-  Select
+  Select,
+  FormHelperText
 } from '@material-ui/core'
-import { PaymentIcon } from '~/components/Icons'
 import { useBooking } from '~/contexts/BookingProvider'
 import { usePayment } from '~/hooks/usePayment'
-import { Field } from 'formik'
-import React, { useState } from 'react'
-
-import FaturationForm from './FaturationForm'
-import PaymentDetails from './PaymentDetails'
+import React from 'react'
 
 const PaymentMethods: React.FC = () => {
   const { paymentMethods } = usePayment()
@@ -39,6 +34,7 @@ const PaymentMethods: React.FC = () => {
             id="demo-simple-select"
             value={paymentMethod}
             onChange={handlePaymentMethod}
+            error={!paymentMethod}
           >
             {paymentMethods.map(paymentMethod => (
               <MenuItem value={paymentMethod.id} key={paymentMethod.id}>
@@ -46,6 +42,9 @@ const PaymentMethods: React.FC = () => {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText error>
+            {!paymentMethod && 'Selecione o método de Pagamento'}
+          </FormHelperText>
         </FormControl>
       </Grid>
     </Grid>

@@ -7,9 +7,8 @@ import { Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 
 import VehicleData from './VehicleData'
-
 const VehicleForm: React.FC = () => {
-  const { vehicleCount, handleAddVehicle, vehicles, vehicle } = useBooking()
+  const { vehicleCount, handleAddVehicle, vehicle } = useBooking()
 
   const [total, setTotal] = useState(0)
   useEffect(() => {

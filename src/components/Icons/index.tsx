@@ -27,9 +27,9 @@ import {
   MdPayment as PaymentIcon,
   MdDeleteForever as DeleteForeverIcon,
   MdNavigateNext as NextIcon,
-  MdNavigateBefore as BackIcon
+  MdNavigateBefore as BackIcon,
+  MdAttachMoney as MoneyIcon
 } from 'react-icons/md'
-import { RiMoneyDollarCircleFill as MoneyIcon } from 'react-icons/ri'
 import { TiPrinter as PrinterPosIcon } from 'react-icons/ti'
 
 export {
