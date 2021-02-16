@@ -40,7 +40,12 @@ const reducer: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
 
     case LoginActionTypes.LOGOUT:
       localStorage.removeItem('token')
-      return { ...state, token: null, tokenExpirationDate: null }
+      return {
+        ...state,
+        token: null,
+        tokenExpirationDate: null,
+        role: {} as UserRole
+      }
 
     case LoginActionTypes.CLEAR_ERROR:
       return {
