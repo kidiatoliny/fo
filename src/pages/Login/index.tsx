@@ -37,7 +37,10 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(10)
     },
     card: {
-      width: theme.spacing(50)
+      width: theme.spacing(50),
+      [theme.breakpoints.down('xs')]: {
+        height: '100vh'
+      }
     }
   })
 )
