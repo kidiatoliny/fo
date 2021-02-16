@@ -10,6 +10,7 @@ import { PaymentState } from './ducks/payments/types'
 import { PrintState } from './ducks/prints/types'
 import rootReducer from './ducks/rootReducers'
 import rootSaga from './ducks/rootSagas'
+import { SearchState } from './ducks/searchs/types'
 import { TravelState } from './ducks/travels/types'
 import { UserState } from './ducks/user/types'
 export interface ApplicationState {
@@ -21,6 +22,7 @@ export interface ApplicationState {
   booking: BookingState
   payment: PaymentState
   print: PrintState
+  search: SearchState
 }
 const sagaMiddleware = createSagaMiddleware()
 

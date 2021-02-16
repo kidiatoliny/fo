@@ -7,6 +7,6 @@ export const getRole = (state: AuthState) => state.role
 export const isLogdin = (state: AuthState) => state.isLogdin
 export const isTokenExpired = (state: AuthState) => {
   const date =
-    state.tokenExpirationDate && state.tokenExpirationDate < new Date()
+    state.tokenExpirationDate && state.tokenExpirationDate > new Date()
   return date
 }

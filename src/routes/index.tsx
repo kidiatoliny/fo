@@ -11,6 +11,7 @@ const Routes: React.FC = () => {
         <Route exact path="/" component={page.Login} />
         <Route path="/dashboard" component={page.Home} isPrivate />
         <Route path="/reservation" component={page.Reservation} isPrivate />
+        <Route path="/search" component={page.Search} isPrivate />
         <Redirect to="/404" />
       </Switch>
     </BrowserRouter>

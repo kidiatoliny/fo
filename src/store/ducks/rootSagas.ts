@@ -5,6 +5,7 @@ import location from '~/store/ducks/locations/sagas'
 import passenger from '~/store/ducks/passengers/sagas'
 import payment from '~/store/ducks/payments/sagas'
 import print from '~/store/ducks/prints/sagas'
+import search from '~/store/ducks/searchs/sagas'
 import travel from '~/store/ducks/travels/sagas'
 import user from '~/store/ducks/user/sagas'
 import { all } from 'redux-saga/effects'
@@ -18,6 +19,7 @@ export default function* rootSaga() {
     passenger,
     booking,
     payment,
-    print
+    print,
+    search
   ])
 }
