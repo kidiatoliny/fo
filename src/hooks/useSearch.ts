@@ -7,6 +7,8 @@ export const useSearch = () => {
   const searchRequest = (payload: SearchType) =>
     dispatch(actions.searchRequest(payload))
 
+  const clear = () => dispatch(actions.clear())
+
   const isSearchLoading = useSelector((state: ApplicationState) =>
     selectors.isLoading(state.search)
   )
@@ -18,5 +20,5 @@ export const useSearch = () => {
     selectors.getSearchData(state.search)
   )
 
-  return { searchRequest, error, isSearchLoading, searchData }
+  return { searchRequest, error, isSearchLoading, searchData, clear }
 }

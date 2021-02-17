@@ -35,6 +35,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     dispatch(actions.logout())
   }
 
+  const isAdmin = () => role.code === 'ROLE_ADMIN'
+
   return (
     <AuthContext.Provider
       value={{
@@ -45,7 +47,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         isLogdIn,
         role,
         isTokenExpired: !!isTokenExpired,
-        token
+        token,
+        isAdmin
       }}
     >
       {children}

@@ -9,4 +9,5 @@ export interface AuthContextData {
   role: UserRole
   isTokenExpired: boolean
   token: string | null
+  isAdmin: () => boolean
 }
