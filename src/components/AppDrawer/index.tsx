@@ -16,7 +16,8 @@ import { useUser } from '~/hooks/useUser'
 import React from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 
-import { SearchIcon } from '../Icons'
+import { SearchIcon, SystemIcon, RouteIcon, ShipIcon } from '../Icons'
+import NestedList from '../Lists/NestedList'
 import SimpleList from '../Lists/SimpleList'
 
 const simpleList = [
@@ -32,6 +33,17 @@ const simpleList = [
     link: '/reservation'
   }
 ]
+
+const nestedList = [
+  {
+    label: 'Sistema',
+    icon: <SystemIcon />,
+    childs: [
+      { label: 'Rotas', icon: <RouteIcon />, link: '/routes' },
+      { label: 'Navios', icon: <ShipIcon />, link: '/ships' }
+    ]
+  }
+]
 const AppDrawer: React.FC = () => {
   const { profile } = useUser()
 
@@ -45,6 +57,14 @@ const AppDrawer: React.FC = () => {
           icon={list.icon}
           link={list.link}
           key={list.title}
+        />
+      ))}
+      {nestedList.map((list, index) => (
+        <NestedList
+          key={index}
+          label={list.label}
+          icon={list.icon}
+          childs={list.childs}
         />
       ))}
     </div>

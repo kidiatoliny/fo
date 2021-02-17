@@ -8,8 +8,10 @@ import {
 import { BiBlock as StopIcon } from 'react-icons/bi'
 import {
   BsSearch as SearchIcon,
-  BsPersonPlus as AddUserIcon
+  BsPersonPlus as AddUserIcon,
+  BsFillGearFill as SystemIcon
 } from 'react-icons/bs'
+import { FaRoute as RouteIcon } from 'react-icons/fa'
 import {
   FiUser as UserIcon,
   FiPhone as PhoneIcon,
@@ -30,8 +32,8 @@ import {
   MdNavigateBefore as BackIcon,
   MdAttachMoney as MoneyIcon
 } from 'react-icons/md'
+import { RiShipLine as ShipIcon } from 'react-icons/ri'
 import { TiPrinter as PrinterPosIcon } from 'react-icons/ti'
-
 export {
   UserIcon,
   PhoneIcon,
@@ -55,5 +57,8 @@ export {
   MoneyIcon,
   ShoppingIcon,
   PrinterIcon,
-  PrinterPosIcon
+  PrinterPosIcon,
+  SystemIcon,
+  RouteIcon,
+  ShipIcon
 }
